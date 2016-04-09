@@ -1,0 +1,1 @@
+r.js -o baseUrl=. paths.backbone=backbone-min paths.underscore=lodash.min paths.jquery=jquery-2.1.4.min paths.pnglib=pnglib include=pnglib name=../app/mediatorRequire out=../app/mediatorRequire-built.js
