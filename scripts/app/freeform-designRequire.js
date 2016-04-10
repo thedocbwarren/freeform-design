@@ -21,6 +21,20 @@ require.config({
 
 require(['augmented', 'augmentedPresentation'], function(Augmented, Presentation) {
     "use strict";
+
+/* integrate this */
+
+/*
+document.querySelector('.material-design-hamburger__icon').addEventListener(
+    'click', function(e) {
+        var menu = document.querySelector('.material-design-hamburger__icon');
+        this.parentNode.nextElementSibling.classList.toggle('menu--on');
+        document.body.classList.toggle('background--blur');
+
+        this.parentNode.classList.toggle('model');
+});
+*/
+
     // setup a logger
 
     var logger = Augmented.Logger.LoggerFactory.getLogger(Augmented.Logger.Type.console, Augmented.Logger.Level.debug);
@@ -66,6 +80,13 @@ require(['augmented', 'augmentedPresentation'], function(Augmented, Presentation
         },
         logo: function() {
             window.location = "http://www.augmentedjs.com";
+        },
+        hamburger: function(e) {
+            var menu = this.boundElement("hamburgerMenu");
+            var r = this.boundElement("hamburgerClickRegion");
+            r.classList.toggle('model');
+            menu.classList.toggle('menu--on');
+            document.body.classList.toggle('background--blur');
         }
     });
 
@@ -134,19 +155,19 @@ require(['augmented', 'augmentedPresentation'], function(Augmented, Presentation
             this.on("compile", function(data) {
                 // do something
                 this.schema = data;
-                this.compile();
-                logger.debug(APP_NAME + "Viewer got the data");
+                if (this.schema) {
+                    this.compile();
+                }
             });
             this.on("requestData", function(message) {
                 this.sendMessage("yourDataRequest", this.getFullDataset());
-                }
-            );
+            });
         },
         getFullDataset: function() {
-                return {
-                    data: this.data,
-                    settings: this.settings
-                };
+            return {
+                data: this.data,
+                settings: this.settings
+            };
         },
         editableToggle: function(ee) {
             var e = this.boundElement("editable");
@@ -181,6 +202,11 @@ require(['augmented', 'augmentedPresentation'], function(Augmented, Presentation
             }
             this.compile();
         },
+        theme: function(e) {
+            var item = e.target;
+            var s = item.getAttribute(this.bindingAttribute());
+            logger.debug("got a theme and a click: " + s);
+        },
         compile: function() {
             if (myTableView && this.schema) {
                 myTableView.setSchema(this.schema);
@@ -200,7 +226,9 @@ require(['augmented', 'augmentedPresentation'], function(Augmented, Presentation
                 });
                 myTableView.render();
             }
-            this.sendMessage("yourDataRequest", this.getFullDataset());
+            if (this.schema){
+                this.sendMessage("yourDataRequest", this.getFullDataset());
+            }
         },
         generate: function() {
             if (this.schema && this.schema.properties) {

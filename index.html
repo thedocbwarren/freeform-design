@@ -18,6 +18,7 @@
                 <header id="header">
                     <h1><em>free</em>Form Design</h1>
                     <h2>Augmented.js Automatic UI Designer</h2>
+                    <!-- old menu
     		        <nav>
                         <i class="material-icons md-light">menu</i>
                         <ul>
@@ -28,6 +29,22 @@
                             <li id="about" data-header="about"><i class="material-icons md-dark">info</i>About</li>
                         </ul>
                     </nav>
+                    -->
+                    <section id="hamburger" class="wrapper" data-header="hamburger">
+                        <section class="material-design-hamburger" data-header="hamburgerClickRegion">
+                            <div class="material-design-hamburger__icon" data-header="hamburgerIcon" data-click="hamburger">
+                                <i class="material-icons md-light">menu</i><!--span class="material-design-hamburger__layer"></span-->
+                            </div>
+                        </section>
+                        <section class="menu menu--off" data-header="hamburgerMenu">
+                            <div>Augmented.js</div>
+                            <div id="createProject" data-header="create"><i class="material-icons md-dark">create</i>Create Project</div>
+                            <div id="openProject" data-header="open"><i class="material-icons md-dark">cloud_download</i>Open Project</div>
+                            <div id="saveProject" data-header="save"><i class="material-icons md-dark">save</i>Save Project</div>
+                            <div class="spacer"></div>
+                            <div id="about" data-header="about"><i class="material-icons md-dark">info</i>About</div>
+                        </section>
+                    </section>
                     <figure id="logo" data-header="logo"></figure>
                 </header>
             </section>
@@ -51,9 +68,14 @@
                         <div id="generate" class="tools" data-viewer="generate" data-click="generate" title="Generate Test Data">
                             <i class="material-icons md-dark">create</i>
                         </div>
-                        <div id="theme" class="tools" data-viewer="theme" title="Select a Style">
+                        <nav id="theme" class="tools" title="Select a Style">
                             <i class="material-icons md-dark">style</i>
-                        </div>
+                            <ul>
+                                <li data-viewer="material" data-click="theme"><i class="material-icons md-dark hidden">check</i>Material</li>
+                                <li data-viewer="plain" data-click="theme"><i class="material-icons md-dark">check</i>Plain</li>
+                                <li data-viewer="spaceGray" data-click="theme"><i class="material-icons md-dark hidden">check</i>Space Gray</li>
+                            </ul>
+                        </nav>
                         <nav id="more" class="tools">
                             <i class="material-icons md-dark">more_vert</i>
                             <ul>

@@ -41,6 +41,327 @@ i.hidden {
     visibility: hidden;
 }
 
+/* Hamburger */
+
+.wrapper {
+    height: 100%;
+    -webkit-transition: all 300ms ease-in-out;
+    transition: all 300ms ease-in-out;
+    /*margin: 1em 0;*/
+    padding: 0;
+    z-index: 5;
+}
+
+.background--blur {
+  background-color: rgb(240, 240, 240);
+}
+
+.menu {
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  color: rgba(0,0,0,0.85);
+  top: -16px;
+  background-color: white;
+}
+section.wrapper section.material-design-hamburger div.material-design-hamburger__icon i {
+    padding: 8px;
+    margin-top: 3px;
+}
+
+article section#header header#header section.wrapper section.material-design-hamburger.model div.material-design-hamburger__icon {
+    /*width: 100%;
+    height: 600px;
+    background-color: rgba(0,0,0,0.2);*/
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    transform: translateZ(0px);
+    width: 100%;
+}
+
+.menu div {
+    /*margin: 16px;
+    padding: 0 0 8px 8px;*/
+    margin-left: 0;
+    margin-right: 0;
+    padding: 16px 24px;
+}
+.menu div:hover {
+    background-color: #eeeeee;
+}
+
+.menu div:first-child {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 24px;
+    font-weight: 400;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 14px;
+    padding: 0 16px 14px;
+}
+
+.menu div:first-child:hover, .menu div.spacer:hover {
+    background-color: inherit;
+}
+.menu div.spacer {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0;
+    padding: 0;
+}
+
+.menu div i {
+    font-size: 16px;
+    line-height: 18px;
+    padding-right: 16px;
+    vertical-align: text-top;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #3367d6;
+}
+
+.menu a:hover {
+  text-decoration: underline;
+}
+
+.menu div:last-child {
+  border: 0;
+}
+
+.menu--off {
+    height: 100%;
+    position: fixed;
+    /*top: 0;*/
+    transform: translateZ(0px);
+  /*position: absolute;*/
+  left: -225px;
+  width: 225px;
+  display: block;
+  min-height: 600px;
+  /*height: 125%;*/
+  margin-top: 1em;
+  -webkit-transition: all 300ms;
+  transition: all 300ms;
+}
+
+.menu--on {
+  left: 0;
+  box-shadow: 8px 8px 20px 0 rgba(0, 0, 0, 0.2);
+  -webkit-transition: all 300ms;
+  transition: all 300ms;
+}
+
+.material-design-hamburger button {
+  display: block;
+  border: none;
+  background: none;
+  outline: 0;
+}
+
+.material-design-hamburger__icon {
+  /*padding: 3rem 1rem;*/
+  width: 40px;
+  cursor: pointer;
+}
+
+.material-design-hamburger__layer {
+  display: block;
+  width: 100px;
+  height: 10px;
+  /*background: #eee;*/
+  position: relative;
+  -webkit-animation-duration: 300ms;
+          animation-duration: 300ms;
+  -webkit-animation-timing-function: ease-in-out;
+          animation-timing-function: ease-in-out;
+}
+
+.material-design-hamburger__layer:before, .material-design-hamburger__layer:after {
+  display: block;
+  width: inherit;
+  height: 10px;
+  position: absolute;
+  background: inherit;
+  left: 0;
+  content: '';
+  -webkit-animation-duration: 300ms;
+          animation-duration: 300ms;
+  -webkit-animation-timing-function: ease-in-out;
+          animation-timing-function: ease-in-out;
+}
+
+.material-design-hamburger__layer:before {
+  bottom: 200%;
+}
+
+.material-design-hamburger__layer:after {
+  top: 200%;
+}
+
+.material-design-hamburger__icon--to-arrow {
+  -webkit-animation-name: material-design-hamburger__icon--slide;
+          animation-name: material-design-hamburger__icon--slide;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+.material-design-hamburger__icon--to-arrow:before {
+  -webkit-animation-name: material-design-hamburger__icon--slide-before;
+          animation-name: material-design-hamburger__icon--slide-before;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+.material-design-hamburger__icon--to-arrow:after {
+  -webkit-animation-name: material-design-hamburger__icon--slide-after;
+          animation-name: material-design-hamburger__icon--slide-after;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+.material-design-hamburger__icon--from-arrow {
+  -webkit-animation-name: material-design-hamburger__icon--slide-from;
+          animation-name: material-design-hamburger__icon--slide-from;
+}
+
+.material-design-hamburger__icon--from-arrow:before {
+  -webkit-animation-name: material-design-hamburger__icon--slide-before-from;
+          animation-name: material-design-hamburger__icon--slide-before-from;
+}
+
+.material-design-hamburger__icon--from-arrow:after {
+  -webkit-animation-name: material-design-hamburger__icon--slide-after-from;
+          animation-name: material-design-hamburger__icon--slide-after-from;
+}
+
+@-webkit-keyframes material-design-hamburger__icon--slide {
+  0% {
+  }
+  100% {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+}
+
+@keyframes material-design-hamburger__icon--slide {
+  0% {
+  }
+  100% {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+}
+
+@-webkit-keyframes material-design-hamburger__icon--slide-before {
+  0% {
+  }
+  100% {
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+    margin: 3% 37%;
+    width: 75%;
+  }
+}
+
+@keyframes material-design-hamburger__icon--slide-before {
+  0% {
+  }
+  100% {
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+    margin: 3% 37%;
+    width: 75%;
+  }
+}
+
+@-webkit-keyframes material-design-hamburger__icon--slide-after {
+  0% {
+  }
+  100% {
+    -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+    margin: 3% 37%;
+    width: 75%;
+  }
+}
+
+@keyframes material-design-hamburger__icon--slide-after {
+  0% {
+  }
+  100% {
+    -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+    margin: 3% 37%;
+    width: 75%;
+  }
+}
+
+@-webkit-keyframes material-design-hamburger__icon--slide-from {
+  0% {
+    -webkit-transform: rotate(-180deg);
+            transform: rotate(-180deg);
+  }
+  100% {
+  }
+}
+
+@keyframes material-design-hamburger__icon--slide-from {
+  0% {
+    -webkit-transform: rotate(-180deg);
+            transform: rotate(-180deg);
+  }
+  100% {
+  }
+}
+
+@-webkit-keyframes material-design-hamburger__icon--slide-before-from {
+  0% {
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+    margin: 3% 37%;
+    width: 75%;
+  }
+  100% {
+  }
+}
+
+@keyframes material-design-hamburger__icon--slide-before-from {
+  0% {
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+    margin: 3% 37%;
+    width: 75%;
+  }
+  100% {
+  }
+}
+
+@-webkit-keyframes material-design-hamburger__icon--slide-after-from {
+  0% {
+    -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+    margin: 3% 37%;
+    width: 75%;
+  }
+  100% {
+  }
+}
+
+@keyframes material-design-hamburger__icon--slide-after-from {
+  0% {
+    -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+    margin: 3% 37%;
+    width: 75%;
+  }
+  100% {
+  }
+}
+
+
 /* CONTAINERS */
 
 body {
@@ -650,12 +971,14 @@ article section#main div.panel#viewer div#renderWindow {
     overflow-y: auto;
 }
 
-article section#main div#viewer.panel header div#theme.tools {
-    right: 32px;
-}
-
 article section#main div#viewer.panel header div#generate.tools {
     right: 64px;
+}
+
+article section#main div#viewer.panel.viewer header nav#theme.tools {
+    left: unset;
+    right: 32px;
+    width: 24px;
 }
 
 article section#main div#viewer.panel.viewer header nav#more.tools {
@@ -664,7 +987,8 @@ article section#main div#viewer.panel.viewer header nav#more.tools {
     width: 24px;
 }
 
-article section#main div#viewer.panel.viewer header nav#more.tools ul {
+article section#main div#viewer.panel.viewer header nav#more.tools ul,
+    article section#main div#viewer.panel.viewer header nav#theme.tools ul {
     display: block;
     position: absolute;
     right: 0;
