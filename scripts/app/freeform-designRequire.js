@@ -50,9 +50,9 @@ require(['augmented', 'augmentedPresentation'], function(Augmented, Presentation
                     }
                 }
             );
-            this.on("updateTestData", function(message) {
+            /*this.on("updateTestData", function(message) {
                 this.publish("viewer", "requestData", "requestData");
-            });
+            });*/
             this.on("yourDataRequest", function(data) {
                 this.publish("source", "updateYourData", data);
             });
@@ -101,7 +101,6 @@ require(['augmented', 'augmentedPresentation'], function(Augmented, Presentation
                 this.setMessage("Schema is not valid!  Could Not parse schema!", true);
                 this.addClass("schema", "bad");
             }
-            logger.info(APP_NAME + "validating schema: " + schema);
             return data;
         },
         clear: function(event) {
@@ -115,7 +114,6 @@ require(['augmented', 'augmentedPresentation'], function(Augmented, Presentation
                 schema = this.model.get("schema");
                 this.sendMessage("compile", data);
             }
-            logger.info(APP_NAME + "compile button clicked! schema: " + this.model.get("schema"));
         }
     });
 
@@ -127,6 +125,11 @@ require(['augmented', 'augmentedPresentation'], function(Augmented, Presentation
     var ViewerDecoratorView = Augmented.Presentation.DecoratorView.extend({
         name: "viewer",
         el: "#viewer",
+        settings: {
+            sortable: false,
+            editable: false,
+            lineNumbers: false
+        },
         init: function() {
             this.on("compile", function(data) {
                 // do something
@@ -135,24 +138,69 @@ require(['augmented', 'augmentedPresentation'], function(Augmented, Presentation
                 logger.debug(APP_NAME + "Viewer got the data");
             });
             this.on("requestData", function(message) {
-                this.sendMessage("yourDataRequest", this.data);
+                this.sendMessage("yourDataRequest", this.getFullDataset());
                 }
             );
         },
+        getFullDataset: function() {
+                return {
+                    data: this.data,
+                    settings: this.settings
+                };
+        },
+        editableToggle: function(ee) {
+            var e = this.boundElement("editable");
+            if (this.settings.editable === true) {
+                this.settings.editable = false;
+                e.firstElementChild.classList.add("hidden");
+            } else {
+                this.settings.editable = true;
+                e.firstElementChild.classList.remove("hidden");
+            }
+            this.compile();
+        },
+        sortableToggle: function() {
+            var e = this.boundElement("sortable");
+            if (this.settings.sortable === true) {
+                this.settings.sortable = false;
+                e.firstElementChild.classList.add("hidden");
+            } else {
+                this.settings.sortable = true;
+                e.firstElementChild.classList.remove("hidden");
+            }
+            this.compile();
+        },
+        lineNumbersToggle: function() {
+            var e = this.boundElement("lineNumber");
+            if (this.settings.lineNumbers === true) {
+                this.settings.lineNumbers = false;
+                e.firstElementChild.classList.add("hidden");
+            } else {
+                this.settings.lineNumbers = true;
+                e.firstElementChild.classList.remove("hidden");
+            }
+            this.compile();
+        },
         compile: function() {
             if (myTableView && this.schema) {
-                myTableView.setSchema = this.schema;
+                myTableView.setSchema(this.schema);
+                myTableView.sortable = this.settings.sortable;
+                myTableView.editable = this.settings.editable;
+                myTableView.lineNumbers = this.settings.lineNumbers;
                 myTableView.populate(this.data);
                 myTableView.render();
             } else if (this.schema){
                 myTableView = new MyTable({
                     schema: this.schema,
                     data: this.data,
+                    sortable: this.settings.sortable,
+                    editable: this.settings.editable,
+                    lineNumbers: this.settings.lineNumbers,
                 	el: "#renderWindow"
                 });
                 myTableView.render();
             }
-            this.sendMessage("updateTestData", this.data);
+            this.sendMessage("yourDataRequest", this.getFullDataset());
         },
         generate: function() {
             if (this.schema && this.schema.properties) {
@@ -171,7 +219,6 @@ require(['augmented', 'augmentedPresentation'], function(Augmented, Presentation
                 }
             }
             this.compile();
-
         },
         makeUpData: function(type, format, en) {
             if (type === "string") {
@@ -205,13 +252,16 @@ require(['augmented', 'augmentedPresentation'], function(Augmented, Presentation
                 this.compile(data);
                 logger.debug(APP_NAME + "Source got the data");
             });
-            this.on("updateYourData", function(data) {
-                if (data) {
-                    this.model.set("data", Augmented.Utility.PrettyPrint(data));
+            this.on("updateYourData", function(dataset) {
+                if (dataset) {
+                    this.model.set("data", Augmented.Utility.PrettyPrint(dataset.data));
+                    this.model.set("settings", dataset.settings);
+                    this.compile();
                 }
             });
         },
         compile: function(data) {
+            var settings = this.model.get("settings");
             var javascript = "var schema = " + JSON.stringify(data) + ";\n\n" +
                 "var MyTable = Augmented.Presentation.DirectDOMAutomaticTable.extend({\n" +
                 "\tinit: function(options) { }\n" +
@@ -219,7 +269,9 @@ require(['augmented', 'augmentedPresentation'], function(Augmented, Presentation
                 "var at = new MyTable({ " +
                     "\tschema: schema, \n" +
                     "\tel: \"#autoTable\", \n" +
-                    "\tsortable: true,\n" +
+                    "\tlineNumbers: " + String(settings.lineNumbers) + ",\n" +
+                    "\tsortable: " + String(settings.sortable) + ",\n" +
+                    "\teditable: " + String(settings.editable) + ",\n" +
                     "\turl: \"http://www.example.com/data\"\n" +
                 "});\n\n" +
                 "at.render();";

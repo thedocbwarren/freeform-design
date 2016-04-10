@@ -37,6 +37,10 @@
 .material-icons.md-light { color: rgba(255, 255, 255, 1); }
 .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
 
+i.hidden {
+    visibility: hidden;
+}
+
 /* CONTAINERS */
 
 body {
@@ -396,7 +400,6 @@ button::before, div.tools i::before {
 button:active:before, div.tools i:active::before {
   width: 120%;
   padding-top: 120%;
-
   transition: width .2s ease-out, padding-top .2s ease-out;
 }
 
@@ -467,23 +470,23 @@ article section#header header h2 {
     width: 100%;
 }
 
-article section#header header nav {
+article section#header header nav, div.panel nav {
     display: block;
     position: absolute;
     left: 10px;
     top: 12px;
     z-index: 3;
-    background: rgba(0, 0, 0, 0) ;
-    cursor:context-menu;
+    background: rgba(0, 0, 0, 0);
+    cursor: context-menu;
 }
 
-article section#header header nav ul {
+article section#header header nav ul, div.panel nav ul {
     display: block;
     border: 1px solid rgba(0,0,0,0.1);
     box-shadow: 2px 4px 5px rgba(0,0,0,0.1);
     background-color: white;
     z-index: 4;
-    margin: 6px 0 0;
+    margin: 4px 16px 0 0;
     padding: 0;
     list-style: none;
     overflow: hidden;
@@ -493,7 +496,11 @@ article section#header header nav ul {
     transition: max-height 0.3s ease-out, visibility 0s linear 0.5s,opacity 0.5s linear;
 }
 
-article section#header header nav:hover ul {
+article div.panel nav ul {
+    margin: 4px 0 0 16px;
+}
+
+article section#header header nav:hover ul , div.panel nav:hover ul {
     display: block;
     visibility: visible;
     opacity: 1.0;
@@ -501,23 +508,36 @@ article section#header header nav:hover ul {
     max-height: 500px;
 }
 
-article section#header header nav ul li {
-    font-size: 14px;
-    line-height: 18px;
-    font-weight: 400;
+article section#header header nav ul li, div.panel nav ul li {
     border-bottom: 1px solid transparent;
-    padding: 8px 16px 8px 16px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    margin-right: 0;
+    padding: 8px 16px;
     vertical-align: text-bottom;
+    width: 100%;
 }
 
-article section#header header nav ul li i {
+article section#header header nav ul li.spacer, div.panel nav ul li.spacer {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    height: 1px;
+    margin-bottom: 4px;
+    padding: 0 16px 4px 0;
+}
+
+article section#header header nav ul li.spacer:hover, div.panel nav ul li.spacer:hover {
+    background-color: inherit;
+}
+
+article section#header header nav ul li i, div.panel nav ul li i {
     font-size: 14px;
     line-height: 18px;
     padding-right: 16px;
     vertical-align: text-bottom;
 }
 
-article section#header header nav ul li:hover {
+article section#header header nav ul li:hover, div.panel nav ul li:hover {
     background-color: #eeeeee;
 }
 
@@ -550,20 +570,27 @@ article section#main div.panel div {
     margin: 0 0 8px;
 }
 
-article section#main div.panel div.tools {
+article section#main div.panel .tools {
     display: block;
     position: absolute;
     right: 0;
-    top: -8px;
+    top: -3px;
     min-width: 24px;
     height: 24px;
 }
 
-article section#main div.panel div.tools i {
+article section#main div.panel .tools i {
     display: inline-block;
     width: 24px;
     height: 24px;
     cursor:pointer;
+}
+article section#main div.panel nav.tools li i {
+    cursor: pointer;
+    height: 14px;
+    line-height: 12px;
+    padding-right: 8px;
+    width: 18px;
 }
 
 article section#main div.panel h1 {
@@ -623,8 +650,26 @@ article section#main div.panel#viewer div#renderWindow {
     overflow-y: auto;
 }
 
-article section#main div#viewer.panel header div#generate.tools {
+article section#main div#viewer.panel header div#theme.tools {
     right: 32px;
+}
+
+article section#main div#viewer.panel header div#generate.tools {
+    right: 64px;
+}
+
+article section#main div#viewer.panel.viewer header nav#more.tools {
+    left: unset;
+    right: 0;
+    width: 24px;
+}
+
+article section#main div#viewer.panel.viewer header nav#more.tools ul {
+    display: block;
+    position: absolute;
+    right: 0;
+    text-align: left;
+    width: 216px;
 }
 
 article section#main div.panel#source {

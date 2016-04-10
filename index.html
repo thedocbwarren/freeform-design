@@ -21,10 +21,11 @@
     		        <nav>
                         <i class="material-icons md-light">menu</i>
                         <ul>
+                            <li id="createProject" data-header="create"><i class="material-icons md-dark">create</i>Create Project</li>
                             <li id="openProject" data-header="open"><i class="material-icons md-dark">cloud_download</i>Open Project</li>
                             <li id="saveProject" data-header="save"><i class="material-icons md-dark">save</i>Save Project</li>
-                            <li id="createTable" data-header="createTable"><i class="material-icons md-dark">create</i>Create Automatic Table</li>
-                            <li id="createForm" data-header="createForm"><i class="material-icons md-dark">create</i>Create Automatic Form</li>
+                            <li class="spacer"></li>
+                            <li id="about" data-header="about"><i class="material-icons md-dark">info</i>About</li>
                         </ul>
                     </nav>
                     <figure id="logo" data-header="logo"></figure>
@@ -34,7 +35,7 @@
     			<div id="schema" class="panel editor">
                     <header>
                         <h1><i class="material-icons md-dark">description</i>JSON Schema</h1>
-                        <div class="tools" data-schema="clear" data-click="clear"><i class="material-icons md-dark">clear</i></div>
+                        <div class="tools" data-schema="clear" data-click="clear" title="Clear the schema"><i class="material-icons md-dark">clear</i></div>
                     </header>
                     <div>
                         <textarea name="schema" placeholder="JSON Schema" data-schema="schema" data-function="validate"></textarea>
@@ -42,13 +43,26 @@
                     <footer>
                         <p id="message" data-schema="message"></p>
                     </footer>
-                    <button id="compile" class="round" data-schema="compile" data-click="compile"><i class="material-icons md-light">add</i></button>
+                    <button id="compile" class="round" data-schema="compile" data-click="compile" title="Compile the schema"><i class="material-icons md-light">add</i></button>
     			</div>
                 <div id="viewer" class="panel viewer">
                     <header>
                         <h1><i class="material-icons md-dark">web</i>Viewer</h1>
-                        <div id="generate" class="tools" data-viewer="generate" data-click="generate"><i class="material-icons md-dark">create</i></div><div class="tools" data-viewer="theme"><i class="material-icons md-dark">style</i></div>
-                    <header>
+                        <div id="generate" class="tools" data-viewer="generate" data-click="generate" title="Generate Test Data">
+                            <i class="material-icons md-dark">create</i>
+                        </div>
+                        <div id="theme" class="tools" data-viewer="theme" title="Select a Style">
+                            <i class="material-icons md-dark">style</i>
+                        </div>
+                        <nav id="more" class="tools">
+                            <i class="material-icons md-dark">more_vert</i>
+                            <ul>
+                                <li id="editable" data-viewer="editable" data-click="editableToggle"><i class="material-icons md-dark hidden">check</i><i class="material-icons md-dark">mode_edit</i>Editable Toggle</li>
+                                <li id="sorting" data-viewer="sortable" data-click="sortableToggle"><i class="material-icons md-dark hidden">check</i><i class="material-icons md-dark">sort</i>Sorting Toggle</li>
+                                <li id="lineNumber" data-viewer="lineNumber" data-click="lineNumbersToggle"><i class="material-icons md-dark hidden">check</i><i class="material-icons md-dark">settings</i>Line Number Toggle</li>
+                            </ul>
+                        </nav>
+                    </header>
                     <div id="renderWindow" data-viewer="renderWindow">
                         <!-- Rendered content goes here -->
                     </div>
@@ -56,7 +70,7 @@
                 <div id="source" class="panel editor">
                     <header>
                         <h1><i class="material-icons md-dark">code</i>Source</h1>
-                        <div class="tools" data-source="save"><i class="material-icons md-dark">save</i></div>
+                        <div class="tools" data-source="save" title="Save generated source"><i class="material-icons md-dark">save</i></div>
                     <header>
                     <div>
                         <label for="javascript">JavaScript</label>
