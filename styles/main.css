@@ -237,7 +237,7 @@ h3 {
   margin: 0.3em 0 5px;
 }
 
-input, textarea {
+input, textarea, code {
     display: block;
     margin: 0 10px 25px 0;
     font-size: 10px;
@@ -248,7 +248,7 @@ input, textarea {
     padding-bottom: 1px;
 }
 
-textarea {
+textarea, code {
     font-family: 'Roboto Mono', monospace;
     width: 100%;
     height: 250px;
@@ -257,15 +257,25 @@ textarea {
     resize: none;
 }
 
-textarea:focus, input:focus {
+textarea:focus, input:focus, code:focus {
     border-bottom: 2px solid #03a9f4;
     padding-bottom: 0px;
     outline: none;
 }
 
-textarea:invalid, textarea.bad {
+textarea:invalid, textarea.bad, code.bad {
     border-bottom: 2px solid #f44336;
     padding-bottom: 0px;
+}
+
+label {
+    display: block;
+    position: relative;
+    font-size: 12px;
+    text-align: left;
+    vertical-align: text-top;
+    color: rgba(0,0,0,0.6);
+    margin: 8px 0 8px 0;
 }
 
 progress {
@@ -545,11 +555,14 @@ article section#main div.panel div.tools {
     position: absolute;
     right: 0;
     top: -8px;
-    width: 24px;
+    min-width: 24px;
     height: 24px;
 }
 
 article section#main div.panel div.tools i {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
     cursor:pointer;
 }
 
@@ -610,6 +623,15 @@ article section#main div.panel#viewer div#renderWindow {
     overflow-y: auto;
 }
 
+article section#main div#viewer.panel header div#generate.tools {
+    right: 32px;
+}
+
 article section#main div.panel#source {
     min-height: 300px;
+}
+
+article section#main div.panel#source textarea[name=html],
+    article section#main div.panel#source textarea[name=css] {
+    height: 2em;
 }

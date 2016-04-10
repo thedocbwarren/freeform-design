@@ -6,7 +6,9 @@
         <meta name="viewport" content="width=device-width,  minimum-scale=1.0, maximum-scale=1.0" />
 		<title>freeForm Design in Augmented.js</title>
         <link type="text/css" rel="stylesheet" href="styles/main.css"/>
+        <!--
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+        -->
 		<!-- requirejs pulls in all necessary js for this component -->
 		<script data-main="scripts/app/freeform-designRequire.js" src="scripts/lib/require.js"></script>
 	</head>
@@ -20,7 +22,7 @@
                         <i class="material-icons md-light">menu</i>
                         <ul>
                             <li id="openProject" data-header="open"><i class="material-icons md-dark">cloud_download</i>Open Project</li>
-                            <li id="saveProject" data-header="save"><i class="material-icons md-dark">cloud_upload</i>Save Project</li>
+                            <li id="saveProject" data-header="save"><i class="material-icons md-dark">save</i>Save Project</li>
                             <li id="createTable" data-header="createTable"><i class="material-icons md-dark">create</i>Create Automatic Table</li>
                             <li id="createForm" data-header="createForm"><i class="material-icons md-dark">create</i>Create Automatic Form</li>
                         </ul>
@@ -38,14 +40,14 @@
                         <textarea name="schema" placeholder="JSON Schema" data-schema="schema" data-function="validate"></textarea>
                     </div>
                     <footer>
-                        <p id="message" data-schema="message">Ready</p>
+                        <p id="message" data-schema="message"></p>
                     </footer>
                     <button id="compile" class="round" data-schema="compile" data-click="compile"><i class="material-icons md-light">add</i></button>
     			</div>
                 <div id="viewer" class="panel viewer">
                     <header>
                         <h1><i class="material-icons md-dark">web</i>Viewer</h1>
-                        <div class="tools" data-viewer="theme"><i class="material-icons md-dark">palette</i></div>
+                        <div id="generate" class="tools" data-viewer="generate" data-click="generate"><i class="material-icons md-dark">create</i></div><div class="tools" data-viewer="theme"><i class="material-icons md-dark">style</i></div>
                     <header>
                     <div id="renderWindow" data-viewer="renderWindow">
                         <!-- Rendered content goes here -->
@@ -53,11 +55,18 @@
     			</div>
                 <div id="source" class="panel editor">
                     <header>
-                        <h1><i class="material-icons md-dark">web_asset</i>Source</h1>
-                        <div class="tools" data-source="save"><i class="material-icons md-dark">cloud_upload</i></div>
+                        <h1><i class="material-icons md-dark">code</i>Source</h1>
+                        <div class="tools" data-source="save"><i class="material-icons md-dark">save</i></div>
                     <header>
                     <div>
-                        <textarea name="source" placeholder="Source Code" data-source="source"></textarea>
+                        <label for="javascript">JavaScript</label>
+                        <textarea name="javascript" placeholder="JavaScript Source Code" data-source="javascript" autocomplete="off"></textarea>
+                        <label for="html">HTML</label>
+                        <textarea name="html" placeholder="HTML Source Code" data-source="html" autocomplete="off"></textarea>
+                        <label for="html">CSS</label>
+                        <textarea name="css" placeholder="CSS Source Code" data-source="css" autocomplete="off"></textarea>
+                        <label for="data">Test Data</label>
+                        <textarea name="data" placeholder="Test Data" data-source="data" autocomplete="off"></textarea>
                     </div>
     			</div>
             </section>
