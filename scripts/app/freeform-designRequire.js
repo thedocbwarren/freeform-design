@@ -47,6 +47,11 @@ document.querySelector('.material-design-hamburger__icon').addEventListener(
     var app = new Augmented.Presentation.Application("freeForm Designer");
     app.registerStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons");
     app.registerStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto:400,300,400italic,100,700");
+    // adding style packs
+    app.registerStylesheet("styles/table/material.css");
+    app.registerStylesheet("styles/table/plain.css");
+    app.registerStylesheet("styles/table/spaceGray.css");
+
     app.start();
     logger.info(APP_NAME + "Starting Application...");
 
@@ -139,6 +144,12 @@ document.querySelector('.material-design-hamburger__icon').addEventListener(
     });
 
     var MyTable = Augmented.Presentation.DirectDOMAutomaticTable.extend({
+        setTheme: function(theme) {
+            var e = document.querySelector(this.el + " > table");
+            if (e) {
+                e.setAttribute("class", theme);
+            }
+        }
     });
 
     var myTableView = null;
@@ -149,9 +160,23 @@ document.querySelector('.material-design-hamburger__icon').addEventListener(
         settings: {
             sortable: false,
             editable: false,
-            lineNumbers: false
+            lineNumbers: false,
+            theme: "material"
+        },
+        themes: {
+            "material": { name:         "Material",
+                          stylesheet:   "styles/table/material.css"
+                        },
+            "plain":    { name:         "Plain",
+                          stylesheet:   "styles/table/plain.css"
+                        },
+            "spaceGray":{ name:         "Space Gray",
+                        stylesheet:   "styles/table/spaceGray.css"
+                        }
         },
         init: function() {
+            //defaults
+            this.setTheme(this.settings.theme);
             this.on("compile", function(data) {
                 // do something
                 this.schema = data;
@@ -166,6 +191,7 @@ document.querySelector('.material-design-hamburger__icon').addEventListener(
         getFullDataset: function() {
             return {
                 data: this.data,
+                schema: this.schema,
                 settings: this.settings
             };
         },
@@ -204,8 +230,23 @@ document.querySelector('.material-design-hamburger__icon').addEventListener(
         },
         theme: function(e) {
             var item = e.target;
-            var s = item.getAttribute(this.bindingAttribute());
-            logger.debug("got a theme and a click: " + s);
+            var theme = item.getAttribute(this.bindingAttribute());
+            this.setTheme(theme);
+        },
+        setTheme: function(t) {
+            this.settings.theme = t;
+            var i = 0, keys = Object.keys(this.themes), l = keys.length, theme, bound;
+            for (i = 0; i < l; i++) {
+                theme = keys[i];
+                bound = this.boundElement(theme);
+                if (this.settings.theme === theme) {
+                    bound.firstElementChild.classList.remove("hidden");
+                } else {
+                    bound.firstElementChild.classList.add("hidden");
+                }
+            }
+
+            this.compile();
         },
         compile: function() {
             if (myTableView && this.schema) {
@@ -215,6 +256,7 @@ document.querySelector('.material-design-hamburger__icon').addEventListener(
                 myTableView.lineNumbers = this.settings.lineNumbers;
                 myTableView.populate(this.data);
                 myTableView.render();
+                myTableView.setTheme(this.settings.theme);
             } else if (this.schema){
                 myTableView = new MyTable({
                     schema: this.schema,
@@ -225,6 +267,7 @@ document.querySelector('.material-design-hamburger__icon').addEventListener(
                 	el: "#renderWindow"
                 });
                 myTableView.render();
+                myTableView.setTheme(this.settings.theme);
             }
             if (this.schema){
                 this.sendMessage("yourDataRequest", this.getFullDataset());
@@ -284,7 +327,7 @@ document.querySelector('.material-design-hamburger__icon').addEventListener(
                 if (dataset) {
                     this.model.set("data", Augmented.Utility.PrettyPrint(dataset.data));
                     this.model.set("settings", dataset.settings);
-                    this.compile();
+                    this.compile(dataset.schema);
                 }
             });
         },
@@ -305,10 +348,10 @@ document.querySelector('.material-design-hamburger__icon').addEventListener(
                 "at.render();";
             this.model.set("javascript", javascript);
 
-            var html = "<div id=\"autoTable\" class=\"material\"></div>";
+            var html = "<div id=\"autoTable\" class=\"" + settings.theme + "\"></div>";
             this.model.set("html", html);
 
-            var css = "<link type=\"text/css\" rel=\"stylesheet\" href=\"styles/table/material.css\"/>";
+            var css = "<link type=\"text/css\" rel=\"stylesheet\" href=\"styles/table/" + settings.theme + "\"/>";
             this.model.set("css", css);
         }
     });
