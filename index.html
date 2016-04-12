@@ -18,18 +18,6 @@
                 <header id="header">
                     <h1><em>free</em>Form Design</h1>
                     <h2>Augmented.js Automatic UI Designer</h2>
-                    <!-- old menu
-    		        <nav>
-                        <i class="material-icons md-light">menu</i>
-                        <ul>
-                            <li id="createProject" data-header="create"><i class="material-icons md-dark">create</i>Create Project</li>
-                            <li id="openProject" data-header="open"><i class="material-icons md-dark">cloud_download</i>Open Project</li>
-                            <li id="saveProject" data-header="save"><i class="material-icons md-dark">save</i>Save Project</li>
-                            <li class="spacer"></li>
-                            <li id="about" data-header="about"><i class="material-icons md-dark">info</i>About</li>
-                        </ul>
-                    </nav>
-                    -->
                     <section id="hamburger" class="wrapper" data-header="hamburger">
                         <section class="material-design-hamburger" data-header="hamburgerClickRegion">
                             <div class="material-design-hamburger__icon" data-header="hamburgerIcon" data-click="hamburger">
@@ -42,10 +30,10 @@
                             <div id="openProject" data-header="open"><i class="material-icons md-dark">cloud_download</i>Open Project</div>
                             <div id="saveProject" data-header="save"><i class="material-icons md-dark">save</i>Save Project</div>
                             <div class="spacer"></div>
-                            <div id="about" data-header="about"><i class="material-icons md-dark">info</i>About</div>
+                            <div id="about" data-header="about" data-click="about"><i class="material-icons md-dark">info</i>About</div>
                         </section>
                     </section>
-                    <figure id="logo" data-header="logo"></figure>
+                    <figure id="logo" data-header="logo" data-click="logo"></figure>
                 </header>
             </section>
             <section id="main">
@@ -92,7 +80,7 @@
                 <div id="source" class="panel editor">
                     <header>
                         <h1><i class="material-icons md-dark">code</i>Source</h1>
-                        <div class="tools" data-source="save" title="Save generated source"><i class="material-icons md-dark">save</i></div>
+                        <div class="tools" data-source="save" data-click="save" title="Save generated source"><i class="material-icons md-dark">save</i></div>
                     <header>
                     <div>
                         <label for="javascript">JavaScript</label>

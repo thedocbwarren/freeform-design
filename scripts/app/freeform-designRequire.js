@@ -2,38 +2,27 @@ require.config({
 	'baseUrl': 'scripts/',
 
     'paths': {
-		'jquery': 'lib/jquery-2.1.4.min',
+		'jquery': 'lib/jquery.min',
 		'underscore': 'lib/lodash.min',
 		'backbone': 'lib/backbone-min',
 
         // hosted version
 		'augmented': '/augmented/scripts/core/augmented',
-        'augmentedPresentation': '/augmented/scripts/presentation/augmentedPresentation'
+        'augmentedPresentation': '/augmented/scripts/presentation/augmentedPresentation',
 
         // local version
 		//'augmented': 'lib/augmented',
         //'augmentedPresentation': 'lib/augmentedPresentation',
 
+        // FileSave Polyfill
+        'filesaver': "lib/FileSaver.min"
 	},
     'shim': {
     }
 });
 
-require(['augmented', 'augmentedPresentation'], function(Augmented, Presentation) {
+require(['augmented', 'augmentedPresentation', 'filesaver'], function(Augmented, Presentation) {
     "use strict";
-
-/* integrate this */
-
-/*
-document.querySelector('.material-design-hamburger__icon').addEventListener(
-    'click', function(e) {
-        var menu = document.querySelector('.material-design-hamburger__icon');
-        this.parentNode.nextElementSibling.classList.toggle('menu--on');
-        document.body.classList.toggle('background--blur');
-
-        this.parentNode.classList.toggle('model');
-});
-*/
 
     // setup a logger
 
@@ -69,9 +58,6 @@ document.querySelector('.material-design-hamburger__icon').addEventListener(
                     }
                 }
             );
-            /*this.on("updateTestData", function(message) {
-                this.publish("viewer", "requestData", "requestData");
-            });*/
             this.on("yourDataRequest", function(data) {
                 this.publish("source", "updateYourData", data);
             });
@@ -86,12 +72,17 @@ document.querySelector('.material-design-hamburger__icon').addEventListener(
         logo: function() {
             window.location = "http://www.augmentedjs.com";
         },
+        // toggles the hamburger
         hamburger: function(e) {
             var menu = this.boundElement("hamburgerMenu");
             var r = this.boundElement("hamburgerClickRegion");
             r.classList.toggle('model');
             menu.classList.toggle('menu--on');
             document.body.classList.toggle('background--blur');
+        },
+        about: function() {
+            alert("freeForm Designer for Augmented.js.");
+            this.hamburger();
         }
     });
 
@@ -171,7 +162,7 @@ document.querySelector('.material-design-hamburger__icon').addEventListener(
                           stylesheet:   "styles/table/plain.css"
                         },
             "spaceGray":{ name:         "Space Gray",
-                        stylesheet:   "styles/table/spaceGray.css"
+                        stylesheet:     "styles/table/spaceGray.css"
                         }
         },
         init: function() {
@@ -353,6 +344,10 @@ document.querySelector('.material-design-hamburger__icon').addEventListener(
 
             var css = "<link type=\"text/css\" rel=\"stylesheet\" href=\"styles/table/" + settings.theme + "\"/>";
             this.model.set("css", css);
+        },
+        save: function() {
+            var blob = new Blob([JSON.stringify(this.model.toJSON())], {type: "text/plain;charset=utf-8"});
+            saveAs(blob, "myTable.json");
         }
     });
 
