@@ -26,7 +26,7 @@
                         </section>
                         <section class="menu menu--off" data-header="hamburgerMenu">
                             <div>Augmented.js</div>
-                            <div id="createProject" data-header="create"><i class="material-icons md-dark">create</i>Create Project</div>
+                            <div id="createProject" data-header="create" data-click="create"><i class="material-icons md-dark">create</i>Create Project</div>
                             <div id="openProject" data-header="open"><i class="material-icons md-dark">cloud_download</i>Open Project</div>
                             <div id="saveProject" data-header="save"><i class="material-icons md-dark">save</i>Save Project</div>
                             <div class="spacer"></div>
@@ -36,10 +36,76 @@
                     <figure id="logo" data-header="logo" data-click="logo"></figure>
                 </header>
             </section>
+            <!-- Index mount point -->
             <section id="main">
+            </section>
+            <!-- Active Panel mount point -->
+            <section id="activePanel">
+            </section>
+            <!-- Templates -->
+            <template id="routesTemplate">
+                <div id="routes">
+                    <h1><i class="material-icons">toc</i> Routes</h1>
+                    <div id="currentRoutes" data-stylesheets="routes" data-style="list">
+                    </div>
+                </div>
+            </template>
+            <template id="stylesheetsTemplate">
+                <div id="stylesheets">
+                    <h1><i class="material-icons">style</i> Stylesheets</h1>
+                    <div id="styles" data-stylesheets="styles" data-style="list">
+                    </div>
+                    <label for="projectName">Enter a new stylesheet</label><input type="text" name="stylesheet" id="stylesheet" data-stylesheets="stylesheet"/>
+                    <button data-stylesheets="addButton" data-click="addStylesheet" class="primary">Add</button>
+                    <button data-stylesheets="removeAllButton" data-click="removeAllStylesheets">Remove All</button>
+                </div>
+            </template>
+            <template id="mainProjectTemplate">
+                <div id="mainProject" class="panel">
+                    <div id="sideNav" class="sideNav">
+                        <header>
+                            <h1><i class="material-icons">web</i>Application: <span data-sideNav="name">{{name}}</span></h1>
+                        </header>
+                        <nav class="sideNav">
+                            <ul>
+                                <li data-sideNav="stylesheets" data-click="stylesheets"><i class="material-icons md-dark">style</i>Stylesheets</li>
+                                <li data-sideNav="routes" data-click="routes"><i class="material-icons md-dark">toc</i>Routes</li>
+                                <li data-sideNav="views" data-click="views"><i class="material-icons md-dark">web_asset</i>Views</li>
+                                <li data-sideNav="controllers" data-click="controllers"><i class="material-icons md-dark">web_asset</i>Controllers</li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div id="basePanel" data-mainProject="basePanel" class="">
+                    </div>
+                </div>
+            </template>
+            <template id="createProjectDialogTemplate">
+                <div class="blur" id="createProjectDialog" data-header="createProjectDialog">
+                    <dialog class="form">
+                        <h1>Create a new project</h1>
+                        <label for="projectName">Enter a new Project Name</label><input type="text" name="projectName" id="projectName" data-header="projectName"/>
+                        <div class="buttonGroup">
+                            <button data-header="createButton" data-click="projectCreateButton">Create</button>
+                            <button data-header="cancelButton" data-click="projectCreateButtonClose">Cancel</button>
+                        </div>
+                    </dialog>
+                </div>
+            </template>
+            <template id="aboutDialogTemplate">
+                <div class="blur" id="aboutDialog" data-header="aboutDialog">
+                    <dialog class="alert">
+                        <h1>freeForm Designer</h1>
+                        <h2>The Augmented.js UI Designer.  Designed for Augmented.js v.0.3.x</h2>
+                        <div class="buttonGroup">
+                            <button data-header="okButton" data-click="aboutButtonClose">Ok</button>
+                        </div>
+                    </dialog>
+                </div>
+            </template>
+            <template id="tableCreateTemplate">
     			<div id="schema" class="panel editor">
                     <header>
-                        <h1><i class="material-icons md-dark">description</i>JSON Schema</h1>
+                        <h1><i class="material-icons">description</i>JSON Schema</h1>
                         <div class="tools" data-schema="clear" data-click="clear" title="Clear the schema"><i class="material-icons md-dark">clear</i></div>
                     </header>
                     <div>
@@ -52,11 +118,11 @@
     			</div>
                 <div id="viewer" class="panel viewer">
                     <header>
-                        <h1><i class="material-icons md-dark">web</i>Viewer</h1>
+                        <h1><i class="material-icons">web</i>Viewer</h1>
                         <div id="generate" class="tools" data-viewer="generate" data-click="generate" title="Generate Test Data">
                             <i class="material-icons md-dark">create</i>
                         </div>
-                        <nav id="theme" class="tools" title="Select a Style">
+                        <nav id="theme" class="menu tools" title="Select a Style">
                             <i class="material-icons md-dark">style</i>
                             <ul>
                                 <li data-viewer="material" data-click="theme"><i class="material-icons md-dark hidden">check</i>Material</li>
@@ -64,7 +130,7 @@
                                 <li data-viewer="spaceGray" data-click="theme"><i class="material-icons md-dark hidden">check</i>Space Gray</li>
                             </ul>
                         </nav>
-                        <nav id="more" class="tools">
+                        <nav id="more" class="menu tools">
                             <i class="material-icons md-dark">more_vert</i>
                             <ul>
                                 <li id="editable" data-viewer="editable" data-click="editableToggle"><i class="material-icons md-dark hidden">check</i><i class="material-icons md-dark">mode_edit</i>Editable Toggle</li>
@@ -79,9 +145,9 @@
     			</div>
                 <div id="source" class="panel editor">
                     <header>
-                        <h1><i class="material-icons md-dark">code</i>Source</h1>
+                        <h1><i class="material-icons">code</i>Source</h1>
                         <div class="tools" data-source="save" data-click="save" title="Save generated source"><i class="material-icons md-dark">save</i></div>
-                    <header>
+                    </header>
                     <div>
                         <label for="javascript">JavaScript</label>
                         <textarea name="javascript" placeholder="JavaScript Source Code" data-source="javascript" autocomplete="off"></textarea>
@@ -93,7 +159,7 @@
                         <textarea name="data" placeholder="Test Data" data-source="data" autocomplete="off"></textarea>
                     </div>
     			</div>
-            </section>
+            </template>
 		</article>
 	</body>
 </html>

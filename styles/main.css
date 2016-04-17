@@ -56,10 +56,6 @@ i.hidden {
     z-index: 5;
 }
 
-.background--blur {
-  background-color: rgb(240, 240, 240);
-}
-
 .menu {
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
@@ -98,9 +94,11 @@ article section#header header#header section.wrapper section.material-design-ham
 }
 
 .menu div:first-child {
+    color: #e53935;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     font-size: 24px;
     font-weight: 400;
+    text-align: center;
     margin-left: 0;
     margin-right: 0;
     margin-top: 14px;
@@ -641,10 +639,10 @@ button {
     border-radius: 2px;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
     color: rgba(0, 0, 0, 0.6);
-    font-size: 10pt;
+    font-size: 12px;
     font-weight: 400;
     height: 36px;
-    line-height: 0;
+    line-height: 8px;
     margin-left: 10px;
     margin-right: 0;
     padding: 12px 16px;
@@ -662,27 +660,56 @@ button:active {
 }
 
 button.primary {
-    background-color: #f44336;
-    border: none;
-    border-radius: 2px;
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    border: 1px solid transparent;
+    background-color: #2196f3;
     color: rgba(255, 255, 255, 0.85);
-    font-size: 10pt;
-    font-weight: 400;
-    height: 36px;
-    line-height: 0;
-    margin-left: 10px;
-    margin-right: 0;
-    padding: 12px 16px;
-    text-transform: uppercase;
 }
 
 button.primary:hover {
-    background-color: #e53935;
+    background-color: #1e88e5;
 }
 
 button.primary:active {
+    background-color: #1976d2;
+}
+
+button.red {
+    color: rgba(255, 255, 255, 0.85);
+    background-color: #f44336;
+}
+
+button.red:hover {
+    background-color: #e53935;
+}
+
+button.red:active {
     background-color: #d32f2f;
+}
+
+button.green {
+    color: rgba(0, 0, 0, 0.85);
+    background-color: #4caf50;
+}
+
+button.green:hover {
+    background-color: #43a047;
+}
+
+button.green:active {
+    background-color: #388e3c;
+}
+
+button.yellow {
+    color: rgba(0, 0, 0, 0.85);
+    background-color: #ffeb3b;
+}
+
+button.yellow:hover {
+    background-color: #fdd835;
+}
+
+button.yellow:active {
+    background-color: #fbc02d;
 }
 
 button.round {
@@ -727,6 +754,92 @@ button:active:before, div.tools i:active::before {
   width: 120%;
   padding-top: 120%;
   transition: width .2s ease-out, padding-top .2s ease-out;
+}
+
+dialog {
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    padding: 16px;
+    z-index: auto;
+}
+dialog.alert {
+    height: 168px;
+    margin-left: -184px;
+    margin-top: -140px;
+    width: 368px;
+}
+
+dialog.form {
+    height: 168px;
+    margin-left: -184px;
+    margin-top: -140px;
+    width: 368px;
+}
+
+dialog button {
+    background-color: transparent;
+    border: 0 none;
+    box-shadow: none;
+    color: #2196f3;
+    display: block;
+    float: right;
+    margin: 0;
+    padding: 8px;
+}
+
+dialog button:hover, dialog button:active {
+    background-color: transparent;
+    border: 0 none;
+}
+
+dialog div.buttonGroup {
+    bottom: 16px;
+    display: block;
+    position: absolute;
+    right: 16px;
+    text-align: right;
+}
+
+dialog h1 {
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 24px;
+    margin-left: 0;
+    padding: 0;
+}
+
+dialog h2, dialog label {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(0,0,0,0.6);
+    margin-left: 0;
+    padding: 0;
+}
+
+dialog input {
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 8px;
+}
+
+div.blur {
+    display: block;
+    position: fixed;
+    z-index: auto;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.1);
+}
+
+/* specific dialogs */
+div#createProjectDialog dialog input {
+    width: 100%;
 }
 
 article section#header {
@@ -797,7 +910,7 @@ article section#header header h2 {
     width: 100%;
 }
 
-article section#header header nav, div.panel nav {
+article section#header header nav.menu, div.panel nav.menu {
     display: block;
     position: absolute;
     left: 10px;
@@ -807,7 +920,7 @@ article section#header header nav, div.panel nav {
     cursor: context-menu;
 }
 
-article section#header header nav ul, div.panel nav ul {
+article section#header header nav.menu ul, div.panel nav.menu ul {
     display: block;
     border: 1px solid rgba(0,0,0,0.1);
     box-shadow: 2px 4px 5px rgba(0,0,0,0.1);
@@ -823,11 +936,11 @@ article section#header header nav ul, div.panel nav ul {
     transition: max-height 0.3s ease-out, visibility 0s linear 0.5s,opacity 0.5s linear;
 }
 
-article div.panel nav ul {
+article div.panel nav.menu ul {
     margin: 4px 0 0 16px;
 }
 
-article section#header header nav:hover ul , div.panel nav:hover ul {
+article section#header header nav.menu:hover ul, div.panel nav.menu:hover ul {
     display: block;
     visibility: visible;
     opacity: 1.0;
@@ -835,7 +948,7 @@ article section#header header nav:hover ul , div.panel nav:hover ul {
     max-height: 500px;
 }
 
-article section#header header nav ul li, div.panel nav ul li {
+article section#header header nav.menu ul li, div.panel nav.menu ul li {
     border-bottom: 1px solid transparent;
     font-size: 14px;
     font-weight: 400;
@@ -846,39 +959,94 @@ article section#header header nav ul li, div.panel nav ul li {
     width: 100%;
 }
 
-article section#header header nav ul li.spacer, div.panel nav ul li.spacer {
+article section#header header nav.menu ul li.spacer, div.panel nav.menu ul li.spacer {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     height: 1px;
     margin-bottom: 4px;
     padding: 0 16px 4px 0;
 }
 
-article section#header header nav ul li.spacer:hover, div.panel nav ul li.spacer:hover {
+article section#header header nav.menu ul li.spacer:hover, div.panel nav.menu ul li.spacer:hover {
     background-color: inherit;
 }
 
-article section#header header nav ul li i, div.panel nav ul li i {
+article section#header header nav.menu ul li i, div.panel nav.menu ul li i {
     font-size: 14px;
     line-height: 18px;
     padding-right: 16px;
     vertical-align: text-bottom;
 }
 
-article section#header header nav ul li:hover, div.panel nav ul li:hover {
+article section#header header nav.menu ul li:hover, div.panel nav.menu ul li:hover {
     background-color: #eeeeee;
 }
 
-article section#main {
+div.sideNav {
+    display: block;
+    position: relative;
+    width: 200px;
+    height: 100%;
+    margin-right: 16px;
+    border-right:1px solid #eeeeee;
+    margin-bottom: 0;
+}
+
+div.sideNav header {
+    margin-left: 16px;
+}
+
+nav.sideNav {
+    display: block;
+    position: relative;
+    padding: 16px 0;
+    width: 200px;
+}
+
+nav.sideNav ul {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+}
+
+nav.sideNav ul li {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    margin-right: 0;
+    padding: 8px 16px;
+    vertical-align: text-bottom;
+}
+
+nav.sideNav ul li:hover {
+    background-color: #eeeeee;
+}
+
+nav.sideNav ul li.current {
+    background-color: #bbdefb;
+}
+
+nav.sideNav ul li i {
+    font-size: 14px;
+    line-height: 18px;
+    padding-right: 16px;
+    vertical-align: text-bottom;
+}
+
+
+
+/* application specific stuff */
+
+article section#activePanel {
     display: block;
     position: relative;
     /*text-align: center;*/
     vertical-align: text-top;
-    overflow-y: auto;
+    overflow-y: hidden;;
     overflow-x: hidden;
     margin-top: 48px;
 }
 
-article section#main div.panel {
+article section#activePanel div.panel {
     background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -889,15 +1057,41 @@ article section#main div.panel {
     z-index: auto;
 }
 
-article section#main div.panel textarea {
+article section#activePanel div#basePanel {
+    min-height: 400px;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    width: 82%;
+}
+
+article section#activePanel div#mainProject {
+    min-height: 400px;
+    height: calc(100% - 58px);
+}
+
+article section#activePanel div.panel.stack {
+    display: inline-block;
+    vertical-align: text-top;
+}
+
+article section#main h1 {
+    color: rgba(0, 0, 0, 0.1);
+    font-size: 64px;
+    font-weight: 100;
+    margin-top: 20%;
+    text-align: center;
+}
+
+article section#activePanel div.panel textarea {
     margin: 0;
 }
 
-article section#main div.panel div {
+article section#activePanel div.panel div {
     margin: 0 0 8px;
 }
 
-article section#main div.panel .tools {
+article section#activePanel div.panel .tools {
     display: block;
     position: absolute;
     right: 0;
@@ -906,13 +1100,13 @@ article section#main div.panel .tools {
     height: 24px;
 }
 
-article section#main div.panel .tools i {
+article section#activePanel div.panel .tools i {
     display: inline-block;
     width: 24px;
     height: 24px;
     cursor:pointer;
 }
-article section#main div.panel nav.tools li i {
+article section#activePanel div.panel nav.tools li i {
     cursor: pointer;
     height: 14px;
     line-height: 12px;
@@ -920,7 +1114,8 @@ article section#main div.panel nav.tools li i {
     width: 18px;
 }
 
-article section#main div.panel h1 {
+article section#activePanel div.panel h1 {
+    color: #43a047;
     font-size: 16px;
     line-height: 16px;
     margin: 0 0 16px;
@@ -928,21 +1123,41 @@ article section#main div.panel h1 {
     vertical-align: text-bottom;
 }
 
-article section#main div.panel h1 i {
+article section#activePanel div.panel h1 i {
     font-size: 24px;
     line-height: 20px;
     padding-right: 8px;
     vertical-align: text-bottom;
 }
 
+article section#activePanel div.panel ul {
+    list-style: none;
+    min-height: 200px;
+    max-width: 500px;
+}
+
+article section#activePanel div.panel ul li {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    margin-right: 0;
+    padding: 8px 16px;
+    vertical-align: text-bottom;
+    border-bottom: 1px solid #eeeeee;
+    text-overflow: clip ellipsis;
+    word-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 /* specific panels */
-article section#main div.panel#schema {
+article section#activePanel div.panel#schema {
     top: 0;
     width: 40%;
     height: 310px;
 }
 
-article section#main div.panel#schema button#compile {
+article section#activePanel div.panel#schema button#compile {
     position: absolute;
     top: 42%;
     right: -18px;
@@ -951,7 +1166,7 @@ article section#main div.panel#schema button#compile {
     transition: background-color 0.3s;
 }
 
-article section#main div.panel#schema footer p {
+article section#activePanel div.panel#schema footer p {
     color: #4caf50;
     font-size: 12px;
     font-weight: 400;
@@ -959,11 +1174,11 @@ article section#main div.panel#schema footer p {
     margin: 0;
 }
 
-article section#main div.panel#schema footer p.bad {
+article section#activePanel div.panel#schema footer p.bad {
     color: #f44336;
 }
 
-article section#main div.panel#viewer {
+article section#activePanel div.panel#viewer {
     height: 310px;
     position: absolute;
     right: 0;
@@ -971,34 +1186,35 @@ article section#main div.panel#viewer {
     width: 52%;
 }
 
-article section#main div.panel#viewer div#renderWindow {
+article section#activePanel div.panel#viewer div#renderWindow {
     height: 270px;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
-article section#main div#viewer.panel header div#generate.tools {
+article section#activePanel div#viewer.panel header div#generate.tools {
     right: 64px;
 }
 
-article section#main div#viewer.panel.viewer header nav#theme.tools {
+article section#activePanel div#viewer.panel.viewer header nav#theme.tools {
     left: unset;
     right: 32px;
     width: 24px;
 }
 
-article section#main div#viewer.panel.viewer header nav#more.tools {
+article section#activePanel div#viewer.panel.viewer header nav#more.tools {
     left: unset;
     right: 0;
     width: 24px;
 }
 
-article section#main div#viewer.panel.viewer header nav#more.tools i, article section#main div#viewer.panel.viewer header nav#theme.tools i {
+article section#activePanel div#viewer.panel.viewer header nav#more.tools.menu i,
+    article section#activePanel div#viewer.panel.viewer header nav#theme.tools i {
     cursor: context-menu;
 }
 
-article section#main div#viewer.panel.viewer header nav#more.tools ul,
-    article section#main div#viewer.panel.viewer header nav#theme.tools ul {
+article section#activePanel div#viewer.panel.viewer header nav#more.tools ul,
+    article section#activePanel div#viewer.panel.viewer header nav#theme.tools ul {
     display: block;
     position: absolute;
     right: 0;
@@ -1006,11 +1222,11 @@ article section#main div#viewer.panel.viewer header nav#more.tools ul,
     width: 216px;
 }
 
-article section#main div.panel#source {
+article section#activePanel div.panel#source {
     min-height: 300px;
 }
 
-article section#main div.panel#source textarea[name=html],
-    article section#main div.panel#source textarea[name=css] {
+article section#activePanel div.panel#source textarea[name=html],
+    article section#activePanel div.panel#source textarea[name=css] {
     height: 2em;
 }
