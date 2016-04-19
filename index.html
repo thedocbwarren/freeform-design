@@ -43,20 +43,89 @@
             <section id="activePanel">
             </section>
             <!-- Templates -->
+            <template id="controllersTemplate">
+                <div id="controllers">
+                    <h1><i class="material-icons">web</i> Controllers</h1>
+                    <!-- since the template requires a lot more than simple generation, it's handled in code -->
+                    <div id="currentControllers" data-controllers="controllersTemplate">
+                        <pre>
+                            -mock data-
+
+BigProjectController                              X
+----------------------------------------------------
+GreatController                                   X
+----------------------------------------------------
+
+                        </pre>
+                    </div>
+                    <button id="addController" class="round hugTop" data-controllers="addController" data-click="addController" title="Add a new controller"><i class="material-icons md-light">add</i></button>
+                </div>
+            </template>
+            <template id="viewsTemplate">
+                <div id="views">
+                    <h1><i class="material-icons">web</i> Views</h1>
+                    <!-- since the template requires a lot more than simple generation, it's handled in code -->
+                    <div id="currentViews" data-views="viewsTemplate">
+                        <pre>
+                            -mock data-
+
+|     Name | SampleMediatorView                 / X
+----------------------------------------------------
+|     Type | Mediator
+----------------------------------------------------
+|    Mount | #sample
+----------------------------------------------------
+
+|     Name | SampleTableView                    / X
+----------------------------------------------------
+|     Type | AutomaticTable
+----------------------------------------------------
+|    Mount | #table
+----------------------------------------------------
+
+                        </pre>
+                    </div>
+                    <button id="addView" class="round hugTop" data-views="addView" data-click="addView" title="Add a new view"><i class="material-icons md-light">add</i></button>
+                </div>
+            </template>
             <template id="routesTemplate">
                 <div id="routes">
                     <h1><i class="material-icons">toc</i> Routes</h1>
-                    <div id="currentRoutes" data-stylesheets="routes" data-style="list">
+                    <!-- since the template requires a lot more than simple generation, it's handled in code -->
+                    <div id="currentRoutes" data-routes="routesTemplate">
                     </div>
+                    <button id="addRoute" class="round hugTop" data-routes="addRoute" data-click="addRoute" title="Add a new route"><i class="material-icons md-light">add</i></button>
+                </div>
+            </template>
+            <template id="addRouteTemplate">
+                <div class="blur" id="addRouteDialog" data-routes="addRouteDialog">
+                    <dialog class="form">
+                        <h1>Add a new route</h1>
+                        <label for="routePath">Path</label><input type="text" name="routePath" id="routePath" data-routes="routePath"/>
+                        <label for="routeCallback">Callback</label><input type="text" name="routeCallback" id="routeCallback" data-routes="routeCallback"/>
+                        <label for="routeCallback">Type</label>
+                            <select name="routeType" data-routes="routeType">
+                                <option value="function" selected="selected">Function</option>
+                                <option value="view">View</option>
+                                <option value="controller">Controller</option>
+                            </select>
+
+                        <div class="buttonGroup">
+                            <button data-routes="createButton" data-click="addRouteButton">Add</button>
+                            <button data-routes="cancelButton" data-click="addRouteButtonClose">Cancel</button>
+                        </div>
+                    </dialog>
                 </div>
             </template>
             <template id="stylesheetsTemplate">
                 <div id="stylesheets">
                     <h1><i class="material-icons">style</i> Stylesheets</h1>
-                    <div id="styles" data-stylesheets="styles" data-style="list">
+                    <!-- since the template requires a lot more than simple generation, it's handled in code -->
+                    <div id="styles" data-stylesheets="stylesheetsTemplate">
                     </div>
                     <label for="projectName">Enter a new stylesheet</label><input type="text" name="stylesheet" id="stylesheet" data-stylesheets="stylesheet"/>
-                    <button data-stylesheets="addButton" data-click="addStylesheet" class="primary">Add</button>
+                    <button data-stylesheets="addButton" data-click="addStylesheet" class="primary">Add Async</button>
+                    <button data-stylesheets="addButtonSync" data-click="addStylesheetSync" class="primary">Add Sync</button>
                     <button data-stylesheets="removeAllButton" data-click="removeAllStylesheets">Remove All</button>
                 </div>
             </template>

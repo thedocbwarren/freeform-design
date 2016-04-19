@@ -1,0 +1,16 @@
+<h2>Async Stylesheets</h2>
+<div id="asyncStylesheets" class="editList">
+    <ul>
+        {{#each asyncStylesheets}}
+        <li>{{this}} <div class="inlineButton" data-stylesheets="edit" data-click="editStylesheet"><i class="material-icons md-dark">edit</i></div></li>
+        {{/each}}
+    </ul>
+</div>
+<h2>Sync Stylesheets</h2>
+<div id="syncStylesheets" class="editList">
+    <ul>
+        {{#each syncStylesheets}}
+        <li>{{this}} <div class="inlineButton" data-stylesheets="edit" data-click="editStylesheet"><i class="material-icons md-dark">edit</i></div></li>
+        {{/each}}
+    </ul>
+</div>

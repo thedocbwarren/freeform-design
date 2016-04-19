@@ -832,6 +832,8 @@ div.blur {
     display: block;
     position: fixed;
     z-index: auto;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.1);
@@ -1023,6 +1025,7 @@ nav.sideNav ul li:hover {
 
 nav.sideNav ul li.current {
     background-color: #bbdefb;
+    color: #3b78e7;
 }
 
 nav.sideNav ul li i {
@@ -1063,6 +1066,8 @@ article section#activePanel div#basePanel {
     right: 16px;
     top: 16px;
     width: 82%;
+    overflow-y: auto;
+    height: 100%;
 }
 
 article section#activePanel div#mainProject {
@@ -1130,9 +1135,16 @@ article section#activePanel div.panel h1 i {
     vertical-align: text-bottom;
 }
 
+article section#activePanel div.panel h2 {
+    font-size: 16px;
+    line-height: 14px;
+    padding-right: 8px;
+    vertical-align: text-bottom;
+}
+
 article section#activePanel div.panel ul {
     list-style: none;
-    min-height: 200px;
+    /*min-height: 200px;*/
     max-width: 500px;
 }
 
@@ -1148,6 +1160,54 @@ article section#activePanel div.panel ul li {
     word-wrap: break-word;
     white-space: nowrap;
     overflow: hidden;
+}
+
+div.editList dl {
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+div.editList dl dt {
+    float: left;
+    clear: left;
+    min-width: 100px;
+    text-align: right;
+}
+
+div.editList dl dd {
+    margin: 0 0 0 116px;
+    padding: 0 0 0.5em 0;
+}
+
+div.inlineButton {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+}
+
+div.inlineButton i {
+    font-size: 1em;
+    line-height: 1em;
+}
+
+
+div#addRouteDialog dialog.form {
+    height: 300px;
+}
+
+/*article section div.panel button#addRoute,
+    article section div.panel button#addView,
+    article section div.panel button#addController,*/
+article section div.panel button.hugTop {
+    position: absolute;
+    top: 0;
+    left: 200px;
+    background-color: #e91e63;
+    z-index: 2;
+    transition: background-color 0.3s;
 }
 
 /* specific panels */

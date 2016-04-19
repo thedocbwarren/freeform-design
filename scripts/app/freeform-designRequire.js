@@ -6,6 +6,7 @@ require.config({
 		'jquery': 'lib/jquery.min',
 		'underscore': 'lib/lodash.min',
 		'backbone': 'lib/backbone-min',
+        'handlebars': 'lib/handlebars.runtime.min',
 
         // hosted version
 		'augmented': '/augmented/scripts/core/augmented',
@@ -22,7 +23,11 @@ require.config({
 
         // other modules
         'mainProject': 'app/mainProject',
-        'tableCreate': 'app/tableCreate'
+        'tableCreate': 'app/tableCreate',
+
+        // compiled templates
+        'stylesheetsTemplate': 'app/templates/stylesheetsTemplate',
+        'routesTemplate': 'app/templates/routesTemplate'
 	},
     'shim': {
     }
@@ -74,9 +79,11 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
 
     var MyRouter = Augmented.Router.extend({
         routes: {
-            "":         "index",    // index
-            "project":  "project",  // #project
-            "table":    "table"     // #table
+            "":                     "index",    // index
+            "project":              "project",  // #project
+            //"project/stylesheets":  "stylesheetPanel",
+            //"project/routes":       "routePanel",
+            "table":                "table"     // #table
         },
 
         index: function() {
@@ -86,16 +93,22 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         project: function()  {
             this.loadView(MainProject.initialize());
         },
+/*
+        stylesheetPanel: function() {
+            this.loadView(StylsheetPanel.initialize());
+        },
+
+        routePanel: function() {
+            this.loadView(RoutePanel.initialize());
+        },
+        */
 
         table: function() {
             this.loadView(TableCreate.initialize());
         }
     });
 
-    var router = new MyRouter();
-
-    // This feature WIP
-    //app.registerRouter(router);
+    app.router =  new MyRouter();
 
     app.start();
     app.log("Starting Application...");
@@ -111,6 +124,7 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
             this.on('createProject', function(name) {
                 this.model.set("projectName", name);
                 app.log("Created new project - " + name);
+                app.router.navigate("project", {trigger: true});
             });
         }
     });
