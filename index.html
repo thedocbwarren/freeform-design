@@ -47,16 +47,8 @@
                 <div id="controllers">
                     <h1><i class="material-icons">web</i> Controllers</h1>
                     <!-- since the template requires a lot more than simple generation, it's handled in code -->
-                    <div id="currentControllers" data-controllers="controllersTemplate">
-                        <pre>
-                            -mock data-
-
-BigProjectController                              X
-----------------------------------------------------
-GreatController                                   X
-----------------------------------------------------
-
-                        </pre>
+                    <div id="editDialog"></div>
+                    <div id="currentControllers" data-controllers="currentControllers" data-style="list" data-click="currentControllers">
                     </div>
                     <button id="addController" class="round hugTop" data-controllers="addController" data-click="addController" title="Add a new controller"><i class="material-icons md-light">add</i></button>
                 </div>

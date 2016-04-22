@@ -5,11 +5,81 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'han
 
     // TODO: this feels a tad crufty but refactor later
 
+    var EditDialog = Augmented.Presentation.DialogView.extend({
+        style: "form",
+        el: "#editDialog",
+        title: "Edit Controller",
+        name: "edit-controller",
+        buttons: {
+            "cancel": "cancel",
+            "ok" : "ok",
+            "delete": "del"
+        },
+        init: function() {
+
+        },
+        ok: function() {
+            this.trigger("save");
+            this.close();
+        },
+        del: function() {
+            this.trigger("delete");
+            this.close();
+        }
+    });
+
     var ControllersView = Augmented.Presentation.DecoratorView.extend({
         name: "controllers",
         el: "#controllers",
         init: function() {
             this.model = new Augmented.Model();
+            this.syncModelChange("currentControllers");
+            // hard coded data
+            this.model.set("currentControllers", ["BigProjectController", "GreatController"]);
+        },
+        saveController: function() {
+            var data = this.dialog.model.get("edit-controller");
+            var index = this.dialog.model.get("index");
+            var cc = this.model.get("currentControllers").slice(0);
+            if (index > -1) {
+                cc[index] = data;
+            } else {
+                cc.push(data);
+            }
+            this.model.set("currentControllers", cc);
+        },
+        deleteController: function() {
+            var index = this.dialog.model.get("index");
+            var cc = this.model.get("currentControllers").slice(0);
+            cc.splice(index, 1);
+            this.model.set("currentControllers", cc);
+        },
+        currentControllers: function(event) {
+            var index = (event.target.getAttribute("data-index"));
+            var a = this.model.get("currentControllers");
+            this.openDialog(a, index);
+        },
+        openDialog: function(data, index) {
+            if (!this.dialog) {
+                this.dialog = new EditDialog();
+                this.listenTo(this.dialog, "save", this.saveController);
+                this.listenTo(this.dialog, "delete", this.deleteController);
+                this.listenTo(this.dialog, "close", this.closeDialog);
+            }
+                this.dialog.model.set("index", index);
+                this.dialog.body = "<input type=\"text\" value=\"" + ((data && (index > -1)) ? (data[index]) : "") + "\" data-edit-controller=\"edit-controller\" />";
+                this.dialog.render();
+                this.dialog.syncBoundElement("edit-controller");
+
+
+        },
+        closeDialog: function() {
+            //this.stopListening(this.dialog);
+            //this.dialog = null;
+        },
+        addController: function() {
+            var a = this.model.get("currentControllers");
+            this.openDialog(a, -1);
         }
     });
 

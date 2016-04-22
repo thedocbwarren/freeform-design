@@ -798,7 +798,7 @@ dialog button:hover, dialog button:active {
 }
 
 dialog div.buttonGroup {
-    bottom: 16px;
+    bottom: 8px;
     display: block;
     position: absolute;
     right: 16px;
