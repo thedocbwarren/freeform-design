@@ -8,15 +8,10 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'han
     var EditDialog = Augmented.Presentation.DialogView.extend({
         style: "form",
         el: "#editDialog",
-        title: "Edit Controller",
-        name: "edit-controller",
         buttons: {
             "cancel": "cancel",
             "ok" : "ok",
             "delete": "del"
-        },
-        init: function() {
-
         },
         ok: function() {
             this.trigger("save");
@@ -26,6 +21,16 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'han
             this.trigger("delete");
             this.close();
         }
+    });
+
+    var EditControllerDialog = EditDialog.extend({
+        title: "Edit Controller",
+        name: "edit-controller"
+    });
+
+    var EditViewDialog = EditDialog.extend({
+        title: "Edit View",
+        name: "edit-view"
     });
 
     var ControllersView = Augmented.Presentation.DecoratorView.extend({
@@ -61,17 +66,16 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'han
         },
         openDialog: function(data, index) {
             if (!this.dialog) {
-                this.dialog = new EditDialog();
+                this.dialog = new EditControllerDialog();
                 this.listenTo(this.dialog, "save", this.saveController);
                 this.listenTo(this.dialog, "delete", this.deleteController);
                 this.listenTo(this.dialog, "close", this.closeDialog);
             }
-                this.dialog.model.set("index", index);
-                this.dialog.body = "<input type=\"text\" value=\"" + ((data && (index > -1)) ? (data[index]) : "") + "\" data-edit-controller=\"edit-controller\" />";
-                this.dialog.render();
-                this.dialog.syncBoundElement("edit-controller");
-
-
+            this.dialog.model.set("index", index);
+            this.dialog.body = "<input type=\"text\" value=\"" +
+                ((data && (index > -1)) ? (data[index]) : "") + "\" data-edit-controller=\"edit-controller\" />";
+            this.dialog.render();
+            this.dialog.syncBoundElement("edit-controller");
         },
         closeDialog: function() {
             //this.stopListening(this.dialog);
@@ -88,7 +92,55 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'han
         el: "#views",
         init: function() {
             this.model = new Augmented.Model();
+            this.syncModelChange("currentViews");
+            // hard coded data
+            this.model.set("currentViews", ["AutoTableView", "StandardView"]);
+        },
+        saveView: function() {
+            var data = this.dialog.model.get("edit-view");
+            var index = this.dialog.model.get("index");
+            var cc = this.model.get("currentViews").slice(0);
+            if (index > -1) {
+                cc[index] = data;
+            } else {
+                cc.push(data);
+            }
+            this.model.set("currentViews", cc);
+        },
+        deleteView: function() {
+            var index = this.dialog.model.get("index");
+            var cc = this.model.get("currentViews").slice(0);
+            cc.splice(index, 1);
+            this.model.set("currentViews", cc);
+        },
+        currentViews: function(event) {
+            var index = (event.target.getAttribute("data-index"));
+            var a = this.model.get("currentViews");
+            this.openDialog(a, index);
+        },
+        openDialog: function(data, index) {
+            if (!this.dialog) {
+                this.dialog = new EditViewDialog();
+                this.listenTo(this.dialog, "save", this.saveView);
+                this.listenTo(this.dialog, "delete", this.deleteView);
+                this.listenTo(this.dialog, "close", this.closeDialog);
+            }
+
+            this.dialog.model.set("index", index);
+            this.dialog.body = "<input type=\"text\" value=\"" +
+                ((data && (index > -1)) ? (data[index]) : "") + "\" data-edit-view=\"edit-view\" />";
+            this.dialog.render();
+            this.dialog.syncBoundElement("edit-view");
+        },
+        closeDialog: function() {
+            //this.stopListening(this.dialog);
+            //this.dialog = null;
+        },
+        addView: function() {
+            var a = this.model.get("currentViews");
+            this.openDialog(a, -1);
         }
+
     });
 
     var StylesheetsView = Augmented.Presentation.DecoratorView.extend({

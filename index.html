@@ -56,26 +56,8 @@
             <template id="viewsTemplate">
                 <div id="views">
                     <h1><i class="material-icons">web</i> Views</h1>
-                    <!-- since the template requires a lot more than simple generation, it's handled in code -->
-                    <div id="currentViews" data-views="viewsTemplate">
-                        <pre>
-                            -mock data-
-
-|     Name | SampleMediatorView                 / X
-----------------------------------------------------
-|     Type | Mediator
-----------------------------------------------------
-|    Mount | #sample
-----------------------------------------------------
-
-|     Name | SampleTableView                    / X
-----------------------------------------------------
-|     Type | AutomaticTable
-----------------------------------------------------
-|    Mount | #table
-----------------------------------------------------
-
-                        </pre>
+                    <div id="editDialog"></div>
+                    <div id="currentViews" data-views="currentViews" data-style="list" data-click="currentViews">
                     </div>
                     <button id="addView" class="round hugTop" data-views="addView" data-click="addView" title="Add a new view"><i class="material-icons md-light">add</i></button>
                 </div>
