@@ -41,8 +41,36 @@
 .material-icons.md-light { color: rgba(255, 255, 255, 1); }
 .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
 
+/*
 i.hidden {
     visibility: hidden;
+}
+*/
+
+i.radio::before {
+    visibility: visible;
+    content: "radio_button_checked";
+}
+
+i.radio.hidden::before {
+    visibility: visible;
+    content: "radio_button_unchecked";
+}
+
+i.checkbox::before {
+    visibility: visible;
+    content: "check_box";
+}
+
+i.checkbox.hidden::before {
+    visibility: visible;
+    content: "check_box_outline_blank";
+}
+
+.secondary {
+    font-size: 0.8em;
+    color: rgba(0, 0, 0, 0.6);
+    margin-top: 0;
 }
 
 /* Hamburger */
@@ -1191,6 +1219,20 @@ div.inlineButton {
 div.inlineButton i {
     font-size: 1em;
     line-height: 1em;
+}
+
+div.flexContainer {
+    display: flex;                   /* establish flex container */
+    flex-direction: row;             /* default value; can be omitted */
+    flex-wrap: nowrap;               /* default value; can be omitted */
+    justify-content: space-between;  /* switched from default (flex-start, see below) */
+    flex-grow: 1;
+    align-items: flex-start;
+    margin: 8px 0;
+}
+
+div.flexContainer p, div.flexContainer div {
+    margin: 0;
 }
 
 

@@ -1,0 +1,15 @@
+<ul>
+    {{#each currentViews}}
+    <li>
+        <div class="flexContainer">
+            <p>{{name}}<br/><span class="secondary">{{type}}</span></p>
+            <div>
+                {{#if panel}}
+                <div class="inlineButton" data-name="{{name}}" data-type="{{type}}" data-index="{{@index}}" data-views="editType" data-click="editViewType"><i class="material-icons md-dark">add_circle</i></div>
+                {{/if}}
+                <div class="inlineButton" data-name="{{name}}" data-type="{{type}}" data-index="{{@index}}" data-views="edit" data-click="editView"><i class="material-icons md-dark">edit</i></div>
+            </div>
+        </div>
+    </li>
+    {{/each}}
+</ul>

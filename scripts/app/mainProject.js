@@ -1,9 +1,31 @@
 // Main project module
-define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'handlebars', 'routesTemplate', 'stylesheetsTemplate'],
-    function(Augmented, Presentation, app, Handlebars) {
+define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'models', 'handlebars',
+//templates
+'routesTemplate', 'stylesheetsTemplate', 'viewsTemplate'],
+    function(Augmented, Presentation, app, Models, Handlebars) {
     "use strict";
 
     // TODO: this feels a tad crufty but refactor later
+
+    // register panels to a view type
+
+    var panelRegistry = {
+        "AutomaticTable": "table"
+    };
+
+    // models
+
+    var ControllerModel = Models.ControllerModel;
+    var ViewModel = Models.ViewModel;
+    var StylesheetsModel = Models.StylesheetsModel;
+    var RoutesModel = Models.RoutesModel;
+
+    var ViewCollection = Augmented.Collection.extend({
+        model: ViewModel
+    });
+
+
+    // dialogs
 
     var EditDialog = Augmented.Presentation.DialogView.extend({
         style: "form",
@@ -33,11 +55,13 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'han
         name: "edit-view"
     });
 
+    // views
+
     var ControllersView = Augmented.Presentation.DecoratorView.extend({
         name: "controllers",
         el: "#controllers",
         init: function() {
-            this.model = new Augmented.Model();
+            this.model = new ControllerModel();
             this.syncModelChange("currentControllers");
             // hard coded data
             this.model.set("currentControllers", ["BigProjectController", "GreatController"]);
@@ -91,34 +115,60 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'han
         name: "views",
         el: "#views",
         init: function() {
-            this.model = new Augmented.Model();
-            this.syncModelChange("currentViews");
+            this.collection = new ViewCollection();
             // hard coded data
-            this.model.set("currentViews", ["AutoTableView", "StandardView"]);
+            this.collection.add(new ViewModel({ "name": "TestView", "type": "View" }));
+            this.collection.add(new ViewModel({ "name": "TestAutotableView", "type": "AutomaticTable", "panel": true }));
+            this.collection.add(new ViewModel({ "name": "TestDecoratorView", "type": "DecoratorView" }));
+            this.collection.add(new ViewModel({ "name": "TestDecoratorView2", "type": "DecoratorView" }));
+
+            this.render();
+        },
+        render: function() {
+            var e = this.boundElement("currentViews");
+            this.removeTemplate(e, true);
+            this.injectTemplate(Handlebars.templates.viewsTemplate({"currentViews": this.collection.toJSON()}), e);
+        },
+        editView: function(event) {
+            var index = (event.currentTarget.getAttribute("data-index"));
+            var model = this.collection.at(index);
+            this.openDialog(model, index);
+        },
+        editViewType: function(event) {
+            var index = (event.currentTarget.getAttribute("data-index"));
+            var model = this.collection.at(index);
+            var panel = panelRegistry[model.get("type")];
+            app.router.navigate(panel, {trigger: true});
         },
         saveView: function() {
-            var data = this.dialog.model.get("edit-view");
+            var name = this.dialog.model.get("edit-view");
+            var type = this.dialog.model.get("edit-view-type");
             var index = this.dialog.model.get("index");
-            var cc = this.model.get("currentViews").slice(0);
-            if (index > -1) {
-                cc[index] = data;
+            var model = this.collection.at(index);
+
+            if (model && index != -1) {
+                model.set("name", name);
+                model.set("type", type);
+                this.collection.push(model);
             } else {
-                cc.push(data);
+                model = new ViewModel({"name": name, "type": type});
+                this.collection.add(model);
             }
-            this.model.set("currentViews", cc);
+
+            this.render();
         },
         deleteView: function() {
             var index = this.dialog.model.get("index");
-            var cc = this.model.get("currentViews").slice(0);
-            cc.splice(index, 1);
-            this.model.set("currentViews", cc);
+            var model = this.collection.at(index);
+            this.collection.remove(model);
+            this.render();
         },
         currentViews: function(event) {
             var index = (event.target.getAttribute("data-index"));
             var a = this.model.get("currentViews");
             this.openDialog(a, index);
         },
-        openDialog: function(data, index) {
+        openDialog: function(model, index) {
             if (!this.dialog) {
                 this.dialog = new EditViewDialog();
                 this.listenTo(this.dialog, "save", this.saveView);
@@ -127,27 +177,25 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'han
             }
 
             this.dialog.model.set("index", index);
-            this.dialog.body = "<input type=\"text\" value=\"" +
-                ((data && (index > -1)) ? (data[index]) : "") + "\" data-edit-view=\"edit-view\" />";
+            this.dialog.body = "<input type=\"text\" value=\"" + ((model) ? model.get("name") : "") +
+                "\" data-edit-view=\"edit-view\" />" +
+                "<select data-edit-view=\"edit-view-type\" name=\"edit-view-type\"><option>View</option><option>Mediator</option><option>Colleague</option><option>AutomaticTable</option><option>DecoratorView</option></select>";
             this.dialog.render();
             this.dialog.syncBoundElement("edit-view");
+            this.dialog.syncBoundElement("edit-view-type");
         },
         closeDialog: function() {
-            //this.stopListening(this.dialog);
-            //this.dialog = null;
         },
         addView: function() {
-            var a = this.model.get("currentViews");
-            this.openDialog(a, -1);
+            this.openDialog(null, -1);
         }
-
     });
 
     var StylesheetsView = Augmented.Presentation.DecoratorView.extend({
         name: "stylesheets",
         el: "#stylesheets",
         init: function() {
-            this.model = new Augmented.Model();
+            this.model = new StylesheetsModel();
             this.model.set("asyncStylesheets", ["https://fonts.googleapis.com/icon?family=Material+Icons",
                                             "https://fonts.googleapis.com/css?family=Roboto:400"]);
             this.model.set("syncStylesheets", ["styles/reset.css", "styles/layout.css", "styles/theme.css",]);
@@ -195,7 +243,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'han
         name: "routes",
         el: "#routes",
         init: function() {
-            this.model = new Augmented.Model();
+            this.model = new RoutesModel();
             this.model.set("functionRoutes", [{"route": "route", "callback": "goToThisFunction"}, {"route": "another", "callback": "goHere"}]);
             this.model.set("viewRoutes", [{"route": "project", "callback": "projectView"}, {"route": "table", "callback": "tableView"}]);
             this.model.set("controllerRoutes", [{"route": "application", "callback": "applicationController"}]);

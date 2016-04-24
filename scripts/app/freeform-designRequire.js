@@ -24,10 +24,12 @@ require.config({
         // other modules
         'mainProject': 'app/mainProject',
         'tableCreate': 'app/tableCreate',
+        'models': 'app/models',
 
         // compiled templates
         'stylesheetsTemplate': 'app/templates/stylesheetsTemplate',
-        'routesTemplate': 'app/templates/routesTemplate'
+        'routesTemplate': 'app/templates/routesTemplate',
+        'viewsTemplate': 'app/templates/viewsTemplate'
 	},
     'shim': {
     }
