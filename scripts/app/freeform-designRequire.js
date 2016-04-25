@@ -25,6 +25,7 @@ require.config({
         'mainProject': 'app/mainProject',
         'tableCreate': 'app/tableCreate',
         'models': 'app/models',
+        'compiler': 'app/compiler',
 
         // compiled templates
         'stylesheetsTemplate': 'app/templates/stylesheetsTemplate',
@@ -61,8 +62,8 @@ define('application', ['augmented', 'augmentedPresentation'], function(Augmented
 
 //
 
-require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'tableCreate', 'models'],
-    function(Augmented, Presentation, app, MainProject, TableCreate, Models) {
+require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'tableCreate', 'models', 'compiler'],
+    function(Augmented, Presentation, app, MainProject, TableCreate, Models, Compiler) {
     "use strict";
     app.log("Beginning Application...");
 
@@ -134,6 +135,12 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
                 app.log("Saving a project - " + file);
                 var blob = new Blob([JSON.stringify(app.datastore.toJSON())], {type: "text/plain;charset=utf-8"});
                 saveAs(blob, file);
+            });
+            this.on('compileProject', function() {
+                app.log("Compiling a project");
+                var stuff = Compiler.compile(app.datastore.toJSON());
+                var blob = new Blob([stuff], {type: "text/plain;charset=utf-8"});
+                saveAs(blob, app.datastore.get("project") + ".txt");
             });
         }
     });
@@ -259,6 +266,10 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
                 this.sendMessage("saveProject", el.value);
             }
         },
+        compile: function() {
+            this.hamburger();
+            this.sendMessage("compileProject", null);
+        }
     });
 
     app.start();
