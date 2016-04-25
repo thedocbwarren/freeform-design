@@ -7,6 +7,9 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
 
     // TODO: this feels a tad crufty but refactor later
 
+
+
+
     // register panels to a view type
 
     var panelRegistry = {
@@ -14,7 +17,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
     };
 
     // models
-
+    var ProjectModel = Models.ProjectModel;
     var ControllerModel = Models.ControllerModel;
     var ViewModel = Models.ViewModel;
     var StylesheetsModel = Models.StylesheetsModel;
@@ -63,8 +66,14 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         init: function() {
             this.model = new ControllerModel();
             this.syncModelChange("currentControllers");
+            var arr = app.datastore.get("controllers");
+            this.model.set("currentControllers", arr);
             // hard coded data
-            this.model.set("currentControllers", ["BigProjectController", "GreatController"]);
+            //this.setModel(["BigProjectController", "GreatController"]);
+        },
+        setModel: function(arr) {
+            this.model.set("currentControllers", arr);
+            app.datastore.set("controllers", arr);
         },
         saveController: function() {
             var data = this.dialog.model.get("edit-controller");
@@ -75,13 +84,13 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
             } else {
                 cc.push(data);
             }
-            this.model.set("currentControllers", cc);
+            this.setModel(cc);
         },
         deleteController: function() {
             var index = this.dialog.model.get("index");
             var cc = this.model.get("currentControllers").slice(0);
             cc.splice(index, 1);
-            this.model.set("currentControllers", cc);
+            this.setModel(cc);
         },
         currentControllers: function(event) {
             var index = (event.target.getAttribute("data-index"));
@@ -102,8 +111,6 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
             this.dialog.syncBoundElement("edit-controller");
         },
         closeDialog: function() {
-            //this.stopListening(this.dialog);
-            //this.dialog = null;
         },
         addController: function() {
             var a = this.model.get("currentControllers");
@@ -117,14 +124,22 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         init: function() {
             this.collection = new ViewCollection();
             // hard coded data
+            /*
             this.collection.add(new ViewModel({ "name": "TestView", "type": "View" }));
             this.collection.add(new ViewModel({ "name": "TestAutotableView", "type": "AutomaticTable", "panel": true }));
             this.collection.add(new ViewModel({ "name": "TestDecoratorView", "type": "DecoratorView" }));
             this.collection.add(new ViewModel({ "name": "TestDecoratorView2", "type": "DecoratorView" }));
-
+            */
+            var arr = app.datastore.get("views");
+            if (arr) {
+                this.collection.reset(arr);
+            }
             this.render();
         },
         render: function() {
+            // refresh the data
+            app.datastore.set("views", this.collection.toJSON());
+
             var e = this.boundElement("currentViews");
             this.removeTemplate(e, true);
             this.injectTemplate(Handlebars.templates.viewsTemplate({"currentViews": this.collection.toJSON()}), e);
@@ -196,12 +211,25 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         el: "#stylesheets",
         init: function() {
             this.model = new StylesheetsModel();
+            /*
             this.model.set("asyncStylesheets", ["https://fonts.googleapis.com/icon?family=Material+Icons",
                                             "https://fonts.googleapis.com/css?family=Roboto:400"]);
             this.model.set("syncStylesheets", ["styles/reset.css", "styles/layout.css", "styles/theme.css",]);
+            */
+            var ss = app.datastore.get("stylesheets");
+            this.model.set("asyncStylesheets", ss.asyncStylesheets);
+            this.model.set("syncStylesheets", ss.syncStylesheets);
+
             this.render();
         },
         render: function() {
+            // sync the data
+            var d = {
+                "asyncStylesheets": this.model.get("asyncStylesheets"),
+                "syncStylesheets": this.model.get("syncStylesheets")
+            };
+            app.datastore.set("stylesheets", d);
+
             var e = this.boundElement("stylesheetsTemplate");
             this.removeTemplate(e, true);
             this.injectTemplate(Handlebars.templates.stylesheetsTemplate(this.model.toJSON()), e);
@@ -244,12 +272,28 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         el: "#routes",
         init: function() {
             this.model = new RoutesModel();
+            /*
             this.model.set("functionRoutes", [{"route": "route", "callback": "goToThisFunction"}, {"route": "another", "callback": "goHere"}]);
             this.model.set("viewRoutes", [{"route": "project", "callback": "projectView"}, {"route": "table", "callback": "tableView"}]);
             this.model.set("controllerRoutes", [{"route": "application", "callback": "applicationController"}]);
+            */
+            var r = app.datastore.get("routes");
+            if (r) {
+                this.model.set("functionRoutes", r.functionRoutes);
+                this.model.set("viewRoutes", r.viewRoutes);
+                this.model.set("controllerRoutes", r.controllerRoutes);
+            }
             this.render();
         },
         render: function() {
+            // sync the data
+            var r = {
+                "functionRoutes": this.model.get("functionRoutes"),
+                "viewRoutes": this.model.get("viewRoutes"),
+                "controllerRoutes": this.model.get("controllerRoutes")
+            };
+            app.datastore.set("routes", r);
+
             var e = this.boundElement("routesTemplate");
             this.removeTemplate(e, true);
             this.injectTemplate(Handlebars.templates.routesTemplate(this.model.toJSON()), e);
@@ -302,12 +346,10 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         currentNav: "",
         init: function() {
             this.syncModelChange("name");
-            this.model.set("name", "My Application"); // obviousely get this from the main app
-
+            this.model.set("name", app.datastore.get("project"));
             this.on("markNavigation", function(nav) {
                 this.markNavigation(nav);
             });
-
         },
         markNavigation: function(nav) {
             Augmented.Presentation.Dom.removeClass(this.currentNav, "current");

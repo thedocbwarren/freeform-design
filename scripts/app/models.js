@@ -4,6 +4,23 @@ define('models', ['augmented'],
     "use strict";
 
     var Models = {
+        ProjectModel: Augmented.Model.extend({
+            defaults: {
+                "project": "untitled",
+                "application": {},
+                "routes": {
+                    "functionRoutes": [],
+                    "viewRoutes": [],
+                    "controllerRoutes": []
+                },
+                "views": [],
+                "controllers": [],
+                "stylesheets": {
+                    "asyncStylesheets": [],
+                    "syncStylesheets": []
+                }
+            }
+        }),
         ControllerModel: Augmented.Model.extend({
             defaults : {
                 "currentControllers": []

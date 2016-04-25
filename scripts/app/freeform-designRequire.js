@@ -36,6 +36,7 @@ require.config({
 });
 
 // Create base application
+
 define('application', ['augmented', 'augmentedPresentation'], function(Augmented, Presentation) {
     "use strict";
     // create an application
@@ -58,10 +59,10 @@ define('application', ['augmented', 'augmentedPresentation'], function(Augmented
     return app;
 });
 
+//
 
-
-require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'tableCreate'],
-    function(Augmented, Presentation, app, MainProject, TableCreate) {
+require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'tableCreate', 'models'],
+    function(Augmented, Presentation, app, MainProject, TableCreate, Models) {
     "use strict";
     app.log("Beginning Application...");
 
@@ -83,37 +84,22 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         routes: {
             "":                     "index",    // index
             "project":              "project",  // #project
-            //"project/stylesheets":  "stylesheetPanel",
-            //"project/routes":       "routePanel",
             "table":                "table"     // #table
         },
 
         index: function() {
             this.loadView(new IntroView());
         },
-
         project: function()  {
             this.loadView(MainProject.initialize());
         },
-/*
-        stylesheetPanel: function() {
-            this.loadView(StylsheetPanel.initialize());
-        },
-
-        routePanel: function() {
-            this.loadView(RoutePanel.initialize());
-        },
-        */
-
         table: function() {
             this.loadView(TableCreate.initialize());
         }
     });
 
     app.router =  new MyRouter();
-
-    app.start();
-    app.log("Starting Application...");
+    app.datastore = new Models.ProjectModel();
 
     // define my views
 
@@ -121,12 +107,33 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         name:"mediator",
         el: "#main",
         init: function(options) {
-            this.model = new Augmented.Model();
-
             this.on('createProject', function(name) {
-                this.model.set("projectName", name);
                 app.log("Created new project - " + name);
+                app.datastore.set("project", name);
                 app.router.navigate("project", {trigger: true});
+            });
+            this.on('openProject', function(file) {
+                app.log("Opening a project - " + file);
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var text = reader.result, data;
+                    try {
+                        data = JSON.parse(text);
+                        app.datastore.set(data);
+                        app.router.navigate("project", {trigger: true});
+                    } catch(e) {
+                        alert("Failed to read file! " + e);
+                        app.log("Failed to read file! " + e);
+                    }
+                };
+
+                reader.readAsText(file);
+            });
+            this.on('saveProject', function(file) {
+                app.log("Saving a project - " + file);
+                var blob = new Blob([JSON.stringify(app.datastore.toJSON())], {type: "text/plain;charset=utf-8"});
+                saveAs(blob, file);
             });
         }
     });
@@ -186,13 +193,76 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         },
         projectCreateButton: function() {
             if (this.modal) {
-                var dialog = this.boundElement("createProjectDialog");
+                /*var dialog = this.boundElement("createProjectDialog");
                 this.removeTemplate(dialog);
-                this.modal = false;
+                this.modal = false;*/
+                this.projectCreateButtonClose();
                 this.sendMessage("createProject", this.model.get("projectName"));
             }
-        }
+        },
+        open: function() {
+            if (!this.modal) {
+                this.hamburger();
+
+                // Check for the various File API support.
+                if (window.File && window.FileReader && window.FileList && window.Blob) {
+                    var t = document.querySelector('#openProjectDialogTemplate');
+                    // consider an inject template method
+                    var clone = document.importNode(t.content, true);
+                    this.injectTemplate(clone, this.el);
+                    this.modal = true;
+                } else {
+                    alert("Sorry no support for file reading on this browser.  Will polyfill shortly.");
+                }
+            }
+        },
+        projectOpenButtonClose: function() {
+            if (this.modal) {
+                var dialog = this.boundElement("openProjectDialog");
+                this.removeTemplate(dialog);
+                this.modal = false;
+            }
+        },
+        projectOpenButton: function() {
+            if (this.modal) {
+                var el = this.boundElement("projectFile");
+                var file = el.files[0];
+
+                this.projectOpenButtonClose();
+
+                this.sendMessage("openProject", file);
+            }
+        },
+        save: function() {
+            if (!this.modal) {
+                this.hamburger();
+
+                var t = document.querySelector('#saveProjectDialogTemplate');
+                // consider an inject template method
+                var clone = document.importNode(t.content, true);
+                this.injectTemplate(clone, this.el);
+                this.modal = true;
+            }
+        },
+        projectSaveButtonClose: function() {
+            if (this.modal) {
+                var dialog = this.boundElement("saveProjectDialog");
+                this.removeTemplate(dialog);
+                this.modal = false;
+            }
+        },
+        projectSaveButton: function() {
+            if (this.modal) {
+                var el = this.boundElement("projectFile");
+                this.projectSaveButtonClose();
+
+                this.sendMessage("saveProject", el.value);
+            }
+        },
     });
+
+    app.start();
+    app.log("Starting Application...");
 
     var mediatorView = new ApplicationMediator();
     // No advantage as of yet

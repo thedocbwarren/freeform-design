@@ -27,8 +27,8 @@
                         <section class="menu menu--off" data-header="hamburgerMenu">
                             <div>Augmented.js</div>
                             <div id="createProject" data-header="create" data-click="create"><i class="material-icons md-dark">create</i>Create Project</div>
-                            <div id="openProject" data-header="open"><i class="material-icons md-dark">cloud_download</i>Open Project</div>
-                            <div id="saveProject" data-header="save"><i class="material-icons md-dark">save</i>Save Project</div>
+                            <div id="openProject" data-header="open" data-click="open"><i class="material-icons md-dark">cloud_download</i>Open Project</div>
+                            <div id="saveProject" data-header="save" data-click="save"><i class="material-icons md-dark">save</i>Save Project</div>
                             <div class="spacer"></div>
                             <div id="about" data-header="about" data-click="about"><i class="material-icons md-dark">info</i>About</div>
                         </section>
@@ -120,6 +120,30 @@
                     </div>
                     <div id="basePanel" data-mainProject="basePanel" class="">
                     </div>
+                </div>
+            </template>
+            <template id="saveProjectDialogTemplate">
+                <div class="blur" id="saveProjectDialog" data-header="saveProjectDialog">
+                    <dialog class="form">
+                        <h1>Save a project</h1>
+                        <label for="projectFile">Enter a filename</label><input type="text" name="projectFile" id="projectFile" data-header="projectFile"/>
+                        <div class="buttonGroup">
+                            <button data-header="saveButton" data-click="projectSaveButton">Open</button>
+                            <button data-header="cancelButton" data-click="projectSaveButtonClose">Cancel</button>
+                        </div>
+                    </dialog>
+                </div>
+            </template>
+            <template id="openProjectDialogTemplate">
+                <div class="blur" id="openProjectDialog" data-header="openProjectDialog">
+                    <dialog class="form">
+                        <h1>Open a project</h1>
+                        <label for="projectFile">Choose a Project</label><input type="file" name="projectFile" id="projectFile" data-header="projectFile"/>
+                        <div class="buttonGroup">
+                            <button data-header="openButton" data-click="projectOpenButton">Open</button>
+                            <button data-header="cancelButton" data-click="projectOpenButtonClose">Cancel</button>
+                        </div>
+                    </dialog>
                 </div>
             </template>
             <template id="createProjectDialogTemplate">
