@@ -18,7 +18,7 @@
 	<body>
 		<article>
             <section id="header">
-                <header id="header">
+                <header id="headerBar" class="header">
                     <h1><em>free</em>Form Design</h1>
                     <h2>Augmented.js Automatic UI Designer</h2>
                     <section id="hamburger" class="wrapper" data-header="hamburger">
@@ -236,6 +236,19 @@
                         <textarea name="data" placeholder="Test Data" data-source="data" autocomplete="off"></textarea>
                     </div>
     			</div>
+            </template>
+            <template id="standardViewEditorTemplate">
+                <div id="basic">
+                    <header>
+                        <h1 data-basic="name"></h1>
+                        <div class="icon right" data-basic="back" data-click="back"><i class="material-icons">arrow_back</i></div>
+                    </header>
+                </div>
+                <div id="security" class="panel editor">
+                    <header>
+                        <h1><i class="material-icons">security</i>Security</h1>
+                    </header>
+                </div>
             </template>
 		</article>
 	</body>

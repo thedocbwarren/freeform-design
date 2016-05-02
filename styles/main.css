@@ -97,7 +97,7 @@ section.wrapper section.material-design-hamburger div.material-design-hamburger_
     cursor: context-menu;
 }
 
-article section#header header#header section.wrapper section.material-design-hamburger.model div.material-design-hamburger__icon {
+article section#header header.header section.wrapper section.material-design-hamburger.model div.material-design-hamburger__icon {
     /*width: 100%;
     height: 600px;
     background-color: rgba(0,0,0,0.2);*/
@@ -917,6 +917,10 @@ article section#header header {
     transition: top 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0s;
     width: 100%;
     z-index: 2;
+}
+
+article section#header header.green {
+    background-color: #4caf50;
 }
 
 article section#header header figure {

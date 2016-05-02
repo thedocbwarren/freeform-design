@@ -1,4 +1,5 @@
-define(['augmented', 'augmentedPresentation', 'application', 'compiler', 'filesaver'], function(Augmented, Presentation, app, Compiler) {
+define(['augmented', 'augmentedPresentation', 'application', 'basicInfoView', 'compiler', 'filesaver'],
+function(Augmented, Presentation, app, BasicInfoView, Compiler) {
     "use strict";
 
     // define the classes
@@ -74,7 +75,7 @@ define(['augmented', 'augmentedPresentation', 'application', 'compiler', 'filesa
             app.router.navigate("project", {trigger: true});
         }
     });
-
+/* already a module
     var BasicInfoView = Augmented.Presentation.DecoratorView.extend({
         name: "basic",
         el: "#basic",
@@ -91,7 +92,7 @@ define(['augmented', 'augmentedPresentation', 'application', 'compiler', 'filesa
             this.sendMessage("goToProject");
         }
     });
-
+*/
     var SchemaDecoratorView = Augmented.Presentation.DecoratorView.extend({
         name: "schema",
         el: "#schema",

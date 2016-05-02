@@ -7,12 +7,13 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
 
     // TODO: this feels a tad crufty but refactor later
 
-
-
-
-
     // register panels to a view type
     var panelRegistry = {
+        "View": "view",
+        "Mediator": "view",
+        "Colleague": "view",
+        "DecoratorView": "view",
+        "Dialog": "view",
         "AutomaticTable": "table"
     };
 
@@ -34,17 +35,9 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         return html;
     };
 
-    // models - TODO: remove these instances
-    var ProjectModel = Models.ProjectModel;
-    var ControllerModel = Models.ControllerModel;
-    var ViewModel = Models.ViewModel;
-    var StylesheetsModel = Models.StylesheetsModel;
-    var RoutesModel = Models.RoutesModel;
-
     var ViewCollection = Augmented.Collection.extend({
         model: Models.ViewModel
     });
-
 
     // dialogs
 
@@ -82,7 +75,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         name: "controllers",
         el: "#controllers",
         init: function() {
-            this.model = new ControllerModel();
+            this.model = new Models.ControllerModel();
             this.syncModelChange("currentControllers");
             var arr = app.datastore.get("controllers");
             this.model.set("currentControllers", arr);
@@ -176,7 +169,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
                 model.set("type", type);
                 this.collection.push(model);
             } else {
-                model = new ViewModel({"name": name, "type": type});
+                model = new Models.ViewModel({"name": name, "type": type});
                 this.collection.add(model);
             }
 
@@ -202,10 +195,8 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
             }
 
             if (!model) {
-                model = new ViewModel();
+                model = new Models.ViewModel();
             }
-
-
 
             this.dialog.model.set("index", index);
             this.dialog.body = "<input type=\"text\" value=\"" + ((model) ? model.get("name") : "") +
@@ -228,7 +219,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         name: "stylesheets",
         el: "#stylesheets",
         init: function() {
-            this.model = new StylesheetsModel();
+            this.model = new Models.StylesheetsModel();
             var ss = app.datastore.get("stylesheets");
             this.model.set("asyncStylesheets", ss.asyncStylesheets);
             this.model.set("syncStylesheets", ss.syncStylesheets);
@@ -284,7 +275,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         name: "routes",
         el: "#routes",
         init: function() {
-            this.model = new RoutesModel();
+            this.model = new Models.RoutesModel();
             var r = app.datastore.get("routes");
             if (r) {
                 this.model.set("functionRoutes", r.functionRoutes);
@@ -400,7 +391,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
             var header = Augmented.Presentation.Dom.selector("#header").offsetHeight;
             this.el.style.height = (Augmented.Presentation.Dom.getViewportHeight() - ((header) ? (header) : 55)) + "px";
         },
-        doNavigation: function(navigation, viewObject) {
+        doNavigation: function(navigation, ViewObject) {
             this.removeLastView();
             this.currentNavigation = navigation;
             this.publish("sideNav", "markNavigation", navigation);
@@ -410,7 +401,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
             var el = Augmented.Presentation.Dom.selector(this.basePanelEl);
             Augmented.Presentation.Dom.empty(el);
             Augmented.Presentation.Dom.injectTemplate("#" + navigation + "Template", el);
-            this.currentNavigationView = new viewObject();
+            this.currentNavigationView = new ViewObject();
             this.observeColleagueAndTrigger(
                 this.currentNavigationView, // colleague view
                 "myColleague",   // channel

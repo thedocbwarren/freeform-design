@@ -24,8 +24,10 @@ require.config({
         // other modules
         'mainProject': 'app/mainProject',
         'tableCreate': 'app/tableCreate',
+        'standardViewEditor': 'app/standardViewEditor',
         'models': 'app/models',
         'compiler': 'app/compiler',
+        'basicInfoView': 'app/basicInfoView',
 
         // compiled templates
         'stylesheetsTemplate': 'app/templates/stylesheetsTemplate',
@@ -62,15 +64,18 @@ define('application', ['augmented', 'augmentedPresentation'], function(Augmented
 
 //
 
-require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'tableCreate', 'models', 'compiler'],
-    function(Augmented, Presentation, app, MainProject, TableCreate, Models, Compiler) {
+require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'tableCreate', 'standardViewEditor', 'models', 'compiler'],
+    function(Augmented, Presentation, app, MainProject, TableCreate, StandardViewEditor, Models, Compiler) {
     "use strict";
     app.log("Beginning Application...");
 
     var IntroView = Augmented.View.extend({
         el: "#main",
         render: function() {
-            Augmented.Presentation.Dom.setValue(this.el, "<h1>Hello.</h1>");
+            var h1 = document.createElement("h1"), t = document.createTextNode("Hello."), el = Augmented.Presentation.Dom.selector(this.el);
+            h1.appendChild(t);
+            el.appendChild(h1);
+            //Augmented.Presentation.Dom.setValue(this.el, "<h1>Hello.</h1>");
         },
         remove: function() {
             /* off to unbind the events */
@@ -85,7 +90,8 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         routes: {
             "":                     "index",    // index
             "project":              "project",  // #project
-            "table":                "table"     // #table
+            "table":                "table",    // #table
+            "view":                 "view"      // #view
         },
 
         index: function() {
@@ -96,6 +102,9 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         },
         table: function() {
             this.loadView(TableCreate.initialize());
+        },
+        view: function() {
+            this.loadView(StandardViewEditor.initialize());
         }
     });
 
@@ -152,6 +161,11 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         name: "header",
         el: "#header",
         init: function() {
+            this.on("highlight", function(color) {
+                if (color === "green") {
+                    Augmented.Presentation.Dom.addClass(this.el, "green");
+                }
+            });
         },
         logo: function() {
             window.location = "http://www.augmentedjs.com";
