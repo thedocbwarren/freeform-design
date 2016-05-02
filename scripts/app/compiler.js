@@ -71,7 +71,7 @@ define('compiler', ['augmented', 'models'],
                         req = req+ "\n\n" + this.compileTable(model.views[i], model.views[i].settings);
                     } else {
                         req = req + "\nvar " + model.views[i].name + " = " +
-                            ((model.views[i].type === "View") ? "Augmented." : " = Augmented.Presentation.") +
+                            ((model.views[i].type === "View") ? "Augmented." : "Augmented.Presentation.") +
                             model.views[i].type + ".extend({\n});\n";
                     }
                 }
