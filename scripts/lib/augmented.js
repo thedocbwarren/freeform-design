@@ -96,7 +96,7 @@
      * @private
      * @memberof Augmented
      */
-    var $ = Augmented.$ = Backbone.$; // Does $ exist?
+    Augmented.$ = (Backbone.$) ? Backbone.$ : $; // Does $ exist?
 
     /**
      * Augmented.Configuration - a set of configuration properties for the framework
@@ -652,6 +652,16 @@
             // Authorization
             if (xhr.withCredentials && ajaxObject.user && ajaxObject.password) {
                 xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa(ajaxObject.user + ':' + ajaxObject.password));
+            }
+
+            // custom headers
+
+            if (ajaxObject.headers) {
+                var i = 0, keys = Object.keys(ajaxObject.headers), l = keys.length;
+
+                for (i = 0; i < l; i++) {
+                    xhr.setRequestHeader(keys[i], ajaxObject.headers[keys[i]]);
+                }
             }
 
     	    xhr.onload = function() {
@@ -2838,8 +2848,8 @@
     		try {
     		    throw err;
     		}
-    		catch(err) {
-    		    this.stack = err.stack || err.stacktrace;
+    		catch(err2) {
+    		    this.stack = err2.stack || err2.stacktrace;
     		}
     	    }
     	}
@@ -4017,14 +4027,14 @@
          * @memberof Augmented
          */
         loadView: function(view) {
-            if (this.view) {
-                if (this.view.cleanup) {
-                    this.view.cleanup();
+            if (this._view) {
+                if (this._view.cleanup) {
+                    this._view.cleanup();
                 }
-                this.view.remove();
+                this._view.remove();
             }
-    		this.view = view;
-            this.view.render();
+    		this._view = view;
+            this._view.render();
     	}
     });
 
