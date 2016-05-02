@@ -7,7 +7,7 @@ define('models', ['augmented'],
         ProjectModel: Augmented.Model.extend({
             defaults: {
                 "project": "untitled",
-                "application": {},
+                "filename": "",
                 "routes": {
                     "functionRoutes": [],
                     "viewRoutes": [],
@@ -18,7 +18,8 @@ define('models', ['augmented'],
                 "stylesheets": {
                     "asyncStylesheets": [],
                     "syncStylesheets": []
-                }
+                },
+                "currentView": null,
             }
         }),
         ControllerModel: Augmented.Model.extend({
@@ -29,8 +30,7 @@ define('models', ['augmented'],
         ViewModel: Augmented.Model.extend({
             defaults : {
                 "name": "untitled",
-                "type": "View",
-                "panel": false
+                "type": "View"
             }
         }),
         StylesheetsModel: Augmented.Model.extend({

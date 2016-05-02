@@ -10,13 +10,31 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
 
 
 
-    // register panels to a view type
 
+    // register panels to a view type
     var panelRegistry = {
         "AutomaticTable": "table"
     };
 
-    // models
+    // Current support views
+    var supportedViews = [
+        "View", "Mediator", "Colleague", "AutomaticTable", "DecoratorView", "DialogView"
+    ];
+
+    // an option builder for the views
+    var buildOptions = function(selected) {
+        var html = "", i = 0, l = supportedViews.length;
+        for (i = 0; i < l; i++) {
+            html = html + "<option";
+            if (supportedViews[i] === selected) {
+                html = html + " selected";
+            }
+            html = html + ">" + supportedViews[i] + "</option>";
+        }
+        return html;
+    };
+
+    // models - TODO: remove these instances
     var ProjectModel = Models.ProjectModel;
     var ControllerModel = Models.ControllerModel;
     var ViewModel = Models.ViewModel;
@@ -24,7 +42,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
     var RoutesModel = Models.RoutesModel;
 
     var ViewCollection = Augmented.Collection.extend({
-        model: ViewModel
+        model: Models.ViewModel
     });
 
 
@@ -68,8 +86,6 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
             this.syncModelChange("currentControllers");
             var arr = app.datastore.get("controllers");
             this.model.set("currentControllers", arr);
-            // hard coded data
-            //this.setModel(["BigProjectController", "GreatController"]);
         },
         setModel: function(arr) {
             this.model.set("currentControllers", arr);
@@ -123,13 +139,6 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         el: "#views",
         init: function() {
             this.collection = new ViewCollection();
-            // hard coded data
-            /*
-            this.collection.add(new ViewModel({ "name": "TestView", "type": "View" }));
-            this.collection.add(new ViewModel({ "name": "TestAutotableView", "type": "AutomaticTable", "panel": true }));
-            this.collection.add(new ViewModel({ "name": "TestDecoratorView", "type": "DecoratorView" }));
-            this.collection.add(new ViewModel({ "name": "TestDecoratorView2", "type": "DecoratorView" }));
-            */
             var arr = app.datastore.get("views");
             if (arr) {
                 this.collection.reset(arr);
@@ -153,6 +162,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
             var index = (event.currentTarget.getAttribute("data-index"));
             var model = this.collection.at(index);
             var panel = panelRegistry[model.get("type")];
+            app.datastore.set("currentView", { "index": index, "model": model.toJSON() });
             app.router.navigate(panel, {trigger: true});
         },
         saveView: function() {
@@ -191,10 +201,18 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
                 this.listenTo(this.dialog, "close", this.closeDialog);
             }
 
+            if (!model) {
+                model = new ViewModel();
+            }
+
+
+
             this.dialog.model.set("index", index);
             this.dialog.body = "<input type=\"text\" value=\"" + ((model) ? model.get("name") : "") +
                 "\" data-edit-view=\"edit-view\" />" +
-                "<select data-edit-view=\"edit-view-type\" name=\"edit-view-type\"><option>View</option><option>Mediator</option><option>Colleague</option><option>AutomaticTable</option><option>DecoratorView</option></select>";
+                "<select data-edit-view=\"edit-view-type\" name=\"edit-view-type\">" +
+                buildOptions(model.get("type")) +
+                "</select>";
             this.dialog.render();
             this.dialog.syncBoundElement("edit-view");
             this.dialog.syncBoundElement("edit-view-type");
@@ -211,11 +229,6 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         el: "#stylesheets",
         init: function() {
             this.model = new StylesheetsModel();
-            /*
-            this.model.set("asyncStylesheets", ["https://fonts.googleapis.com/icon?family=Material+Icons",
-                                            "https://fonts.googleapis.com/css?family=Roboto:400"]);
-            this.model.set("syncStylesheets", ["styles/reset.css", "styles/layout.css", "styles/theme.css",]);
-            */
             var ss = app.datastore.get("stylesheets");
             this.model.set("asyncStylesheets", ss.asyncStylesheets);
             this.model.set("syncStylesheets", ss.syncStylesheets);
@@ -272,11 +285,6 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         el: "#routes",
         init: function() {
             this.model = new RoutesModel();
-            /*
-            this.model.set("functionRoutes", [{"route": "route", "callback": "goToThisFunction"}, {"route": "another", "callback": "goHere"}]);
-            this.model.set("viewRoutes", [{"route": "project", "callback": "projectView"}, {"route": "table", "callback": "tableView"}]);
-            this.model.set("controllerRoutes", [{"route": "application", "callback": "applicationController"}]);
-            */
             var r = app.datastore.get("routes");
             if (r) {
                 this.model.set("functionRoutes", r.functionRoutes);
@@ -389,7 +397,8 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
                     this.doNavigation(navigation, ControllersView);
                 }
             });
-            this.el.style.height = (Augmented.Presentation.Dom.getViewportHeight() - 70) + "px";
+            var header = Augmented.Presentation.Dom.selector("#header").offsetHeight;
+            this.el.style.height = (Augmented.Presentation.Dom.getViewportHeight() - ((header) ? (header) : 55)) + "px";
         },
         doNavigation: function(navigation, viewObject) {
             this.removeLastView();

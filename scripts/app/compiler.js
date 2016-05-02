@@ -65,11 +65,15 @@ define('compiler', ['augmented', 'models'],
                 }
 
                 // views
-                l = model.controllers.length;
+                l = model.views.length;
                 for(i = 0; i < l; i++) {
-                    req = req + "\nvar " + model.views[i].name + " = " +
-                        ((model.views[i].type === "View") ? "Augmented." : " = Augmented.Presentation.") +
-                        model.views[i].type + ".extend({\n});\n";
+                    if (model.views[i].type === "AutomaticTable") {
+                        req = req+ "\n\n" + this.compileTable(model.views[i], model.views[i].settings);
+                    } else {
+                        req = req + "\nvar " + model.views[i].name + " = " +
+                            ((model.views[i].type === "View") ? "Augmented." : " = Augmented.Presentation.") +
+                            model.views[i].type + ".extend({\n});\n";
+                    }
                 }
 
                 req = req + "});";
@@ -78,6 +82,22 @@ define('compiler', ['augmented', 'models'],
                 //zip it
             }
             return "";
+        },
+        compileTable: function(viewModel, settings) {
+            return "var " + viewModel.name + "schema = " + JSON.stringify(viewModel.schema) + ";\n\n" +
+                "var " + viewModel.name +
+                " = Augmented.Presentation.AutomaticTable.extend({\n" +
+                "\tinit: function(options) { }\n" +
+                "});\n\n" +
+                "var at = new " + viewModel.name + "({ " +
+                    "\tschema: " + viewModel.name + "schema, \n" +
+                    "\tel: \"#autoTable\", \n" +
+                    "\tlineNumbers: " + String(settings.lineNumbers) + ",\n" +
+                    "\tsortable: " + String(settings.sortable) + ",\n" +
+                    "\teditable: " + String(settings.editable) + ",\n" +
+                    "\turl: \"http://www.example.com/data\"\n" +
+                "});\n\n" +
+                "at.render();";
         }
     };
     return Compiler;

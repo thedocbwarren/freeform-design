@@ -10,7 +10,10 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
         -->
 		<!-- requirejs pulls in all necessary js for this component -->
-		<script data-main="scripts/app/freeform-designRequire.js" src="scripts/lib/require.js"></script>
+        <!-- for production
+		<script data-main="scripts/app/freeform-designRequire-built.js" src="scripts/lib/require.js"></script>
+        -->
+        <script data-main="scripts/app/freeform-designRequire.js" src="scripts/lib/require.js"></script>
 	</head>
 	<body>
 		<article>
@@ -98,7 +101,7 @@
                     <!-- since the template requires a lot more than simple generation, it's handled in code -->
                     <div id="styles" data-stylesheets="stylesheetsTemplate">
                     </div>
-                    <label for="projectName">Enter a new stylesheet</label><input type="text" name="stylesheet" id="stylesheet" data-stylesheets="stylesheet"/>
+                    <label for="projectName">Enter a new stylesheet</label><input type="text" name="stylesheet" id="stylesheet" data-stylesheets="stylesheet" autofocus/>
                     <button data-stylesheets="addButton" data-click="addStylesheet" class="primary">Add Async</button>
                     <button data-stylesheets="addButtonSync" data-click="addStylesheetSync" class="primary">Add Sync</button>
                     <button data-stylesheets="removeAllButton" data-click="removeAllStylesheets">Remove All</button>
@@ -108,14 +111,14 @@
                 <div id="mainProject" class="panel">
                     <div id="sideNav" class="sideNav">
                         <header>
-                            <h1><i class="material-icons">web</i>Application: <span data-sideNav="name">{{name}}</span></h1>
+                            <h1><i class="material-icons">apps</i><span data-sideNav="name">{{name}}</span></h1>
                         </header>
                         <nav class="sideNav">
                             <ul>
                                 <li data-sideNav="stylesheets" data-click="stylesheets"><i class="material-icons md-dark">style</i>Stylesheets</li>
                                 <li data-sideNav="routes" data-click="routes"><i class="material-icons md-dark">toc</i>Routes</li>
                                 <li data-sideNav="views" data-click="views"><i class="material-icons md-dark">web_asset</i>Views</li>
-                                <li data-sideNav="controllers" data-click="controllers"><i class="material-icons md-dark">web_asset</i>Controllers</li>
+                                <li data-sideNav="controllers" data-click="controllers"><i class="material-icons md-dark">web</i>Controllers</li>
                             </ul>
                         </nav>
                     </div>
@@ -127,9 +130,9 @@
                 <div class="blur" id="saveProjectDialog" data-header="saveProjectDialog">
                     <dialog class="form">
                         <h1>Save a project</h1>
-                        <label for="projectFile">Enter a filename</label><input type="text" name="projectFile" id="projectFile" data-header="projectFile"/>
+                        <label for="projectFile">Enter a filename</label><input type="text" name="projectFile" id="projectFile" data-header="projectFile" autofocus/>
                         <div class="buttonGroup">
-                            <button data-header="saveButton" data-click="projectSaveButton">Open</button>
+                            <button data-header="saveButton" data-click="projectSaveButton">Save</button>
                             <button data-header="cancelButton" data-click="projectSaveButtonClose">Cancel</button>
                         </div>
                     </dialog>
@@ -139,7 +142,7 @@
                 <div class="blur" id="openProjectDialog" data-header="openProjectDialog">
                     <dialog class="form">
                         <h1>Open a project</h1>
-                        <label for="projectFile">Choose a Project</label><input type="file" name="projectFile" id="projectFile" data-header="projectFile"/>
+                        <label for="projectFile">Choose a Project</label><input type="file" name="projectFile" id="projectFile" data-header="projectFile" autofocus/>
                         <div class="buttonGroup">
                             <button data-header="openButton" data-click="projectOpenButton">Open</button>
                             <button data-header="cancelButton" data-click="projectOpenButtonClose">Cancel</button>
@@ -151,7 +154,7 @@
                 <div class="blur" id="createProjectDialog" data-header="createProjectDialog">
                     <dialog class="form">
                         <h1>Create a new project</h1>
-                        <label for="projectName">Enter a new Project Name</label><input type="text" name="projectName" id="projectName" data-header="projectName"/>
+                        <label for="projectName">Enter a new Project Name</label><input type="text" name="projectName" id="projectName" data-header="projectName" autofocus/>
                         <div class="buttonGroup">
                             <button data-header="createButton" data-click="projectCreateButton">Create</button>
                             <button data-header="cancelButton" data-click="projectCreateButtonClose">Cancel</button>
@@ -171,13 +174,19 @@
                 </div>
             </template>
             <template id="tableCreateTemplate">
+                <div id="basic">
+                    <header>
+                        <h1 data-basic="name"></h1>
+                        <div class="icon right" data-basic="back" data-click="back"><i class="material-icons">arrow_back</i></div>
+                    </header>
+                </div>
     			<div id="schema" class="panel editor">
                     <header>
                         <h1><i class="material-icons">description</i>JSON Schema</h1>
                         <div class="tools" data-schema="clear" data-click="clear" title="Clear the schema"><i class="material-icons md-dark">clear</i></div>
                     </header>
                     <div>
-                        <textarea name="schema" placeholder="JSON Schema" data-schema="schema" data-function="validate"></textarea>
+                        <textarea name="schema" placeholder="JSON Schema" data-schema="schema" data-function="validate" autofocus></textarea>
                     </div>
                     <footer>
                         <p id="message" data-schema="message"></p>

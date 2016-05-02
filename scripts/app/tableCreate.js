@@ -1,4 +1,4 @@
-define(['augmented', 'augmentedPresentation', 'application', 'filesaver'], function(Augmented, Presentation, app) {
+define(['augmented', 'augmentedPresentation', 'application', 'compiler', 'filesaver'], function(Augmented, Presentation, app, Compiler) {
     "use strict";
 
     // define the classes
@@ -17,8 +17,34 @@ define(['augmented', 'augmentedPresentation', 'application', 'filesaver'], funct
             this.on("yourDataRequest", function(data) {
                 this.publish("source", "updateYourData", data);
             });
+            this.on("updateSchema", function(schema) {
+                this.currentView.model.schema = schema;
+                this.saveData();
+            });
+            this.on("updateSettings", function(settings) {
+                this.currentView.model.settings = settings;
+                this.saveData();
+            });
+            this.on("goToProject", function() {
+                this.goToProject();
+            });
+        },
+        saveData: function() {
+            app.datastore.set("currentView", this.currentView);
+            var views = app.datastore.get("views");
+            if (views) {
+                views[this.currentView.index] = this.currentView.model;
+            }
         },
         render: function() {
+            this.currentView = app.datastore.get("currentView");
+            if (!this.currentView) {
+                this.currentView = { index: 0, "model": {
+                    "name": "untitled",
+                    "type": "AutomaticTable"
+                }};
+            }
+
             var t = document.querySelector('#tableCreateTemplate');
             // consider an inject temnplate method simular to DecoratorView
             var clone = document.importNode(t.content, true);
@@ -30,6 +56,39 @@ define(['augmented', 'augmentedPresentation', 'application', 'filesaver'], funct
             this.stopListening();
             Augmented.Presentation.Dom.empty(this.el);
             return this;
+        },
+        // Startup methods
+        updateSchema: function(schema) {
+            if (schema) {
+                this.publish("schema", "updateSchema", Augmented.Utility.PrettyPrint(schema));
+            }
+        },
+        updateSettings: function(settings) {
+            if (settings) {
+                this.publish("viewer", "updateSettings", settings);
+            }
+        },
+        goToProject: function() {
+            this.currentView = null;
+            app.datastore.unset("currentView");
+            app.router.navigate("project", {trigger: true});
+        }
+    });
+
+    var BasicInfoView = Augmented.Presentation.DecoratorView.extend({
+        name: "basic",
+        el: "#basic",
+        init: function() {
+            this.syncModelChange("name");
+            this.on("updateName", function(data) {
+                this.setName(data);
+            });
+        },
+        setName: function(name) {
+            this.model.set("name", name);
+        },
+        back: function() {
+            this.sendMessage("goToProject");
         }
     });
 
@@ -41,6 +100,10 @@ define(['augmented', 'augmentedPresentation', 'application', 'filesaver'], funct
             this.syncModelChange("schema");
             this.syncModelChange("message");
             this.setMessage("Ready.");
+            this.on("updateSchema", function(schema) {
+                this.model.set("schema", schema);
+                this.validate();
+            });
         },
         setMessage: function(message, bad) {
             this.model.set("message", message);
@@ -61,7 +124,9 @@ define(['augmented', 'augmentedPresentation', 'application', 'filesaver'], funct
                 this.setMessage("Schema is valid.");
                 this.model.set("schema", Augmented.Utility.PrettyPrint(data));
                 valid = true;
+                this.sendMessage("updateSchema", data);
             } catch(e) {
+                app.log("Error parsing scheme - " + e);
                 this.setMessage("Schema is not valid!  Could Not parse schema!", true);
                 this.addClass("schema", "bad");
             }
@@ -71,6 +136,7 @@ define(['augmented', 'augmentedPresentation', 'application', 'filesaver'], funct
             this.model.unset("schema");
             this.removeClass("schema", "bad");
             this.setMessage("Ready.");
+            this.sendMessage("updateSchema", "");
         },
         compile: function(event) {
             var data = this.validate(), schema;
@@ -123,6 +189,13 @@ define(['augmented', 'augmentedPresentation', 'application', 'filesaver'], funct
             this.on("requestData", function(message) {
                 this.sendMessage("yourDataRequest", this.getFullDataset());
             });
+            this.on("updateSettings", function(settings) {
+                this.settings = settings;
+                this.setEditable(settings.editable);
+                this.setSortable(settings.sortable);
+                this.setLineNumbers(settings.lineNumbers);
+                this.setTheme(settings.theme);
+            });
         },
         getFullDataset: function() {
             return {
@@ -131,43 +204,80 @@ define(['augmented', 'augmentedPresentation', 'application', 'filesaver'], funct
                 settings: this.settings
             };
         },
-        editableToggle: function(ee) {
+        setEditable: function(toggle) {
             var e = this.boundElement("editable");
-            if (this.settings.editable === true) {
-                this.settings.editable = false;
-                e.firstElementChild.classList.add("hidden");
-            } else {
+            if (toggle) {
                 this.settings.editable = true;
                 e.firstElementChild.classList.remove("hidden");
+            } else {
+                this.settings.editable = false;
+                e.firstElementChild.classList.add("hidden");
             }
+        },
+        editableToggle: function() {
+            if (this.settings.editable === true) {
+                this.setEditable(false);
+                //this.settings.editable = false;
+                //e.firstElementChild.classList.add("hidden");
+            } else {
+                this.setEditable(true);
+                //this.settings.editable = true;
+                //e.firstElementChild.classList.remove("hidden");
+            }
+            this.sendMessage("updateSettings", this.settings);
             this.compile();
         },
-        sortableToggle: function() {
+        setSortable: function(toggle) {
             var e = this.boundElement("sortable");
-            if (this.settings.sortable === true) {
-                this.settings.sortable = false;
-                e.firstElementChild.classList.add("hidden");
-            } else {
+            if (toggle) {
                 this.settings.sortable = true;
                 e.firstElementChild.classList.remove("hidden");
+            } else {
+                this.settings.sortable = false;
+                e.firstElementChild.classList.add("hidden");
             }
+        },
+        sortableToggle: function() {
+            if (this.settings.sortable === true) {
+                this.setSortable(false);
+                //this.settings.sortable = false;
+                //e.firstElementChild.classList.add("hidden");
+            } else {
+                this.setSortable(true);
+                //this.settings.sortable = true;
+                //e.firstElementChild.classList.remove("hidden");
+            }
+            this.sendMessage("updateSettings", this.settings);
             this.compile();
         },
-        lineNumbersToggle: function() {
+        setLineNumbers: function(toggle) {
             var e = this.boundElement("lineNumber");
-            if (this.settings.lineNumbers === true) {
-                this.settings.lineNumbers = false;
-                e.firstElementChild.classList.add("hidden");
-            } else {
+            if (toggle) {
                 this.settings.lineNumbers = true;
                 e.firstElementChild.classList.remove("hidden");
+            } else {
+                this.settings.lineNumbers = false;
+                e.firstElementChild.classList.add("hidden");
             }
+        },
+        lineNumbersToggle: function() {
+            if (this.settings.lineNumbers === true) {
+                this.setLineNumbers(false);
+                //this.settings.lineNumbers = false;
+                //e.firstElementChild.classList.add("hidden");
+            } else {
+                this.setLineNumbers(true);
+                //this.settings.lineNumbers = true;
+                //e.firstElementChild.classList.remove("hidden");
+            }
+            this.sendMessage("updateSettings", this.settings);
             this.compile();
         },
         theme: function(e) {
             var item = e.target;
             var theme = item.getAttribute(this.bindingAttribute());
             this.setTheme(theme);
+            this.sendMessage("updateSettings", this.settings);
         },
         setTheme: function(t) {
             this.settings.theme = t;
@@ -273,20 +383,9 @@ define(['augmented', 'augmentedPresentation', 'application', 'filesaver'], funct
             });
         },
         compile: function(data) {
+            var view = app.datastore.get("currentView");
             var settings = this.model.get("settings");
-            var javascript = "var schema = " + JSON.stringify(data) + ";\n\n" +
-                "var MyTable = Augmented.Presentation.DirectDOMAutomaticTable.extend({\n" +
-                "\tinit: function(options) { }\n" +
-                "});\n\n" +
-                "var at = new MyTable({ " +
-                    "\tschema: schema, \n" +
-                    "\tel: \"#autoTable\", \n" +
-                    "\tlineNumbers: " + String(settings.lineNumbers) + ",\n" +
-                    "\tsortable: " + String(settings.sortable) + ",\n" +
-                    "\teditable: " + String(settings.editable) + ",\n" +
-                    "\turl: \"http://www.example.com/data\"\n" +
-                "});\n\n" +
-                "at.render();";
+            var javascript = Compiler.compileTable(view.model, settings);
             this.model.set("javascript", javascript);
 
             var html = "<div id=\"autoTable\" class=\"" + settings.theme + "\"></div>";
@@ -312,8 +411,15 @@ define(['augmented', 'augmentedPresentation', 'application', 'filesaver'], funct
             this.schemaView = new SchemaDecoratorView();
             this.viewerView = new ViewerDecoratorView();
             this.sourceView = new SourceDecoratorView();
+            this.basicView = new BasicInfoView();
 
             app.log("Listening to Child Views...");
+
+            this.tableCreateMediatorView.observeColleagueAndTrigger(
+                this.basicView, // colleague view
+                "basic",   // channel
+                "basic"    // identifer
+            );
 
             this.tableCreateMediatorView.observeColleagueAndTrigger(
                 this.schemaView, // colleague view
@@ -332,6 +438,10 @@ define(['augmented', 'augmentedPresentation', 'application', 'filesaver'], funct
                 "source",   // channel
                 "source"    // identifer
             );
+
+            this.tableCreateMediatorView.publish("basic", "updateName", this.tableCreateMediatorView.currentView.model.name);
+            this.tableCreateMediatorView.updateSchema(this.tableCreateMediatorView.currentView.model.schema);
+            this.tableCreateMediatorView.updateSettings(this.tableCreateMediatorView.currentView.model.settings);
         },
         initialize: function() {
             app.log("Creating Table Mediator View...");
@@ -343,10 +453,12 @@ define(['augmented', 'augmentedPresentation', 'application', 'filesaver'], funct
             return this;
         },
         remove: function() {
+            this.basicView.remove();
             this.schemaView.remove();
             this.viewerView.remove();
             this.sourceView.remove();
             this.tableCreateMediatorView.remove();
+            this.basicView = null;
             this.schemaView = null;
             this.viewerView = null;
             this.sourceView = null;

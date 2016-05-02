@@ -9,12 +9,12 @@ require.config({
         'handlebars': 'lib/handlebars.runtime.min',
 
         // hosted version
-		//'augmented': '/augmented/scripts/core/augmented',
-        //'augmentedPresentation': '/augmented/scripts/presentation/augmentedPresentation',
+		'augmented': '/augmented/scripts/core/augmented',
+        'augmentedPresentation': '/augmented/scripts/presentation/augmentedPresentation',
 
         // local version
-		'augmented': 'lib/augmented',
-        'augmentedPresentation': 'lib/augmentedPresentation',
+		//'augmented': 'lib/augmented',
+        //'augmentedPresentation': 'lib/augmentedPresentation',
 
         // FileSave Polyfill
         'filesaver': 'lib/FileSaver.min',
@@ -108,6 +108,7 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         name:"mediator",
         el: "#main",
         init: function(options) {
+            // hamburger events
             this.on('createProject', function(name) {
                 app.log("Created new project - " + name);
                 app.datastore.set("project", name);
@@ -123,9 +124,9 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
                         data = JSON.parse(text);
                         app.datastore.set(data);
                         app.router.navigate("project", {trigger: true});
-                    } catch(e) {
-                        alert("Failed to read file! " + e);
-                        app.log("Failed to read file! " + e);
+                    } catch(ex) {
+                        alert("Failed to read file! " + ex);
+                        app.log("Failed to read file! " + ex);
                     }
                 };
 
@@ -142,6 +143,8 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
                 var blob = new Blob([stuff], {type: "text/plain;charset=utf-8"});
                 saveAs(blob, app.datastore.get("project") + ".txt");
             });
+            // end hamburger events
+
         }
     });
 

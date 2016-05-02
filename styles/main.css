@@ -701,6 +701,20 @@ button.primary:active {
     background-color: #1976d2;
 }
 
+button.blue {
+    border: 1px solid transparent;
+    background-color: #2196f3;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+button.blue:hover {
+    background-color: #1e88e5;
+}
+
+button.blue:active {
+    background-color: #1976d2;
+}
+
 button.red {
     color: rgba(255, 255, 255, 0.85);
     background-color: #f44336;
@@ -784,6 +798,18 @@ button:active:before, div.tools i:active::before {
   transition: width .2s ease-out, padding-top .2s ease-out;
 }
 
+button.round.hover {
+    position: fixed;
+}
+
+button.round.bottom {
+    bottom: 32px;
+}
+
+button.round.right {
+    right: 32px;
+}
+
 dialog {
     background-color: white;
     border-radius: 3px;
@@ -865,11 +891,6 @@ div.blur {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.1);
-}
-
-/* specific dialogs */
-div#createProjectDialog dialog input {
-    width: 100%;
 }
 
 article section#header {
@@ -1063,9 +1084,75 @@ nav.sideNav ul li i {
     vertical-align: text-bottom;
 }
 
+div.editList dl {
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+div.editList dl dt {
+    float: left;
+    clear: left;
+    min-width: 100px;
+    text-align: right;
+}
+
+div.editList dl dd {
+    margin: 0 0 0 116px;
+    padding: 0 0 0.5em 0;
+}
+
+div.inlineButton {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+}
+
+div.inlineButton i {
+    font-size: 1em;
+    line-height: 1em;
+}
+
+div.flexContainer {
+    display: flex;                   /* establish flex container */
+    flex-direction: row;             /* default value; can be omitted */
+    flex-wrap: nowrap;               /* default value; can be omitted */
+    justify-content: space-between;  /* switched from default (flex-start, see below) */
+    flex-grow: 1;
+    align-items: flex-start;
+    margin: 8px 0;
+}
+
+div.flexContainer p, div.flexContainer div {
+    margin: 0;
+}
 
 
-/* application specific stuff */
+article section div.panel button.hugTop {
+    position: absolute;
+    top: 0;
+    left: 200px;
+    background-color: #e91e63;
+    z-index: 2;
+    transition: background-color 0.3s;
+}
+
+/*
+ * application specific stuff
+ */
+
+/* specific dialogs */
+div#createProjectDialog dialog input {
+    width: 100%;
+}
+
+div#addRouteDialog dialog.form {
+    height: 300px;
+}
+
+/* specific panels */
 
 article section#activePanel {
     display: block;
@@ -1099,7 +1186,6 @@ article section#activePanel div#basePanel {
 }
 
 article section#activePanel div#mainProject {
-    min-height: 400px;
     height: calc(100% - 58px);
 }
 
@@ -1172,7 +1258,6 @@ article section#activePanel div.panel h2 {
 
 article section#activePanel div.panel ul {
     list-style: none;
-    /*min-height: 200px;*/
     max-width: 500px;
 }
 
@@ -1190,73 +1275,11 @@ article section#activePanel div.panel ul li {
     overflow: hidden;
 }
 
-div.editList dl {
-    border: 1px solid rgba(0,0,0,0.1);
-    margin: 0;
-    padding: 8px;
-    font-size: 14px;
-    font-weight: 300;
-}
-
-div.editList dl dt {
-    float: left;
-    clear: left;
-    min-width: 100px;
-    text-align: right;
-}
-
-div.editList dl dd {
-    margin: 0 0 0 116px;
-    padding: 0 0 0.5em 0;
-}
-
-div.inlineButton {
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-}
-
-div.inlineButton i {
-    font-size: 1em;
-    line-height: 1em;
-}
-
-div.flexContainer {
-    display: flex;                   /* establish flex container */
-    flex-direction: row;             /* default value; can be omitted */
-    flex-wrap: nowrap;               /* default value; can be omitted */
-    justify-content: space-between;  /* switched from default (flex-start, see below) */
-    flex-grow: 1;
-    align-items: flex-start;
-    margin: 8px 0;
-}
-
-div.flexContainer p, div.flexContainer div {
-    margin: 0;
-}
-
-
-div#addRouteDialog dialog.form {
-    height: 300px;
-}
-
-/*article section div.panel button#addRoute,
-    article section div.panel button#addView,
-    article section div.panel button#addController,*/
-article section div.panel button.hugTop {
-    position: absolute;
-    top: 0;
-    left: 200px;
-    background-color: #e91e63;
-    z-index: 2;
-    transition: background-color 0.3s;
-}
-
-/* specific panels */
 article section#activePanel div.panel#schema {
     top: 0;
     width: 40%;
     height: 310px;
+    margin-top: 8px;
 }
 
 article section#activePanel div.panel#schema button#compile {
@@ -1284,7 +1307,7 @@ article section#activePanel div.panel#viewer {
     height: 310px;
     position: absolute;
     right: 0;
-    top: 0;
+    top: 37px;
     width: 52%;
 }
 
@@ -1331,4 +1354,16 @@ article section#activePanel div.panel#source {
 article section#activePanel div.panel#source textarea[name=html],
     article section#activePanel div.panel#source textarea[name=css] {
     height: 2em;
+}
+
+article section#activePanel div#basic header h1 {
+    font-size: 24px;
+}
+
+article section#activePanel div#basic header div {
+    display: block;
+    float: right;
+    position: absolute;
+    right: 16px;
+    top: 16px;
 }
