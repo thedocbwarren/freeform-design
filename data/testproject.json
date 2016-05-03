@@ -1,0 +1,85 @@
+{
+	"project": "Test project",
+	"filename": "",
+	"routes": {
+		"functionRoutes": [{
+			"route": "route",
+			"callback": "goToThisFunction"
+		}, {
+			"route": "another",
+			"callback": "goHere"
+		}],
+		"viewRoutes": [{
+			"route": "project",
+			"callback": "projectView"
+		}, {
+			"route": "table",
+			"callback": "tableView"
+		}],
+		"controllerRoutes": [{
+			"route": "application",
+			"callback": "applicationController"
+		}]
+	},
+	"views": [{
+		"name": "TestView",
+		"type": "View",
+		"permissions": {
+			"include": ["admin"],
+			"exclude": ["purchaser"]
+		}
+	}, {
+		"name": "TestAutotableView",
+		"type": "AutomaticTable",
+		"panel": true,
+		"schema": {
+			"$schema": "http://json-schema.org/draft-04/schema#",
+			"title": "User",
+			"description": "A list of users",
+			"type": "object",
+			"properties": {
+				"Name": {
+					"description": "Name of the user",
+					"type": "string"
+				},
+				"ID": {
+					"description": "The unique identifier for a user",
+					"type": "integer"
+				},
+				"Email": {
+					"description": "The email of the user",
+					"type": "string",
+					"format": "email"
+				},
+				"Role": {
+					"description": "The role of the user",
+					"type": "string",
+					"enum": [null, "Architect", "Developer", "Tech Lead", "Product Owner", "UX Designer", "QE", "Operations"]
+				},
+				"Active": {
+					"description": "Is the user Active",
+					"type": "boolean"
+				}
+			},
+			"required": ["Name", "ID"]
+		},
+		"settings": {
+			"sortable": true,
+			"editable": true,
+			"lineNumbers": true,
+			"theme": "material"
+		}
+	}, {
+		"name": "TestDecoratorView",
+		"type": "DecoratorView"
+	}, {
+		"name": "TestDecoratorView2",
+		"type": "DecoratorView"
+	}],
+	"controllers": ["BigProjectController", "GreatController"],
+	"stylesheets": {
+		"asyncStylesheets": ["https://fonts.googleapis.com/icon?family=Material+Icons", "https://fonts.googleapis.com/css?family=Roboto:400"],
+		"syncStylesheets": ["styles/reset.css", "styles/layout.css", "styles/theme.css"]
+	},
+	"application": {}
+}

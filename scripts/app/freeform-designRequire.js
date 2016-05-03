@@ -9,12 +9,12 @@ require.config({
         'handlebars': 'lib/handlebars.runtime.min',
 
         // hosted version
-		//'augmented': '/augmented/scripts/core/augmented',
-        //'augmentedPresentation': '/augmented/scripts/presentation/augmentedPresentation',
+		'augmented': '/augmented/scripts/core/augmented',
+        'augmentedPresentation': '/augmented/scripts/presentation/augmentedPresentation',
 
         // local version
-		'augmented': 'lib/augmented',
-        'augmentedPresentation': 'lib/augmentedPresentation',
+		//'augmented': 'lib/augmented',
+        //'augmentedPresentation': 'lib/augmentedPresentation',
 
         // FileSave Polyfill
         'filesaver': 'lib/FileSaver.min',
@@ -28,11 +28,13 @@ require.config({
         'models': 'app/models',
         'compiler': 'app/compiler',
         'basicInfoView': 'app/basicInfoView',
+        'editDialog': 'app/editDialog',
 
         // compiled templates
         'stylesheetsTemplate': 'app/templates/stylesheetsTemplate',
         'routesTemplate': 'app/templates/routesTemplate',
-        'viewsTemplate': 'app/templates/viewsTemplate'
+        'viewsTemplate': 'app/templates/viewsTemplate',
+        'permissionsTemplate': 'app/templates/permissionsTemplate'
 	},
     'shim': {
     }
@@ -62,7 +64,7 @@ define('application', ['augmented', 'augmentedPresentation'], function(Augmented
     return app;
 });
 
-//
+//  main app
 
 require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'tableCreate', 'standardViewEditor', 'models', 'compiler'],
     function(Augmented, Presentation, app, MainProject, TableCreate, StandardViewEditor, Models, Compiler) {
@@ -72,10 +74,11 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
     var IntroView = Augmented.View.extend({
         el: "#main",
         render: function() {
-            var h1 = document.createElement("h1"), t = document.createTextNode("Hello."), el = Augmented.Presentation.Dom.selector(this.el);
+            var h1 = document.createElement("h1"),
+            t = document.createTextNode("Hello."),
+            el = Augmented.Presentation.Dom.selector(this.el);
             h1.appendChild(t);
             el.appendChild(h1);
-            //Augmented.Presentation.Dom.setValue(this.el, "<h1>Hello.</h1>");
         },
         remove: function() {
             /* off to unbind the events */
@@ -122,20 +125,24 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
                 app.log("Created new project - " + name);
                 app.datastore.set("project", name);
                 app.router.navigate("project", {trigger: true});
+                this.publish("header", "notification", "Project " + name + " Created.");
             });
             this.on('openProject', function(file) {
                 app.log("Opening a project - " + file);
 
-                var reader = new FileReader();
+                var reader = new FileReader(), that = this;
+
                 reader.onload = function(e) {
                     var text = reader.result, data;
                     try {
                         data = JSON.parse(text);
                         app.datastore.set(data);
                         app.router.navigate("project", {trigger: true});
+                        that.publish("header", "notification", "Project Loaded.");
                     } catch(ex) {
                         alert("Failed to read file! " + ex);
                         app.log("Failed to read file! " + ex);
+                        that.publish("header", "error", "Project Load Failed!");
                     }
                 };
 
@@ -145,27 +152,49 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
                 app.log("Saving a project - " + file);
                 var blob = new Blob([JSON.stringify(app.datastore.toJSON())], {type: "text/plain;charset=utf-8"});
                 saveAs(blob, file);
+                this.publish("header", "notification", "Save Project Complete.");
             });
             this.on('compileProject', function() {
                 app.log("Compiling a project");
                 var stuff = Compiler.compile(app.datastore.toJSON());
                 var blob = new Blob([stuff], {type: "text/plain;charset=utf-8"});
                 saveAs(blob, app.datastore.get("project") + ".txt");
+                this.publish("header", "notification", "Compile Complete!");
             });
             // end hamburger events
-
         }
     });
 
     var HeaderDecoratorView = Augmented.Presentation.DecoratorView.extend({
         name: "header",
         el: "#header",
+        notifyEl: "#notify",
         init: function() {
             this.on("highlight", function(color) {
                 if (color === "green") {
                     Augmented.Presentation.Dom.addClass(this.el, "green");
                 }
             });
+            this.on("notification", function(message) {
+                this.notification(message, false);
+            });
+            this.on("error", function(message) {
+                this.notification(message, true);
+            });
+        },
+        notification: function(message, error) {
+            if (message) {
+                Augmented.Presentation.Dom.setValue(this.notifyEl, message);
+                Augmented.Presentation.Dom.addClass(this.notifyEl, ((error) ? "showError" : "show"));
+                Augmented.Presentation.Dom.addClass(this.el, ((error) ? "red" : "green"));
+                var that = this;
+                setTimeout(
+                    function(){
+                        Augmented.Presentation.Dom.removeClass(that.notifyEl, ((error) ? "showError" : "show"));
+                        Augmented.Presentation.Dom.removeClass(that.el, ((error) ? "red" : "green"));
+                    },
+                4000);
+            }
         },
         logo: function() {
             window.location = "http://www.augmentedjs.com";
@@ -217,9 +246,6 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         },
         projectCreateButton: function() {
             if (this.modal) {
-                /*var dialog = this.boundElement("createProjectDialog");
-                this.removeTemplate(dialog);
-                this.modal = false;*/
                 this.projectCreateButtonClose();
                 this.sendMessage("createProject", this.model.get("projectName"));
             }

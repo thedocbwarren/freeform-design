@@ -73,6 +73,16 @@ i.checkbox.hidden::before {
     margin-top: 0;
 }
 
+span.green {
+    color: #4caf50;
+    opacity: 0.85;
+}
+
+span.red {
+    color: #f44336;
+    opacity: 0.85;
+}
+
 /* Hamburger */
 
 .wrapper {
@@ -822,7 +832,7 @@ dialog {
     z-index: auto;
 }
 dialog.alert {
-    height: 168px;
+    height: 135px;
     margin-left: -184px;
     margin-top: -140px;
     width: 368px;
@@ -830,6 +840,13 @@ dialog.alert {
 
 dialog.form {
     height: 168px;
+    margin-left: -184px;
+    margin-top: -140px;
+    width: 368px;
+}
+
+dialog.bigForm {
+    height: 268px;
     margin-left: -184px;
     margin-top: -140px;
     width: 368px;
@@ -882,6 +899,23 @@ dialog input {
     margin-top: 8px;
 }
 
+dialog input[type=text], dialog input[type=file] {
+    width: 99%;
+}
+
+dialog input[type=checkbox] {
+    display: block;
+    float: left;
+}
+
+dialog div.group {
+    line-height: 1em;
+}
+
+dialog div.group label {
+    display: inline-block;
+}
+
 div.blur {
     display: block;
     position: fixed;
@@ -891,6 +925,10 @@ div.blur {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.1);
+}
+
+.center {
+    text-align: center;
 }
 
 article section#header {
@@ -903,6 +941,38 @@ article section#header {
     z-index: 5;
 }
 
+article section#header footer {
+    background-color: white;
+    bottom: 16px;
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
+    color: #4caf50;
+    display: block;
+    font-size: 16px;
+    font-weight: 300;
+    height: 36px;
+    left: 25%;
+    line-height: 36px;
+    position: absolute;
+    right: auto;
+    text-align: center;
+    width: 50%;
+    z-index: 2;
+    opacity: 0;
+    transition: bottom 1s, opacity 0.25s;
+}
+
+article section#header footer.show {
+    bottom: -28px;
+    opacity: 0.75;
+}
+
+article section#header footer.showError {
+    background-color: #d50000;
+    color: rgba(255, 255, 255, 0.85);
+    bottom: -28px;
+    opacity: 0.75;
+}
+
 article section#header header {
     background-color: #3b78e7;
     border: 0 none;
@@ -911,16 +981,21 @@ article section#header header {
     left: 0;
     margin: 0 0 8px 0;
     padding: 0;
-    position: static;
+    position: relative;
     right: 0;
     top: 0;
     transition: top 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0s;
     width: 100%;
-    z-index: 2;
+    z-index: 3;
+    transition: background-color 1s;
 }
 
-article section#header header.green {
+article section#header.green header {
     background-color: #4caf50;
+}
+
+article section#header.red header {
+    background-color: #d50000;
 }
 
 article section#header header figure {
@@ -1112,11 +1187,24 @@ div.inlineButton {
     display: inline-block;
     width: 1em;
     height: 1em;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 div.inlineButton i {
     font-size: 1em;
     line-height: 1em;
+}
+
+div.inlineButton.large {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+}
+
+div.inlineButton.large i {
+    font-size: 1.5em;
+    line-height: 1.5em;
 }
 
 div.flexContainer {
@@ -1126,18 +1214,26 @@ div.flexContainer {
     justify-content: space-between;  /* switched from default (flex-start, see below) */
     flex-grow: 1;
     align-items: flex-start;
-    margin: 8px 0;
+    margin: 8px 0  !important;
 }
 
 div.flexContainer p, div.flexContainer div {
-    margin: 0;
+    margin: 0 !important;
 }
 
+article section div.panel button.bottom {
+    position: absolute;
+    left: 45%;
+    bottom: 8px;
+    background-color: #e91e63;
+    z-index: 2;
+    transition: background-color 0.3s;
+}
 
 article section div.panel button.hugTop {
     position: absolute;
-    top: 0;
-    left: 200px;
+    top: 8px;
+    left: 45%;
     background-color: #e91e63;
     z-index: 2;
     transition: background-color 0.3s;
@@ -1362,6 +1458,8 @@ article section#activePanel div.panel#source textarea[name=html],
 
 article section#activePanel div#basic header h1 {
     font-size: 24px;
+    padding: 15px 15px 0;
+    color: rgba(0, 0, 0, 0.85);
 }
 
 article section#activePanel div#basic header div {

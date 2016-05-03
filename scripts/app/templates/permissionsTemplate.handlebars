@@ -1,0 +1,19 @@
+<ul>
+    {{#each currentPermissions}}
+    <li>
+        <div class="flexContainer">
+            <p>{{permission}}<br/>
+                {{#if exclude}}
+                <span class="secondary red">Must not have
+                {{else}}
+                <span class="secondary green">Must Have
+                {{/if}}
+                </span>
+            </p>
+            <div>
+                <div class="inlineButton" data-permission="{{permission}}" data-exclude="{{exclude}}" data-index="{{@index}}" data-permissions="edit" data-click="editPermission"><i class="material-icons md-dark">edit</i></div>
+            </div>
+        </div>
+    </li>
+    {{/each}}
+</ul>

@@ -30,7 +30,11 @@ define('models', ['augmented'],
         ViewModel: Augmented.Model.extend({
             defaults : {
                 "name": "untitled",
-                "type": "View"
+                "type": "View",
+                "permissions": {
+                    "include": [],
+                    "exclude": []
+                }
             }
         }),
         StylesheetsModel: Augmented.Model.extend({
@@ -44,6 +48,12 @@ define('models', ['augmented'],
                 "functionRoutes": [],
                 "viewRoutes": [],
                 "controllerRoutes": []
+            }
+        }),
+        PermissionModel: Augmented.Model.extend({
+            defaults : {
+                "permission": "",
+                "exclude": false
             }
         })
 

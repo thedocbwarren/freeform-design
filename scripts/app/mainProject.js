@@ -1,11 +1,9 @@
 // Main project module
-define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'models', 'handlebars',
+define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'models', 'editDialog', 'handlebars',
 //templates
 'routesTemplate', 'stylesheetsTemplate', 'viewsTemplate'],
-    function(Augmented, Presentation, app, Models, Handlebars) {
+    function(Augmented, Presentation, app, Models, EditDialog, Handlebars) {
     "use strict";
-
-    // TODO: this feels a tad crufty but refactor later
 
     // register panels to a view type
     var panelRegistry = {
@@ -41,6 +39,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
 
     // dialogs
 
+    /*
     var EditDialog = Augmented.Presentation.DialogView.extend({
         style: "form",
         el: "#editDialog",
@@ -58,6 +57,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
             this.close();
         }
     });
+    */
 
     var EditControllerDialog = EditDialog.extend({
         title: "Edit Controller",
@@ -155,6 +155,13 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
             var index = (event.currentTarget.getAttribute("data-index"));
             var model = this.collection.at(index);
             var panel = panelRegistry[model.get("type")];
+            app.datastore.set("currentView", { "index": index, "model": model.toJSON() });
+            app.router.navigate(panel, {trigger: true});
+        },
+        editViewPermissions: function(event) {
+            var index = (event.currentTarget.getAttribute("data-index"));
+            var model = this.collection.at(index);
+            var panel = panelRegistry.View;
             app.datastore.set("currentView", { "index": index, "model": model.toJSON() });
             app.router.navigate(panel, {trigger: true});
         },

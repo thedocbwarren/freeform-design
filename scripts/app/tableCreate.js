@@ -42,7 +42,11 @@ function(Augmented, Presentation, app, BasicInfoView, Compiler) {
             if (!this.currentView) {
                 this.currentView = { index: 0, "model": {
                     "name": "untitled",
-                    "type": "AutomaticTable"
+                    "type": "AutomaticTable",
+                    "permissions": {
+                        "include": [],
+                        "exclude": []
+                    }
                 }};
             }
 

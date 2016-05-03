@@ -18,6 +18,8 @@
 	<body>
 		<article>
             <section id="header">
+                <footer id="notify" data-header="notify">
+                </footer>
                 <header id="headerBar" class="header">
                     <h1><em>free</em>Form Design</h1>
                     <h2>Augmented.js Automatic UI Designer</h2>
@@ -165,8 +167,8 @@
             <template id="aboutDialogTemplate">
                 <div class="blur" id="aboutDialog" data-header="aboutDialog">
                     <dialog class="alert">
-                        <h1>freeForm Designer</h1>
-                        <h2>The Augmented.js UI Designer.  Designed for Augmented.js v.0.3.x</h2>
+                        <h1><em>free</em>Form Designer</h1>
+                        <h2 class="center">The Augmented.js UI Designer.<br/>Designed for Augmented.js v.0.3.x</h2>
                         <div class="buttonGroup">
                             <button data-header="okButton" data-click="aboutButtonClose">Ok</button>
                         </div>
@@ -244,10 +246,14 @@
                         <div class="icon right" data-basic="back" data-click="back"><i class="material-icons">arrow_back</i></div>
                     </header>
                 </div>
-                <div id="security" class="panel editor">
+                <div id="security" data-permissions="security" class="panel editor">
                     <header>
-                        <h1><i class="material-icons">security</i>Security</h1>
+                        <h1><i class="material-icons">security</i>Security (Permissions)</h1>
                     </header>
+                    <div id="editDialog"></div>
+                    <div id="currentPermissions" data-permissions="currentPermissions">
+                    </div>
+                    <button id="addPermission" class="round hugTop red" data-permissions="addPermission" data-click="addPermission" title="Add a new permission"><i class="material-icons md-light">add</i></button>
                 </div>
             </template>
 		</article>
