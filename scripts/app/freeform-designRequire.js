@@ -9,16 +9,16 @@ require.config({
         'handlebars': 'lib/handlebars.runtime.min',
 
         // hosted version
-		//'augmented': '/augmented/scripts/core/augmented',
-        //'augmentedPresentation': '/augmented/scripts/presentation/augmentedPresentation',
+		'augmented': '/augmented/scripts/core/augmented',
+        'augmentedPresentation': '/augmented/scripts/presentation/augmentedPresentation',
 
         // local version
-		'augmented': 'lib/augmented',
-        'augmentedPresentation': 'lib/augmentedPresentation',
+		//'augmented': 'lib/augmented',
+        //'augmentedPresentation': 'lib/augmentedPresentation',
 
         // FileSave Polyfill
         'filesaver': 'lib/FileSaver.min',
-
+        // Zip library
         'jszip': 'lib/jzsip.min.js',
 
         // other modules
@@ -29,6 +29,7 @@ require.config({
         'compiler': 'app/compiler',
         'basicInfoView': 'app/basicInfoView',
         'editDialog': 'app/editDialog',
+        'dialogEditor': 'app/dialogEditor',
 
         // compiled templates
         'stylesheetsTemplate': 'app/templates/stylesheetsTemplate',
@@ -66,8 +67,8 @@ define('application', ['augmented', 'augmentedPresentation'], function(Augmented
 
 //  main app
 
-require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'tableCreate', 'standardViewEditor', 'models', 'compiler'],
-    function(Augmented, Presentation, app, MainProject, TableCreate, StandardViewEditor, Models, Compiler) {
+require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'tableCreate', 'standardViewEditor', 'dialogEditor', 'models', 'compiler'],
+    function(Augmented, Presentation, app, MainProject, TableCreate, StandardViewEditor, DialogEditor, Models, Compiler) {
     "use strict";
     app.log("Beginning Application...");
 
@@ -94,7 +95,8 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
             "":                     "index",    // index
             "project":              "project",  // #project
             "table":                "table",    // #table
-            "view":                 "view"      // #view
+            "view":                 "view",     // #view
+            "dialog":               "dialog"
         },
 
         index: function() {
@@ -108,6 +110,9 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         },
         view: function() {
             this.loadView(StandardViewEditor.initialize());
+        },
+        dialog: function() {
+            this.loadView(DialogEditor.initialize());
         }
     });
 
@@ -171,9 +176,7 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         notifyEl: "#notify",
         init: function() {
             this.on("highlight", function(color) {
-                if (color === "green") {
-                    Augmented.Presentation.Dom.addClass(this.el, "green");
-                }
+                Augmented.Presentation.Dom.addClass(this.el, color);
             });
             this.on("notification", function(message) {
                 this.notification(message, false);

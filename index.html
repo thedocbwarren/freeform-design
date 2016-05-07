@@ -6,9 +6,6 @@
         <meta name="viewport" content="width=device-width,  minimum-scale=1.0, maximum-scale=1.0" />
 		<title>freeForm Design in Augmented.js</title>
         <link type="text/css" rel="stylesheet" href="styles/main.css"/>
-        <!--
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-        -->
 		<!-- requirejs pulls in all necessary js for this component -->
         <!-- for production
 		<script data-main="scripts/app/freeform-designRequire-built.js" src="scripts/lib/require.js"></script>
@@ -254,6 +251,44 @@
                     <div id="currentPermissions" data-permissions="currentPermissions">
                     </div>
                     <button id="addPermission" class="round hugTop red" data-permissions="addPermission" data-click="addPermission" title="Add a new permission"><i class="material-icons md-light">add</i></button>
+                </div>
+            </template>
+            <template id="dialogEditorTemplate">
+                <div id="basic">
+                    <header>
+                        <h1 data-basic="name"></h1>
+                        <div class="icon right" data-basic="back" data-click="back"><i class="material-icons">arrow_back</i></div>
+                    </header>
+                </div>
+                <div id="dialogEditor" data-dialogEditor="dialogEditor" class="panel editor half stack">
+                    <header>
+                        <h1><i class="material-icons">code</i>Dialog Editor</h1>
+                    </header>
+
+                    <lable for="dialogStyle">Style</label>
+                    <select id="dialogStyle" data-dialogEditor="style">
+                        <option value="form">Form</option>
+                        <option value="bigForm">Big Form</option>
+                        <option value="alert">Alert</option>
+                    </select>
+                    <label for="title">Title (Supports HTML)</label>
+                    <input type="text" id="title" class="full" data-dialogEditor="title" placeholder="Title"/>
+                    <label for="body">Body (Supports HTML)</label>
+                    <textarea id="body" data-dialogEditor="body" placeholder="Body" class="short"></textarea>
+                    <label for="body">Buttons (JSON Object for now)</label>
+                    <textarea id="buttons" data-dialogEditor="buttons" placeholder="{}" class="short"></textarea>
+                </div>
+                <div id="dialogViewer" data-dialogViewer="dialogViewer" class="panel editor half stack">
+                    <header>
+                        <h1><i class="material-icons">code</i>Dialog Viewer</h1>
+                    </header>
+                    <dialog class="form embedded" data-dialogViewer="dialogCanvas">
+                        <h1 data-dialogViewer="title">My Title</h1>
+                        <div data-dialogViewer="body">Body</div>
+                        <div data-dialogViewer="buttons" class="buttonGroup" data-style="description-list">
+                            Buttons
+                        </div>
+                    </dialog>
                 </div>
             </template>
 		</article>

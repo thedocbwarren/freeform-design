@@ -11,7 +11,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         "Mediator": "view",
         "Colleague": "view",
         "DecoratorView": "view",
-        "Dialog": "view",
+        "DialogView": "dialog",
         "AutomaticTable": "table"
     };
 

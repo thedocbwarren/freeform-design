@@ -635,6 +635,14 @@ textarea:invalid, textarea.bad, code.bad {
     padding-bottom: 0px;
 }
 
+textarea.short {
+    height: 100px;
+}
+
+input.full, textarea.full {
+    width: 100%;
+}
+
 label {
     display: block;
     position: relative;
@@ -914,6 +922,15 @@ dialog div.group {
 
 dialog div.group label {
     display: inline-block;
+}
+
+dialog.embedded{
+    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.1);
+    display: block;
+    position: relative;
+    top: auto;
+    left: 50%;
+    margin-top: auto;
 }
 
 div.blur {
@@ -1244,9 +1261,9 @@ article section div.panel button.hugTop {
  */
 
 /* specific dialogs */
-div#createProjectDialog dialog input {
+/*div#createProjectDialog dialog input {
     width: 100%;
-}
+}*/
 
 div#addRouteDialog dialog.form {
     height: 300px;
@@ -1264,7 +1281,7 @@ article section#activePanel {
     margin-top: 48px;
 }
 
-article section#activePanel div.panel {
+article section div.panel {
     background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -1275,7 +1292,7 @@ article section#activePanel div.panel {
     z-index: auto;
 }
 
-article section#activePanel div#basePanel {
+article section div#basePanel {
     min-height: 400px;
     position: absolute;
     right: 16px;
@@ -1285,32 +1302,19 @@ article section#activePanel div#basePanel {
     height: 100%;
 }
 
-article section#activePanel div#mainProject {
+article section div#mainProject {
     height: calc(100% - 58px);
 }
 
-article section#activePanel div.panel.stack {
-    display: inline-block;
-    vertical-align: text-top;
-}
-
-article section#main h1 {
-    color: rgba(0, 0, 0, 0.1);
-    font-size: 64px;
-    font-weight: 100;
-    margin-top: 20%;
-    text-align: center;
-}
-
-article section#activePanel div.panel textarea {
+article section div.panel textarea {
     margin: 0;
 }
 
-article section#activePanel div.panel div {
+article section div.panel div {
     margin: 0 0 8px;
 }
 
-article section#activePanel div.panel .tools {
+article section div.panel .tools {
     display: block;
     position: absolute;
     right: 0;
@@ -1319,13 +1323,13 @@ article section#activePanel div.panel .tools {
     height: 24px;
 }
 
-article section#activePanel div.panel .tools i {
+article section div.panel .tools i {
     display: inline-block;
     width: 24px;
     height: 24px;
     cursor:pointer;
 }
-article section#activePanel div.panel nav.tools li i {
+article section div.panel nav.tools li i {
     cursor: pointer;
     height: 14px;
     line-height: 12px;
@@ -1333,7 +1337,7 @@ article section#activePanel div.panel nav.tools li i {
     width: 18px;
 }
 
-article section#activePanel div.panel h1 {
+article section div.panel h1 {
     color: #43a047;
     font-size: 16px;
     line-height: 16px;
@@ -1342,26 +1346,26 @@ article section#activePanel div.panel h1 {
     vertical-align: text-bottom;
 }
 
-article section#activePanel div.panel h1 i {
+article section div.panel h1 i {
     font-size: 24px;
     line-height: 20px;
     padding-right: 8px;
     vertical-align: text-bottom;
 }
 
-article section#activePanel div.panel h2 {
+article section div.panel h2 {
     font-size: 16px;
     line-height: 14px;
     padding-right: 8px;
     vertical-align: text-bottom;
 }
 
-article section#activePanel div.panel ul {
+article section div.panel ul {
     list-style: none;
     max-width: 500px;
 }
 
-article section#activePanel div.panel ul li {
+article section div.panel ul li {
     font-size: 14px;
     font-weight: 400;
     line-height: 18px;
@@ -1374,6 +1378,33 @@ article section#activePanel div.panel ul li {
     white-space: nowrap;
     overflow: hidden;
 }
+
+div.panel.half {
+    width: 44%;
+}
+
+div.panel.stack {
+    display: inline-block;
+    position: relative;
+    vertical-align: text-top;
+}
+
+/*
+article section#activePanel div.panel.stack {
+    display: inline-block;
+    vertical-align: text-top;
+}
+*/
+
+article section#main h1 {
+    color: rgba(0, 0, 0, 0.1);
+    font-size: 64px;
+    font-weight: 100;
+    margin-top: 20%;
+    text-align: center;
+}
+
+
 
 article section#activePanel div.panel#schema {
     top: 0;

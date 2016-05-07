@@ -72,7 +72,11 @@ define('compiler', ['augmented', 'models'],
                     } else {
                         req = req + "\nvar " + model.views[i].name + " = " +
                             ((model.views[i].type === "View") ? "Augmented." : "Augmented.Presentation.") +
-                            model.views[i].type + ".extend({\n});\n";
+                            model.views[i].type + ".extend({\n";
+                            if (model.views[i].permissions) {
+                                req = req + "\"permissions\": " + JSON.stringify(model.views[i].permissions);
+                            }
+                        req = req + "});\n";
                     }
                 }
 

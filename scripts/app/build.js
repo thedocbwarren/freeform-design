@@ -11,9 +11,14 @@
         augmentedPresentation: "../lib/augmentedPresentation",
         routesTemplate: "templates/routesTemplate",
         stylesheetsTemplate: "templates/stylesheetsTemplate",
-        viewsTemplate: "templates/viewsTemplate"
+        viewsTemplate: "templates/viewsTemplate",
+	    permissionsTemplate: "templates/permissionsTemplate"
     },
     include: ["jszip", "filesaver"],
     name: "freeform-designRequire",
-    out: "freeform-designRequire-built.js"
+    out: "freeform-designRequire-built.js",
+    optimize: "uglify2",
+    preserveLicenseComments: false,
+    generateSourceMaps: true,
+    useStrict: true
 })

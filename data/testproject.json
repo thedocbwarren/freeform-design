@@ -28,6 +28,14 @@
 			"include": ["admin"],
 			"exclude": ["purchaser"]
 		}
+    },
+        {
+    		"name": "MyDialogView",
+    		"type": "DialogView",
+    		"permissions": {
+    			"include": [],
+    			"exclude": []
+            }
 	}, {
 		"name": "TestAutotableView",
 		"type": "AutomaticTable",
