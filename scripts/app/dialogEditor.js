@@ -74,12 +74,27 @@ function(Augmented, Presentation, app, BasicInfoView, EditDialog, Models, Handle
             this.el.style.height = (Augmented.Presentation.Dom.getViewportHeight() - 160) + "px";
         },
         notify: function() {
-            try {
-                var buttons = JSON.parse(this.model.get("buttons"));
-                this.model.set("buttons", buttons);
-            } catch(err){
-                app.log("Error handling buttons - " + err);
+            var buttons = {},
+            button0 = this.model.get("button0"),
+            button1 = this.model.get("button1"),
+            button2 = this.model.get("button2"),
+            button3 = this.model.get("button3");
+            if (button0) {
+                buttons[button0] = button0;
+            } else {
+                buttons.cancel = "cancel";
             }
+            if (button1) {
+                buttons[button1] = button1;
+            }
+            if (button2) {
+                buttons[button2] = button2;
+            }
+            if (button3) {
+                buttons[button3] = button3;
+            }
+            this.model.set("buttons", buttons);
+
             this.sendMessage("updateData", this.model.toJSON());
         }
     });

@@ -262,32 +262,33 @@
                 </div>
                 <div id="dialogEditor" data-dialogEditor="dialogEditor" class="panel editor half stack">
                     <header>
-                        <h1><i class="material-icons">code</i>Dialog Editor</h1>
+                        <h1><i class="material-icons">build</i>Dialog Editor</h1>
                     </header>
 
                     <lable for="dialogStyle">Style</label>
-                    <select id="dialogStyle" data-dialogEditor="style">
+                    <select data-dialogEditor="style">
                         <option value="form">Form</option>
                         <option value="bigForm">Big Form</option>
                         <option value="alert">Alert</option>
                     </select>
                     <label for="title">Title (Supports HTML)</label>
-                    <input type="text" id="title" class="full" data-dialogEditor="title" placeholder="Title"/>
+                    <input type="text" class="full" data-dialogEditor="title" placeholder="Title"/>
                     <label for="body">Body (Supports HTML)</label>
-                    <textarea id="body" data-dialogEditor="body" placeholder="Body" class="short"></textarea>
-                    <label for="body">Buttons (JSON Object for now)</label>
-                    <textarea id="buttons" data-dialogEditor="buttons" placeholder="{}" class="short"></textarea>
+                    <textarea data-dialogEditor="body" placeholder="Body" class="short"></textarea>
+                    <label for="body">Buttons (up to 4)</label>
+                    <input type="text" data-dialogEditor="button0" placeholder="name"/>
+                    <input type="text" data-dialogEditor="button1" placeholder="name"/>
+                    <input type="text" data-dialogEditor="button2" placeholder="name"/>
+                    <input type="text" data-dialogEditor="button3" placeholder="name"/>
                 </div>
                 <div id="dialogViewer" data-dialogViewer="dialogViewer" class="panel editor half stack">
                     <header>
-                        <h1><i class="material-icons">code</i>Dialog Viewer</h1>
+                        <h1><i class="material-icons">web_asset</i>Dialog Viewer</h1>
                     </header>
                     <dialog class="form embedded" data-dialogViewer="dialogCanvas">
-                        <h1 data-dialogViewer="title">My Title</h1>
-                        <div data-dialogViewer="body">Body</div>
-                        <div data-dialogViewer="buttons" class="buttonGroup" data-style="description-list">
-                            Buttons
-                        </div>
+                        <h1 data-dialogViewer="title"></h1>
+                        <div data-dialogViewer="body"></div>
+                        <div data-dialogViewer="buttons" class="buttonGroup" data-style="description-list"></div>
                     </dialog>
                 </div>
             </template>
