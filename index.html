@@ -7,10 +7,12 @@
 		<title>freeForm Design in Augmented.js</title>
         <link type="text/css" rel="stylesheet" href="styles/main.css"/>
 		<!-- requirejs pulls in all necessary js for this component -->
-        <!-- for production
+        <!-- for production -->
 		<script data-main="scripts/app/freeform-designRequire-built.js" src="scripts/lib/require.js"></script>
-        -->
+
+        <!--
         <script data-main="scripts/app/freeform-designRequire.js" src="scripts/lib/require.js"></script>
+    -->
 	</head>
 	<body>
 		<article>
@@ -100,12 +102,6 @@
                     <div id="editDialog"></div>
                     <!-- since the template requires a lot more than simple generation, it's handled in code -->
                     <div id="styles" data-stylesheets="stylesheetsTemplate"></div>
-                    <!--
-                    <label for="stylesheet">Enter a new stylesheet</label><input type="text" name="stylesheet" id="stylesheet" data-stylesheets="stylesheet" autofocus/>
-                    <button data-stylesheets="addButton" data-click="addStylesheet" class="primary">Add Async</button>
-                    <button data-stylesheets="addButtonSync" data-click="addStylesheetSync" class="primary">Add Sync</button>
-                    <button data-stylesheets="removeAllButton" data-click="removeAllStylesheets">Remove All</button>
-                    -->
                     <button id="addStylesheet" class="round hugTop" data-stylesheets="addStylesheet" data-click="addStylesheet" title="Add a new stylesheet"><i class="material-icons md-light">add</i></button>
                 </div>
             </template>
