@@ -1,16 +1,19 @@
-<h2>Async Stylesheets</h2>
-<div id="asyncStylesheets" class="editList">
-    <ul>
-        {{#each asyncStylesheets}}
-        <li>{{this}} <div class="inlineButton" data-stylesheets="edit" data-click="editStylesheet"><i class="material-icons md-dark">edit</i></div></li>
-        {{/each}}
-    </ul>
-</div>
-<h2>Sync Stylesheets</h2>
-<div id="syncStylesheets" class="editList">
-    <ul>
-        {{#each syncStylesheets}}
-        <li>{{this}} <div class="inlineButton" data-stylesheets="edit" data-click="editStylesheet"><i class="material-icons md-dark">edit</i></div></li>
-        {{/each}}
-    </ul>
-</div>
+<ul>
+    {{#each stylesheets}}
+    <li>
+        <div class="flexContainer">
+            <p>{{stylesheet}}<br/><span class="secondary">
+                {{#if async}}
+                Asynchronous
+                {{else}}
+                Blocking
+                {{/if}}
+                </span>
+            </p>
+            <div>
+                <div class="inlineButton large" data-stylesheet="{{stylesheet}}" data-async="{{async}}" data-index="{{@index}}" data-stylesheets="edit" data-click="editStylesheet"><i class="material-icons md-dark">edit</i></div>
+            </div>
+        </div>
+    </li>
+    {{/each}}
+</ul>

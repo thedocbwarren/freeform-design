@@ -1,8 +1,8 @@
 // Main project module
-define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'models', 'editDialog', 'handlebars',
+define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'models', 'editDialog', 'handlebars', 'stylesheetsSubView',
 //templates
-'routesTemplate', 'stylesheetsTemplate', 'viewsTemplate'],
-    function(Augmented, Presentation, app, Models, EditDialog, Handlebars) {
+'routesTemplate', 'viewsTemplate'],
+    function(Augmented, Presentation, app, Models, EditDialog, Handlebars, StylesheetsView) {
     "use strict";
 
     // register panels to a view type
@@ -38,27 +38,6 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
     });
 
     // dialogs
-
-    /*
-    var EditDialog = Augmented.Presentation.DialogView.extend({
-        style: "form",
-        el: "#editDialog",
-        buttons: {
-            "cancel": "cancel",
-            "ok" : "ok",
-            "delete": "del"
-        },
-        ok: function() {
-            this.trigger("save");
-            this.close();
-        },
-        del: function() {
-            this.trigger("delete");
-            this.close();
-        }
-    });
-    */
-
     var EditControllerDialog = EditDialog.extend({
         title: "Edit Controller",
         name: "edit-controller"
@@ -219,62 +198,6 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         },
         addView: function() {
             this.openDialog(null, -1);
-        }
-    });
-
-    var StylesheetsView = Augmented.Presentation.DecoratorView.extend({
-        name: "stylesheets",
-        el: "#stylesheets",
-        init: function() {
-            this.model = new Models.StylesheetsModel();
-            var ss = app.datastore.get("stylesheets");
-            this.model.set("asyncStylesheets", ss.asyncStylesheets);
-            this.model.set("syncStylesheets", ss.syncStylesheets);
-
-            this.render();
-        },
-        render: function() {
-            // sync the data
-            var d = {
-                "asyncStylesheets": this.model.get("asyncStylesheets"),
-                "syncStylesheets": this.model.get("syncStylesheets")
-            };
-            app.datastore.set("stylesheets", d);
-
-            var e = this.boundElement("stylesheetsTemplate");
-            this.removeTemplate(e, true);
-            this.injectTemplate(Handlebars.templates.stylesheetsTemplate(this.model.toJSON()), e);
-        },
-        addStylesheet: function() {
-            var ss = this.model.get("stylesheet");
-            var styles = this.model.get("asyncStylesheets").slice(0);
-            styles.push(ss);
-            this.model.set("asyncStylesheets", styles);
-            this.model.unset("stylesheet");
-            var s = this.boundElement("stylesheet");
-            s.value = "";
-            this.render();
-        },
-        // TODO: clean this up
-        addStylesheetSync: function() {
-            var ss = this.model.get("stylesheet");
-            var styles = this.model.get("syncStylesheets").slice(0);
-            styles.push(ss);
-            this.model.set("syncStylesheets", styles);
-            this.model.unset("stylesheet");
-            var s = this.boundElement("stylesheet");
-            s.value = "";
-            this.render();
-        },
-        removeAllStylesheets: function() {
-            this.model.unset("asyncStylesheets");
-            this.model.unset("syncStylesheets");
-            this.model.set("asyncStylesheets", []);
-            this.model.set("syncStylesheets", []);
-            this.model.unset("stylesheet");
-            var s = this.boundElement("stylesheet");
-            s.value = "";
-            this.render();
         }
     });
 

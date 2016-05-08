@@ -30,6 +30,7 @@ require.config({
         'basicInfoView': 'app/basicInfoView',
         'editDialog': 'app/editDialog',
         'dialogEditor': 'app/dialogEditor',
+        'stylesheetsSubView': 'app/stylesheetsSubView',
 
         // compiled templates
         'stylesheetsTemplate': 'app/templates/stylesheetsTemplate',

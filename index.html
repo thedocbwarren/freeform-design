@@ -97,13 +97,16 @@
             <template id="stylesheetsTemplate">
                 <div id="stylesheets">
                     <h1><i class="material-icons">style</i> Stylesheets</h1>
+                    <div id="editDialog"></div>
                     <!-- since the template requires a lot more than simple generation, it's handled in code -->
-                    <div id="styles" data-stylesheets="stylesheetsTemplate">
-                    </div>
-                    <label for="projectName">Enter a new stylesheet</label><input type="text" name="stylesheet" id="stylesheet" data-stylesheets="stylesheet" autofocus/>
+                    <div id="styles" data-stylesheets="stylesheetsTemplate"></div>
+                    <!--
+                    <label for="stylesheet">Enter a new stylesheet</label><input type="text" name="stylesheet" id="stylesheet" data-stylesheets="stylesheet" autofocus/>
                     <button data-stylesheets="addButton" data-click="addStylesheet" class="primary">Add Async</button>
                     <button data-stylesheets="addButtonSync" data-click="addStylesheetSync" class="primary">Add Sync</button>
                     <button data-stylesheets="removeAllButton" data-click="removeAllStylesheets">Remove All</button>
+                    -->
+                    <button id="addStylesheet" class="round hugTop" data-stylesheets="addStylesheet" data-click="addStylesheet" title="Add a new stylesheet"><i class="material-icons md-light">add</i></button>
                 </div>
             </template>
             <template id="mainProjectTemplate">

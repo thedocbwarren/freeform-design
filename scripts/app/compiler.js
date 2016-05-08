@@ -10,9 +10,11 @@ define('compiler', ['augmented', 'models'],
                 // the html
                 var html = "<!DOCTYPE html>\n<html>\n\t<head>\n\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n\t<title>" + model.project + "</title>\n";
                 // add sync stylesheets
-                l = model.stylesheets.syncStylesheets.length;
+                var syncStylesheets = this.extractStylesheets(model.stylesheets, false);
+
+                l = syncStylesheets.length;
                 for(i = 0; i < l; i++) {
-                    html = html + "\t<link type=\"text/css\" rel=\"stylesheet\" href=\"" + model.stylesheets.syncStylesheets[i] + "\"/>\n";
+                    html = html + "\t<link type=\"text/css\" rel=\"stylesheet\" href=\"" + syncStylesheets[i] + "\"/>\n";
                 }
                 html = html + "\t<script data-main=\"scripts/" + model.project + ".js\" src=\"scripts/lib/require.js\"></script>\n\t</head>\n\t<body>\n\t\t<article>\n\t\t\t<section id=\"main\">\n\t\t\t</section>\n\t\t</article>\n\t</body>\n</html>";
 
@@ -23,9 +25,11 @@ define('compiler', ['augmented', 'models'],
                 // application
                 var application = "define('application', ['augmented', 'augmentedPresentation'], function(Augmented) {\n\"use strict\";\n\tvar app = new Augmented.Presentation.Application(\"" + model.project + "\");\n";
                 // add async stylesheets
-                l = model.stylesheets.asyncStylesheets.length;
+                var asyncStylesheets = this.extractStylesheets(model.stylesheets, true);
+
+                l = asyncStylesheets.length;
                 for(i = 0; i < l; i++) {
-                    application = application + "\tapp.registerStylesheet(\"" + model.stylesheets.asyncStylesheets[i] + "\");\n";
+                    application = application + "\tapp.registerStylesheet(\"" + asyncStylesheets[i] + "\");\n";
                 }
                 application = application + "\n\treturn app;\n});";
 
@@ -102,6 +106,17 @@ define('compiler', ['augmented', 'models'],
                     "\turl: \"http://www.example.com/data\"\n" +
                 "});\n\n" +
                 "at.render();";
+        },
+        extractStylesheets: function(arr, as) {
+            var a = [], i = 0, l = arr.length;
+
+            for (i = 0; i < l; i++) {
+                if (arr[i].async === as) {
+                    a.push = arr[i];
+                }
+            }
+
+            return a;
         }
     };
     return Compiler;

@@ -15,10 +15,7 @@ define('models', ['augmented'],
                 },
                 "views": [],
                 "controllers": [],
-                "stylesheets": {
-                    "asyncStylesheets": [],
-                    "syncStylesheets": []
-                },
+                "stylesheets": [],
                 "currentView": null,
             }
         }),
@@ -39,8 +36,8 @@ define('models', ['augmented'],
         }),
         StylesheetsModel: Augmented.Model.extend({
             defaults : {
-                "asyncStylesheets": [],
-                "syncStylesheets": []
+                "stylesheet": "",
+                "async": true
             }
         }),
         RoutesModel: Augmented.Model.extend({
@@ -56,7 +53,6 @@ define('models', ['augmented'],
                 "exclude": false
             }
         })
-
     };
     return Models;
 });

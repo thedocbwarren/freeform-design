@@ -85,9 +85,12 @@
 		"type": "DecoratorView"
 	}],
 	"controllers": ["BigProjectController", "GreatController"],
-	"stylesheets": {
-		"asyncStylesheets": ["https://fonts.googleapis.com/icon?family=Material+Icons", "https://fonts.googleapis.com/css?family=Roboto:400"],
-		"syncStylesheets": ["styles/reset.css", "styles/layout.css", "styles/theme.css"]
-	},
+	"stylesheets": [
+		{"stylesheet": "https://fonts.googleapis.com/icon?family=Material+Icons", "async": true},
+        {"stylesheet": "https://fonts.googleapis.com/css?family=Roboto:400", "async": true},
+		{"stylesheet": "styles/reset.css", "async": false},
+        {"stylesheet": "styles/layout.css", "async": false},
+        {"stylesheet": "styles/theme.css", "async": false}
+	],
 	"application": {}
 }
