@@ -1303,7 +1303,7 @@ article section div#basePanel {
     position: absolute;
     right: 16px;
     top: 16px;
-    width: 82%;
+    width: calc(100% - 250px);
     overflow-y: auto;
     height: 100%;
 }
