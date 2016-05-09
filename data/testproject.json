@@ -28,17 +28,27 @@
 			"include": ["admin"],
 			"exclude": ["purchaser"]
 		}
-    },
-        {
-    		"name": "MyDialogView",
-    		"type": "DialogView",
-    		"permissions": {
-    			"include": [],
-    			"exclude": []
-            }
+	}, {
+		"name": "MyDialogView",
+		"type": "DialogView",
+		"permissions": {
+			"include": [],
+			"exclude": []
+		},
+		"buttons": {
+			"ok": "ok"
+		},
+		"style": "alert",
+		"title": "Test",
+		"body": "Testing...",
+		"button0": "ok"
 	}, {
 		"name": "TestAutotableView",
 		"type": "AutomaticTable",
+		"permissions": {
+			"include": [],
+			"exclude": []
+		},
 		"panel": true,
 		"schema": {
 			"$schema": "http://json-schema.org/draft-04/schema#",
@@ -79,25 +89,39 @@
 		}
 	}, {
 		"name": "TestDecoratorView",
-		"type": "DecoratorView"
+		"type": "DecoratorView",
+		"permissions": {
+			"include": [],
+			"exclude": []
+		}
 	}, {
 		"name": "TestDecoratorView2",
-		"type": "DecoratorView"
+		"type": "DecoratorView",
+		"permissions": {
+			"include": [],
+			"exclude": []
+		}
 	}],
-	"controllers": [
-        {
-            "controller": "BigProjectController"
-        },
-        {
-            "controller": "GreatController"
-        }
-    ],
-	"stylesheets": [
-		{"stylesheet": "https://fonts.googleapis.com/icon?family=Material+Icons", "async": true},
-        {"stylesheet": "https://fonts.googleapis.com/css?family=Roboto:400", "async": true},
-		{"stylesheet": "styles/reset.css", "async": false},
-        {"stylesheet": "styles/layout.css", "async": false},
-        {"stylesheet": "styles/theme.css", "async": false}
-	],
+	"controllers": [{
+		"controller": "BigProjectController"
+	}, {
+		"controller": "GreatController"
+	}],
+	"stylesheets": [{
+		"stylesheet": "https://fonts.googleapis.com/icon?family=Material+Icons",
+		"async": true
+	}, {
+		"stylesheet": "https://fonts.googleapis.com/css?family=Roboto:400",
+		"async": true
+	}, {
+		"stylesheet": "styles/reset.css",
+		"async": false
+	}, {
+		"stylesheet": "styles/layout.css",
+		"async": false
+	}, {
+		"stylesheet": "styles/theme.css",
+		"async": false
+	}],
 	"application": {}
 }

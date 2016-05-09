@@ -73,6 +73,8 @@ define('compiler', ['augmented', 'models'],
                 for(i = 0; i < l; i++) {
                     if (model.views[i].type === "AutomaticTable") {
                         req = req+ "\n\n" + this.compileTable(model.views[i], model.views[i].settings);
+                    } else if (model.views[i].type === "DialogView") {
+                        req = req+ "\n\n" + this.compileDialog(model.views[i]);
                     } else {
                         req = req + "\nvar " + model.views[i].name + " = " +
                             ((model.views[i].type === "View") ? "Augmented." : "Augmented.Presentation.") +
@@ -90,6 +92,22 @@ define('compiler', ['augmented', 'models'],
                 //zip it
             }
             return "";
+        },
+        compileDialog: function(viewModel) {
+            var code =  "var " + viewModel.name +
+                " = Augmented.Presentation.DialogView.extend({\n" +
+                "\tstyle: \"" + viewModel.style + "\", \n" +
+                "\tel: \"#" + viewModel.name + "\", \n" +
+                "\tbuttons: " + JSON.stringify(viewModel.buttons) + ",";
+            // add button functions
+            var i = 0, keys = Object.keys(viewModel.buttons), l = keys.length;
+            for (i = 0; i < l; i++) {
+                var func = viewModel.buttons[keys[i]];
+                code = code + "\n\t" + func + ": function(event) {},";
+            }
+            code = code.slice(0, -1);
+            code = code + "\n});";
+            return code;
         },
         compileTable: function(viewModel, settings) {
             return "var " + viewModel.name + "schema = " + JSON.stringify(viewModel.schema) + ";\n\n" +
