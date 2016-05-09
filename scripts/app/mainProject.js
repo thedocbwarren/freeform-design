@@ -55,6 +55,9 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
                     this.doNavigation(navigation, ControllersView);
                 }
             });
+            this.setViewportHeight();
+        },
+        setViewportHeight: function() {
             var header = Augmented.Presentation.Dom.selector("#header").offsetHeight;
             this.el.style.height = (Augmented.Presentation.Dom.getViewportHeight() - ((header) ? (header) : 55)) + "px";
         },
@@ -74,6 +77,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
                 "myColleague",   // channel
                 "myColleague"    // identifer
             );
+            this.setViewportHeight();
         },
         removeLastView: function() {
             if (this.currentNavigationView) {
