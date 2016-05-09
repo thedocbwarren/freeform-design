@@ -8,11 +8,7 @@ define('models', ['augmented'],
             defaults: {
                 "project": "untitled",
                 "filename": "",
-                "routes": {
-                    "functionRoutes": [],
-                    "viewRoutes": [],
-                    "controllerRoutes": []
-                },
+                "routes": [],
                 "views": [],
                 "controllers": [],
                 "stylesheets": [],
@@ -40,11 +36,11 @@ define('models', ['augmented'],
                 "async": true
             }
         }),
-        RoutesModel: Augmented.Model.extend({
+        RouteModel: Augmented.Model.extend({
             defaults: {
-                "functionRoutes": [],
-                "viewRoutes": [],
-                "controllerRoutes": []
+                "route": "",
+                "callback": "",
+                "type": ""
             }
         }),
         PermissionModel: Augmented.Model.extend({

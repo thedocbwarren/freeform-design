@@ -1,45 +1,15 @@
-<h2>Function Routes</h2>
-<div id="functionRoutes">
-    <ul>
-        {{#each functionRoutes}}
-        <li>
-            <div class="flexContainer">
-                <p>{{route}}<br/><span class="secondary">{{callback}}</span></p>
-                <div>
-                    <div class="inlineButton large" data-index="{{@index}}" data-routes="edit" data-click="editRoute"><i class="material-icons md-dark">edit</i></div>
-                </div>
+<ul>
+    {{#each currentRoutes}}
+    <li>
+        <div class="flexContainer">
+            <p>{{route}}<br/>
+                <span class="secondary">{{callback}}</span><br/>
+                <span class="secondary">{{type}}</span>
+            </p>
+            <div>
+                <div class="inlineButton large" data-index="{{@index}}" data-routes="edit" data-click="editRoute"><i class="material-icons md-dark">edit</i></div>
             </div>
-        </li>
-        {{/each}}
-    </ul>
-</div>
-<h2>View Routes</h2>
-<div id="viewRoutes" class="editList">
-    <ul>
-        {{#each viewRoutes}}
-        <li>
-            <div class="flexContainer">
-                <p>{{route}}<br/><span class="secondary">{{callback}}</span></p>
-                <div>
-                    <div class="inlineButton large" data-index="{{@index}}" data-routes="edit" data-click="editRoute"><i class="material-icons md-dark">edit</i></div>
-                </div>
-            </div>
-        </li>
-        {{/each}}
-    </ul>
-</div>
-<h2>Controller Routes</h2>
-<div id="controllerRoutes" class="editList">
-    <ul>
-        {{#each controllerRoutes}}
-        <li>
-            <div class="flexContainer">
-                <p>{{route}}<br/><span class="secondary">{{callback}}</span></p>
-                <div>
-                    <div class="inlineButton large" data-index="{{@index}}" data-routes="edit" data-click="editRoute"><i class="material-icons md-dark">edit</i></div>
-                </div>
-            </div>
-        </li>
-        {{/each}}
-    </ul>
-</div>
+        </div>
+    </li>
+    {{/each}}
+</ul>

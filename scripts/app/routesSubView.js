@@ -4,70 +4,147 @@ define('routesSubView', ['augmented', 'augmentedPresentation', 'application', 'm
     function(Augmented, Presentation, app, Models, EditDialog, Handlebars) {
     "use strict";
 
+    var RouteCollection = Augmented.Collection.extend({
+        model: Models.RouteModel
+    });
+
+    // dialogs
+
+    var EditRouteDialog = EditDialog.extend({
+        style: "bigForm",
+        title: "Edit Route",
+        name: "edit-route"
+    });
+
+    var supportedRoutes = [
+        "function", "view", "controller"
+    ];
+
+    // an option builder for the routes
+    var buildOptions = function(selected) {
+        var html = "", i = 0, l = supportedRoutes.length;
+        for (i = 0; i < l; i++) {
+            html = html + "<option";
+            if (supportedRoutes[i] === selected) {
+                html = html + " selected";
+            }
+            html = html + ">" + supportedRoutes[i] + "</option>";
+        }
+        return html;
+    };
+
     var RoutesView = Augmented.Presentation.DecoratorView.extend({
         name: "routes",
         el: "#routes",
         init: function() {
-            this.model = new Models.RoutesModel();
-            var r = app.datastore.get("routes");
-            if (r) {
-                this.model.set("functionRoutes", r.functionRoutes);
-                this.model.set("viewRoutes", r.viewRoutes);
-                this.model.set("controllerRoutes", r.controllerRoutes);
+            this.collection = new RouteCollection();
+            var arr = app.datastore.get("routes");
+            if (arr) {
+                this.collection.reset(arr);
             }
             this.render();
         },
         render: function() {
-            // sync the data
-            var r = {
-                "functionRoutes": this.model.get("functionRoutes"),
-                "viewRoutes": this.model.get("viewRoutes"),
-                "controllerRoutes": this.model.get("controllerRoutes")
-            };
-            app.datastore.set("routes", r);
-
-            var e = this.boundElement("routesTemplate");
+            // refresh the data
+            app.datastore.set("routes", this.collection.toJSON());
+            var e = this.boundElement("currentRoutes");
             this.removeTemplate(e, true);
-            this.injectTemplate(Handlebars.templates.routesTemplate(this.model.toJSON()), e);
+            this.injectTemplate(Handlebars.templates.routesTemplate({"currentRoutes": this.collection.toJSON()}), e);
         },
         editRoute: function(event) {
-            var el = event.target;
+            var index = (event.currentTarget.getAttribute("data-index"));
+            var model = this.collection.at(index);
+            this.openDialog(model, index);
         },
-        addRoute: function() {
-            var t = document.querySelector('#addRouteTemplate');
-            // consider an inject template method
-            var clone = document.importNode(t.content, true);
-            this.injectTemplate(clone, this.el);
-            this.modal = true;
+        saveRoute: function() {
+            var r = this.dialog.model.get("edit-route-x");
+            if (r) {
+                var c = this.dialog.model.get("edit-callback-x");
+                var type = this.dialog.model.get("edit-type-x");
+                var index = this.dialog.model.get("index");
+                var model = this.collection.at(index);
 
-            // fire default for select element
-            // Create a new 'change' event and dispatch it.
-            this.syncBoundElement("routeType");
-        },
-        addRouteButton: function() {
-            if (this.modal) {
-                var dialog = this.boundElement("addRouteDialog");
-                this.removeTemplate(dialog);
-                this.modal = false;
-
-                var type = this.model.get("routeType"), ar;
-                if (type === "controller") {
-                    ar = this.model.get("controllerRoutes");
-                } else if (type === "view") {
-                    ar = this.model.get("viewRoutes");
+                if (model && index != -1) {
+                    model.set("route", r);
+                    model.set("callback", c);
+                    model.set("type", type);
+                    this.collection.push(model);
                 } else {
-                    ar = this.model.get("functionRoutes");
+                    model = new Models.RouteModel({"route": r, "callback": c, "type": type});
+                    this.collection.add(model);
                 }
-                ar.push({"route": this.model.get("routePath"), "callback": this.model.get("routeCallback")});
                 this.render();
             }
         },
-        addRouteButtonClose: function() {
-            if (this.modal) {
-                var dialog = this.boundElement("addRouteDialog");
-                this.removeTemplate(dialog);
-                this.modal = false;
+        deleteRoute: function() {
+            var index = this.dialog.model.get("index");
+            var model = this.collection.at(index);
+            this.collection.remove(model);
+            this.render();
+        },
+        currentRoutes: function(event) {
+            var index = (event.target.getAttribute("data-index"));
+            var a = this.model.get("currentRoutes");
+            this.openDialog(a, index);
+        },
+        openDialog: function(model, index) {
+            if (!this.dialog) {
+                this.dialog = new EditRouteDialog();
+                this.listenTo(this.dialog, "save", this.saveRoute);
+                this.listenTo(this.dialog, "delete", this.deleteRoute);
+                this.listenTo(this.dialog, "close", this.closeDialog);
             }
+
+            if (!model) {
+                model = new Models.RouteModel();
+            }
+
+            if (index === -1) {
+                this.dialog.title = "Add New Route";
+                this.dialog.buttons = {
+                    "cancel": "cancel",
+                    "ok" : "ok"
+                };
+            } else {
+                this.dialog.title = "Edit Route";
+                this.dialog.buttons = {
+                    "cancel": "cancel",
+                    "ok" : "ok",
+                    "delete": "del"
+                };
+            }
+
+            this.dialog.model.set("index", index);
+            var body =
+                "<label for=\"edit-route\">Route</label>" +
+                "<input type=\"text\" name=\"edit-route\" data-edit-route=\"edit-route-x\" value=\"" + model.get("route") + "\" />" +
+                "<label for=\"edit-callback\">Callback</label>" +
+                "<input type=\"text\" name=\"edit-callback\" data-edit-route=\"edit-callback-x\"" +
+                    "value=\"" + model.get("callback") + "\"/>" +
+                "<label for=\"edit-type\">Type</label>" +
+                "<select name=\"edit-type\" data-edit-route=\"edit-type-x\">";
+            // mark selected
+            body = body + buildOptions(model.get("type")) + "</select>";
+
+            this.dialog.body = body;
+            this.dialog.render();
+            this.dialog.syncBoundElement("edit-route-x");
+            this.dialog.syncBoundElement("edit-callback-x");
+            this.dialog.syncBoundElement("edit-type-x");
+        },
+        closeDialog: function() {
+        },
+        addRoute: function() {
+            this.openDialog(null, -1);
+        },
+        remove: function() {
+            if (this.dialog) {
+                this.dialog.remove();
+            }
+            /* off to unbind the events */
+            this.off();
+            this.stopListening();
+            return this;
         }
     });
     return RoutesView;
