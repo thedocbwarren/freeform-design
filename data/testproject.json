@@ -84,7 +84,14 @@
 		"name": "TestDecoratorView2",
 		"type": "DecoratorView"
 	}],
-	"controllers": ["BigProjectController", "GreatController"],
+	"controllers": [
+        {
+            "controller": "BigProjectController"
+        },
+        {
+            "controller": "GreatController"
+        }
+    ],
 	"stylesheets": [
 		{"stylesheet": "https://fonts.googleapis.com/icon?family=Material+Icons", "async": true},
         {"stylesheet": "https://fonts.googleapis.com/css?family=Roboto:400", "async": true},
