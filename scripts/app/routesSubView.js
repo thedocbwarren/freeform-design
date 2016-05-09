@@ -59,7 +59,6 @@ define('routesSubView', ['augmented', 'augmentedPresentation', 'application', 'm
                     ar = this.model.get("functionRoutes");
                 }
                 ar.push({"route": this.model.get("routePath"), "callback": this.model.get("routeCallback")});
-                //this.sendMessage("addRoute", this.model.get("projectName"));
                 this.render();
             }
         },

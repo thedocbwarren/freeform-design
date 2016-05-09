@@ -106,6 +106,15 @@ define('stylesheetsSubView', ['augmented', 'augmentedPresentation', 'application
         },
         addStylesheet: function() {
             this.openDialog(null, -1);
+        },
+        remove: function() {
+            if (this.dialog) {
+                this.dialog.remove();
+            }
+            /* off to unbind the events */
+            this.off();
+            this.stopListening();
+            return this;
         }
     });
     return StylesheetsView;

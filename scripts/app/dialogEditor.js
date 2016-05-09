@@ -133,7 +133,6 @@ function(Augmented, Presentation, app, BasicInfoView, EditDialog, Models, Handle
         }
     });
 
-
     var DialogEditorController = Augmented.Presentation.ViewController.extend({
         render: function() {
             this.mediator.render();

@@ -169,6 +169,15 @@ function(Augmented, Presentation, app, BasicInfoView, EditDialog, Models, Handle
             var model = this.collection.at(index);
             this.collection.remove(model);
             this.render();
+        },
+        remove: function() {
+            if (this.dialog) {
+                this.dialog.remove();
+            }
+            /* off to unbind the events */
+            this.off();
+            this.stopListening();
+            return this;
         }
     });
 
@@ -196,7 +205,6 @@ function(Augmented, Presentation, app, BasicInfoView, EditDialog, Models, Handle
 
             this.mediator.publish("basic", "updateName", this.mediator.currentView.model.name);
             this.mediator.publish("permissions", "updatePermissions",
-            //{ "include": ["bubba", "super", "admin"], "exclude": ["nobody"]});
             this.mediator.currentView.model.permissions);
         },
         initialize: function() {

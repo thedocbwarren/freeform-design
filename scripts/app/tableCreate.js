@@ -79,24 +79,7 @@ function(Augmented, Presentation, app, BasicInfoView, Compiler) {
             app.router.navigate("project", {trigger: true});
         }
     });
-/* already a module
-    var BasicInfoView = Augmented.Presentation.DecoratorView.extend({
-        name: "basic",
-        el: "#basic",
-        init: function() {
-            this.syncModelChange("name");
-            this.on("updateName", function(data) {
-                this.setName(data);
-            });
-        },
-        setName: function(name) {
-            this.model.set("name", name);
-        },
-        back: function() {
-            this.sendMessage("goToProject");
-        }
-    });
-*/
+
     var SchemaDecoratorView = Augmented.Presentation.DecoratorView.extend({
         name: "schema",
         el: "#schema",
@@ -222,12 +205,8 @@ function(Augmented, Presentation, app, BasicInfoView, Compiler) {
         editableToggle: function() {
             if (this.settings.editable === true) {
                 this.setEditable(false);
-                //this.settings.editable = false;
-                //e.firstElementChild.classList.add("hidden");
             } else {
                 this.setEditable(true);
-                //this.settings.editable = true;
-                //e.firstElementChild.classList.remove("hidden");
             }
             this.sendMessage("updateSettings", this.settings);
             this.compile();
@@ -245,12 +224,8 @@ function(Augmented, Presentation, app, BasicInfoView, Compiler) {
         sortableToggle: function() {
             if (this.settings.sortable === true) {
                 this.setSortable(false);
-                //this.settings.sortable = false;
-                //e.firstElementChild.classList.add("hidden");
             } else {
                 this.setSortable(true);
-                //this.settings.sortable = true;
-                //e.firstElementChild.classList.remove("hidden");
             }
             this.sendMessage("updateSettings", this.settings);
             this.compile();
@@ -268,12 +243,8 @@ function(Augmented, Presentation, app, BasicInfoView, Compiler) {
         lineNumbersToggle: function() {
             if (this.settings.lineNumbers === true) {
                 this.setLineNumbers(false);
-                //this.settings.lineNumbers = false;
-                //e.firstElementChild.classList.add("hidden");
             } else {
                 this.setLineNumbers(true);
-                //this.settings.lineNumbers = true;
-                //e.firstElementChild.classList.remove("hidden");
             }
             this.sendMessage("updateSettings", this.settings);
             this.compile();
@@ -296,7 +267,6 @@ function(Augmented, Presentation, app, BasicInfoView, Compiler) {
                     bound.firstElementChild.classList.add("hidden");
                 }
             }
-
             this.compile();
         },
         compile: function() {
@@ -377,7 +347,6 @@ function(Augmented, Presentation, app, BasicInfoView, Compiler) {
             this.syncModelChange();
             this.on("compile", function(data) {
                 this.compile(data);
-                //app.log("Source got the data");
             });
             this.on("updateYourData", function(dataset) {
                 if (dataset) {
