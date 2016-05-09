@@ -37,24 +37,21 @@ define('compiler', ['augmented', 'models'],
                 var router = "define('router', ['augmented', 'augmentedPresentation'], function(Augmented) {\n\"use strict\";\n";
                 router = router + "\n\tvar router = Augmented.Router.extend({\n\troutes: {";
                 // function routes
-                l = model.routes.functionRoutes.length;
+                l = model.routes.length;
                 var func = "";
                 for(i = 0; i < l; i++) {
-                    router = router + "\n\t\"" + model.routes.functionRoutes[i].route + "\": \"" + model.routes.functionRoutes[i].callback + "\",";
-                    func = func + "\n\"" + model.routes.functionRoutes[i].callback + "\"" + ": function() { },";
+                    if (model.routes[i].type === "function") {
+                        router = router + "\n\t\"" + model.routes[i].route + "\": \"" + model.routes[i].callback + "\",";
+                        func = func + "\n\"" + model.routes[i].callback + "\"" + ": function() { },";
+                    } else if (model.routes[i].type === "view") {
+                        router = router + "\n\t\"" + model.routes[i].route + "\": \"" + model.routes[i].callback + "\",";
+                        func = func + "\n\"" + model.routes[i].callback + "\"" + ": function() { this.loadView(new " + model.routes[i].callback + "()); },";
+                    } else if (model.routes[i].type === "controller") {
+                        router = router + "\n\t\"" + model.routes[i].route + "\": \"" + model.routes[i].callback + "\",";
+                        func = func + "\n\"" + model.routes[i].callback + "\"" + ": function() { this.loadView(" + model.routes[i].callback + ".initialize()); },";
+                    }
                 }
-                // view routes
-                l = model.routes.viewRoutes.length;
-                for(i = 0; i < l; i++) {
-                    router = router + "\n\t\"" + model.routes.viewRoutes[i].route + "\": \"" + model.routes.viewRoutes[i].callback + "\",";
-                    func = func + "\n\"" + model.routes.viewRoutes[i].callback + "\"" + ": function() { this.loadView(new " + model.routes.viewRoutes[i].callback + "()); },";
-                }
-                // controller routes
-                l = model.routes.controllerRoutes.length;
-                for(i = 0; i < l; i++) {
-                    router = router + "\n\t\"" + model.routes.controllerRoutes[i].route + "\": \"" + model.routes.controllerRoutes[i].callback + "\",";
-                    func = func + "\n\"" + model.routes.controllerRoutes[i].callback + "\"" + ": function() { this.loadView(" + model.routes.controllerRoutes[i].callback + ".initialize()); },";
-                }
+                
                 // remove the last comma
                 router = router.slice(0, -1);
                 func = func.slice(0, -1);

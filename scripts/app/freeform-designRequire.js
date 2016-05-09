@@ -102,7 +102,7 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
             "project":              "project",  // #project
             "table":                "table",    // #table
             "view":                 "view",     // #view
-            "dialog":               "dialog"
+            "dialog":               "dialog"    // #dialog
         },
 
         index: function() {
@@ -220,7 +220,6 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         about: function() {
             if (!this.modal) {
                 this.hamburger();
-
                 var t = document.querySelector('#aboutDialogTemplate');
                 // consider an inject template method
                 var clone = document.importNode(t.content, true);
@@ -238,7 +237,6 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         create: function() {
             if (!this.modal) {
                 this.hamburger();
-
                 var t = document.querySelector('#createProjectDialogTemplate');
                 // consider an inject template method
                 var clone = document.importNode(t.content, true);
@@ -254,15 +252,15 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
             }
         },
         projectCreateButton: function() {
-            if (this.modal) {
+            var name = this.model.get("projectName");
+            if (this.modal && name) {
                 this.projectCreateButtonClose();
-                this.sendMessage("createProject", this.model.get("projectName"));
+                this.sendMessage("createProject", name);
             }
         },
         open: function() {
             if (!this.modal) {
                 this.hamburger();
-
                 // Check for the various File API support.
                 if (window.File && window.FileReader && window.FileList && window.Blob) {
                     var t = document.querySelector('#openProjectDialogTemplate');
@@ -286,9 +284,7 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
             if (this.modal) {
                 var el = this.boundElement("projectFile");
                 var file = el.files[0];
-
                 this.projectOpenButtonClose();
-
                 this.sendMessage("openProject", file);
             }
         },
@@ -311,10 +307,9 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
             }
         },
         projectSaveButton: function() {
-            if (this.modal) {
-                var el = this.boundElement("projectFile");
+            var el = this.boundElement("projectFile");
+            if (this.modal && el && el.value) {
                 this.projectSaveButtonClose();
-
                 this.sendMessage("saveProject", el.value);
             }
         },

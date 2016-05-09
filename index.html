@@ -125,7 +125,8 @@
                 <div class="blur" id="saveProjectDialog" data-header="saveProjectDialog">
                     <dialog class="form">
                         <h1>Save a project</h1>
-                        <label for="projectFile">Enter a filename</label><input type="text" name="projectFile" id="projectFile" data-header="projectFile" autofocus/>
+                        <label for="projectFile">Enter a filename</label><input type="text" name="projectFile" id="projectFile" data-header="projectFile" autofocus required/>
+                        <p data-header="message" class="message"></p>
                         <div class="buttonGroup">
                             <button data-header="saveButton" data-click="projectSaveButton">Save</button>
                             <button data-header="cancelButton" data-click="projectSaveButtonClose">Cancel</button>
@@ -137,7 +138,7 @@
                 <div class="blur" id="openProjectDialog" data-header="openProjectDialog">
                     <dialog class="form">
                         <h1>Open a project</h1>
-                        <label for="projectFile">Choose a Project</label><input type="file" name="projectFile" id="projectFile" data-header="projectFile" autofocus/>
+                        <label for="projectFile">Choose a Project</label><input type="file" name="projectFile" id="projectFile" data-header="projectFile" placeholder="filename" autofocus required/>
                         <div class="buttonGroup">
                             <button data-header="openButton" data-click="projectOpenButton">Open</button>
                             <button data-header="cancelButton" data-click="projectOpenButtonClose">Cancel</button>
@@ -149,7 +150,8 @@
                 <div class="blur" id="createProjectDialog" data-header="createProjectDialog">
                     <dialog class="form">
                         <h1>Create a new project</h1>
-                        <label for="projectName">Enter a new Project Name</label><input type="text" name="projectName" id="projectName" data-header="projectName" autofocus/>
+                        <label for="projectName">Enter a new Project Name</label><input type="text" name="projectName" id="projectName" data-header="projectName" placeholder="My Project" autofocus required/>
+                        <p data-header="message" class="message"></p>
                         <div class="buttonGroup">
                             <button data-header="createButton" data-click="projectCreateButton">Create</button>
                             <button data-header="cancelButton" data-click="projectCreateButtonClose">Cancel</button>
@@ -160,7 +162,7 @@
             <template id="aboutDialogTemplate">
                 <div class="blur" id="aboutDialog" data-header="aboutDialog">
                     <dialog class="alert">
-                        <h1><em>free</em>Form Designer</h1>
+                        <h1 class="atariScroll"><em>free</em>Form Designer</h1>
                         <h2 class="center">The Augmented.js UI Designer.<br/>Designed for Augmented.js v.0.3.x</h2>
                         <div class="buttonGroup">
                             <button data-header="okButton" data-click="aboutButtonClose">Ok</button>

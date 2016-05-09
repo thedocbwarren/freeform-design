@@ -1,2 +1,2 @@
 # freeform-design
-An application to design tables and forms using Augmented.js
+An application to design single page applications using Augmented.js

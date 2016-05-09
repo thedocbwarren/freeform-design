@@ -1,26 +1,27 @@
 {
 	"project": "Test project",
 	"filename": "",
-	"routes": {
-		"functionRoutes": [{
-			"route": "route",
-			"callback": "goToThisFunction"
-		}, {
-			"route": "another",
-			"callback": "goHere"
-		}],
-		"viewRoutes": [{
-			"route": "project",
-			"callback": "projectView"
-		}, {
-			"route": "table",
-			"callback": "tableView"
-		}],
-		"controllerRoutes": [{
-			"route": "application",
-			"callback": "applicationController"
-		}]
-	},
+	"routes": [{
+		"route": "route",
+		"callback": "goToThisFunction",
+		"type": "function"
+	}, {
+		"route": "another",
+		"callback": "goHere",
+		"type": "function"
+	}, {
+		"route": "project",
+		"callback": "projectView",
+		"type": "view"
+	}, {
+		"route": "table",
+		"callback": "tableView",
+		"type": "view"
+	}, {
+		"route": "application",
+		"callback": "applicationController",
+		"type": "controller"
+	}],
 	"views": [{
 		"name": "TestView",
 		"type": "View",
