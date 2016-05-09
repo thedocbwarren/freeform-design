@@ -6,16 +6,6 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         StylesheetsView, RoutesView, ControllersView, ViewsView) {
     "use strict";
 
-    // register panels to a view type
-    var panelRegistry = {
-        "View": "view",
-        "Mediator": "view",
-        "Colleague": "view",
-        "DecoratorView": "view",
-        "DialogView": "dialog",
-        "AutomaticTable": "table"
-    };
-
     var ProjectSideNavigation = Augmented.Presentation.DecoratorView.extend({
         name: "sideNav",
         el: "#sideNav",

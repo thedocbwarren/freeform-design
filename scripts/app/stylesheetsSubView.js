@@ -37,20 +37,22 @@ define('stylesheetsSubView', ['augmented', 'augmentedPresentation', 'application
         },
         saveStylesheet: function() {
             var ss = this.dialog.model.get("edit-stylesheet");
-            var as = this.dialog.model.get("edit-stylesheet-async");
-            var index = this.dialog.model.get("index");
-            var model = this.collection.at(index);
+            if (ss) {
+                var as = this.dialog.model.get("edit-stylesheet-async");
+                var index = this.dialog.model.get("index");
+                var model = this.collection.at(index);
 
-            if (model && index != -1) {
-                model.set("stylesheet", ss);
-                model.set("async", as);
-                this.collection.push(model);
-            } else {
-                model = new Models.StylesheetsModel({"stylesheet": ss, "async": as});
-                this.collection.add(model);
+                if (model && index != -1) {
+                    model.set("stylesheet", ss);
+                    model.set("async", as);
+                    this.collection.push(model);
+                } else {
+                    model = new Models.StylesheetsModel({"stylesheet": ss, "async": as});
+                    this.collection.add(model);
+                }
+
+                this.render();
             }
-
-            this.render();
         },
         deleteStylesheet: function() {
             var index = this.dialog.model.get("index");
@@ -72,8 +74,17 @@ define('stylesheetsSubView', ['augmented', 'augmentedPresentation', 'application
             }
             if (index === -1) {
                 this.dialog.title = "Add New Stylesheet";
+                this.dialog.buttons = {
+                    "cancel": "cancel",
+                    "ok" : "ok"
+                };
             } else {
                 this.dialog.title = "Edit Stylesheet";
+                this.dialog.buttons = {
+                    "cancel": "cancel",
+                    "ok" : "ok",
+                    "delete": "del"
+                };
             }
 
             if (!model) {
@@ -82,7 +93,7 @@ define('stylesheetsSubView', ['augmented', 'augmentedPresentation', 'application
 
             this.dialog.model.set("index", index);
             this.dialog.body = "<input type=\"text\" value=\"" + ((model) ? model.get("stylesheet") : "") +
-                "\" data-edit-stylesheet=\"edit-stylesheet\" />" +
+                "\" data-edit-stylesheet=\"edit-stylesheet\" required/>" +
                 "<input type=\"checkbox\" name=\"edit-stylesheet-async\" data-edit-stylesheet=\"edit-stylesheet-async\"" +
                 ((model.get("async") === true) ? "checked=\"checked\"" : "") +
                 " />" +

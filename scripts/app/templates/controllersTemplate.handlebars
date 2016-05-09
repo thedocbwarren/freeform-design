@@ -1,0 +1,14 @@
+<div>
+    <ul>
+        {{#each controllers}}
+        <li>
+            <div class="flexContainer">
+                <p>{{controller}}</p>
+                <div>
+                    <div class="inlineButton large" data-index="{{@index}}" data-controllers="edit" data-click="editController"><i class="material-icons md-dark">edit</i></div>
+                </div>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+</div>

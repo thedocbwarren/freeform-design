@@ -40,7 +40,8 @@ require.config({
         'stylesheetsTemplate': 'app/templates/stylesheetsTemplate',
         'routesTemplate': 'app/templates/routesTemplate',
         'viewsTemplate': 'app/templates/viewsTemplate',
-        'permissionsTemplate': 'app/templates/permissionsTemplate'
+        'permissionsTemplate': 'app/templates/permissionsTemplate',
+        'controllersTemplate': 'app/templates/controllersTemplate'
 	},
     'shim': {
     }

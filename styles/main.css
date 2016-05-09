@@ -630,9 +630,16 @@ textarea:focus, input:focus, code:focus {
     outline: none;
 }
 
-textarea:invalid, textarea.bad, code.bad {
+textarea:invalid, textarea.bad, code.bad, input:invalid {
     border-bottom: 2px solid #f44336;
     padding-bottom: 0px;
+    outline: none;
+    box-shadow: none;
+}
+
+input:invalid::after {
+    content: "Enter a Valid Value.";
+    color: #f44336;
 }
 
 textarea.short {

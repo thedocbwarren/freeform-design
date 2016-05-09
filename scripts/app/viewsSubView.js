@@ -20,6 +20,16 @@ define('viewsSubView', ['augmented', 'augmentedPresentation', 'application', 'mo
         "View", "Mediator", "Colleague", "AutomaticTable", "DecoratorView", "DialogView"
     ];
 
+    // register panels to a view type
+    var panelRegistry = {
+        "View": "view",
+        "Mediator": "view",
+        "Colleague": "view",
+        "DecoratorView": "view",
+        "DialogView": "dialog",
+        "AutomaticTable": "table"
+    };
+
     // an option builder for the views
     var buildOptions = function(selected) {
         var html = "", i = 0, l = supportedViews.length;
@@ -32,6 +42,31 @@ define('viewsSubView', ['augmented', 'augmentedPresentation', 'application', 'mo
         }
         return html;
     };
+
+    // {{#compare unicorns ponies operator="<"}}
+    Handlebars.registerHelper('compare', function(lvalue, rvalue, options) {
+        if (arguments.length < 3)
+            throw new Error("Handlerbars Helper 'compare' needs 2 parameters");
+        var operator = options.hash.operator || "==";
+        var operators = {
+            '==':       function(l,r) { return l == r; },
+            '===':      function(l,r) { return l === r; },
+            '!=':       function(l,r) { return l != r; },
+            '<':        function(l,r) { return l < r; },
+            '>':        function(l,r) { return l > r; },
+            '<=':       function(l,r) { return l <= r; },
+            '>=':       function(l,r) { return l >= r; },
+            'typeof':   function(l,r) { return typeof l == r; }
+        };
+        if (!operators[operator])
+            throw new Error("Handlerbars Helper 'compare' doesn't know the operator "+operator);
+        var result = operators[operator](lvalue,rvalue);
+        if( result ) {
+            return options.fn(this);
+        } else {
+            return options.inverse(this);
+        }
+    });
 
     // views
 
@@ -75,20 +110,22 @@ define('viewsSubView', ['augmented', 'augmentedPresentation', 'application', 'mo
         },
         saveView: function() {
             var name = this.dialog.model.get("edit-view");
-            var type = this.dialog.model.get("edit-view-type");
-            var index = this.dialog.model.get("index");
-            var model = this.collection.at(index);
+            if (name) {
+                var type = this.dialog.model.get("edit-view-type");
+                var index = this.dialog.model.get("index");
+                var model = this.collection.at(index);
 
-            if (model && index != -1) {
-                model.set("name", name);
-                model.set("type", type);
-                this.collection.push(model);
-            } else {
-                model = new Models.ViewModel({"name": name, "type": type});
-                this.collection.add(model);
+                if (model && index != -1) {
+                    model.set("name", name);
+                    model.set("type", type);
+                    this.collection.push(model);
+                } else {
+                    model = new Models.ViewModel({"name": name, "type": type});
+                    this.collection.add(model);
+                }
+
+                this.render();
             }
-
-            this.render();
         },
         deleteView: function() {
             var index = this.dialog.model.get("index");
@@ -113,9 +150,24 @@ define('viewsSubView', ['augmented', 'augmentedPresentation', 'application', 'mo
                 model = new Models.ViewModel();
             }
 
+            if (index === -1) {
+                this.dialog.title = "Add New View";
+                this.dialog.buttons = {
+                    "cancel": "cancel",
+                    "ok" : "ok"
+                };
+            } else {
+                this.dialog.title = "Edit View";
+                this.dialog.buttons = {
+                    "cancel": "cancel",
+                    "ok" : "ok",
+                    "delete": "del"
+                };
+            }
+
             this.dialog.model.set("index", index);
             this.dialog.body = "<input type=\"text\" value=\"" + ((model) ? model.get("name") : "") +
-                "\" data-edit-view=\"edit-view\" />" +
+                "\" data-edit-view=\"edit-view\" required/>" +
                 "<select data-edit-view=\"edit-view-type\" name=\"edit-view-type\">" +
                 buildOptions(model.get("type")) +
                 "</select>";

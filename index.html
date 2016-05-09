@@ -7,12 +7,11 @@
 		<title>freeForm Design in Augmented.js</title>
         <link type="text/css" rel="stylesheet" href="styles/main.css"/>
 		<!-- requirejs pulls in all necessary js for this component -->
-        <!-- for production -->
+        <!-- for production
 		<script data-main="scripts/app/freeform-designRequire-built.js" src="scripts/lib/require.js"></script>
-
-        <!--
+        -->
+        <!-- dev -->
         <script data-main="scripts/app/freeform-designRequire.js" src="scripts/lib/require.js"></script>
-    -->
 	</head>
 	<body>
 		<article>
@@ -53,8 +52,7 @@
                     <h1><i class="material-icons">web</i> Controllers</h1>
                     <!-- since the template requires a lot more than simple generation, it's handled in code -->
                     <div id="editDialog"></div>
-                    <div id="currentControllers" data-controllers="currentControllers" data-style="list" data-click="currentControllers">
-                    </div>
+                    <div id="currentControllers" data-controllers="currentControllers"></div>
                     <button id="addController" class="round hugTop" data-controllers="addController" data-click="addController" title="Add a new controller"><i class="material-icons md-light">add</i></button>
                 </div>
             </template>
@@ -62,8 +60,7 @@
                 <div id="views">
                     <h1><i class="material-icons">web</i> Views</h1>
                     <div id="editDialog"></div>
-                    <div id="currentViews" data-views="currentViews">
-                    </div>
+                    <div id="currentViews" data-views="currentViews"></div>
                     <button id="addView" class="round hugTop" data-views="addView" data-click="addView" title="Add a new view"><i class="material-icons md-light">add</i></button>
                 </div>
             </template>

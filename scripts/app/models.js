@@ -21,7 +21,7 @@ define('models', ['augmented'],
         }),
         ControllerModel: Augmented.Model.extend({
             defaults : {
-                "currentControllers": []
+                "controller": ""
             }
         }),
         ViewModel: Augmented.Model.extend({

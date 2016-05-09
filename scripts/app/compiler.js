@@ -64,7 +64,7 @@ define('compiler', ['augmented', 'models'],
                 // controllers
                 l = model.controllers.length;
                 for(i = 0; i < l; i++) {
-                    req = req + "\nvar " + model.controllers[i] +
+                    req = req + "\nvar " + model.controllers[i].controller +
                         " = Augmented.Presentation.ViewController.extend({\nrender: function() {\n },\n initialize: function() {\nreturn this;\n},\nremove: function() {\n}\n});\n";
                 }
 
