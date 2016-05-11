@@ -4,7 +4,7 @@
         backbone: "../lib/backbone-min",
         underscore: "../lib/lodash.min",
         jquery: "../lib/jquery.min",
-        handlebars: "../lib/handlebars",
+        handlebars: "../lib/handlebars.runtime.min",
         jszip: "../lib/jszip.min",
         filesaver: "../lib/FileSaver.min",
         augmented: "../lib/augmented",
