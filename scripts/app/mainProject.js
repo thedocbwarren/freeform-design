@@ -75,7 +75,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
             this.observeColleagueAndTrigger(
                 this.currentNavigationView, // colleague view
                 "myColleague",   // channel
-                "myColleague"    // identifer
+                "myColleague"    // identifier
             );
             this.setViewportHeight();
         },
@@ -93,7 +93,7 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
             this.observeColleagueAndTrigger(
                 this.sideNav, // colleague view
                 "sideNav",   // channel
-                "sideNav"    // identifer
+                "sideNav"    // identifier
             );
         },
         remove: function() {

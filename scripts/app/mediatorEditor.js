@@ -114,7 +114,7 @@ function(Augmented, Presentation, app,
                 this.dialog.body = "<label>Views</label><select data-observe-view='view'>" +
                                     this.formatViews(views, name) + "</select>" +
                                     "<label>Channel</label><input type='text' data-observe-view='channel' value='" + ((model) ? model.get("channel") : "") + " ' />" +
-                                    "<label>Identifer</label><input type='text' data-observe-view='identifer' value='" + ((model) ? model.get("identifer") : "") + "'/>";
+                                    "<label>Identifer</label><input type='text' data-observe-view='identifier' value='" + ((model) ? model.get("identifier") : "") + "'/>";
             } else {
                 this.dialog.body = "There are no views.";
                 this.dialog.buttons = {
@@ -124,7 +124,7 @@ function(Augmented, Presentation, app,
             this.dialog.render();
             this.dialog.syncBoundElement("view");
             this.dialog.syncBoundElement("channel");
-            this.dialog.syncBoundElement("identifer");
+            this.dialog.syncBoundElement("identifier");
         },
         formatViews: function(views, name) {
             var html = "", i = 0, l = views.length;
@@ -146,15 +146,15 @@ function(Augmented, Presentation, app,
                 var index = this.dialog.model.get("index");
                 var model = this.collection.at(index);
                 var channel = this.dialog.model.get("channel");
-                var identifer = this.dialog.model.get("identifer");
+                var identifier = this.dialog.model.get("identifier");
 
                 if (model && index != -1) {
                     model.set("view", view);
                     model.set("channel", channel);
-                    model.set("identifer", identifer);
+                    model.set("identifier", identifier);
                     this.collection.push(model);
                 } else {
-                    model = new Models.ObserveViewModel({"view": view, "channel": channel, "identifer": identifer});
+                    model = new Models.ObserveViewModel({"view": view, "channel": channel, "identifier": identifier});
                     this.collection.add(model);
                 }
 
@@ -183,19 +183,19 @@ function(Augmented, Presentation, app,
             this.mediator.observeColleagueAndTrigger(
                 basicView, // colleague view
                 "basic",   // channel
-                "basic"    // identifer
+                "basic"    // identifier
             );
 
             this.mediator.observeColleagueAndTrigger(
                 mediatorListView, // colleague view
                 "basic",   // channel
-                "listView"    // identifer
+                "listView"    // identifier
             );
 
             this.mediator.observeColleagueAndTrigger(
                 mediatorListView, // colleague view
                 "list",   // channel
-                "list"    // identifer
+                "list"    // identifier
             );
 
             this.mediator.publish("basic", "updateName", this.mediator.currentView.model.name);

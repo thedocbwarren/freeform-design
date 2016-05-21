@@ -1482,18 +1482,11 @@ div.circle.large {
 
 }
 
-/*
-article section#activePanel div.panel.stack {
-    display: inline-block;
-    vertical-align: text-top;
-}
-*/
-
 article section#main h1 {
     color: rgba(0, 0, 0, 0.1);
     font-size: 64px;
     font-weight: 100;
-    margin-top: 20%;
+    margin-top: 23%;
     text-align: center;
 }
 

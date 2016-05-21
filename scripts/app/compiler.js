@@ -51,7 +51,7 @@ define('compiler', ['augmented', 'models'],
                         func = func + "\n\"" + model.routes[i].callback + "\"" + ": function() { this.loadView(" + model.routes[i].callback + ".initialize()); },";
                     }
                 }
-                
+
                 // remove the last comma
                 router = router.slice(0, -1);
                 func = func.slice(0, -1);
@@ -66,12 +66,13 @@ define('compiler', ['augmented', 'models'],
                 }
 
                 // views
+                var mediation = "";
                 l = model.views.length;
                 for(i = 0; i < l; i++) {
                     if (model.views[i].type === "AutomaticTable") {
-                        req = req+ "\n\n" + this.compileTable(model.views[i], model.views[i].settings);
+                        req = req + "\n\n" + this.compileTable(model.views[i], model.views[i].settings);
                     } else if (model.views[i].type === "DialogView") {
-                        req = req+ "\n\n" + this.compileDialog(model.views[i]);
+                        req = req + "\n\n" + this.compileDialog(model.views[i]);
                     } else {
                         req = req + "\nvar " + model.views[i].name + " = " +
                             ((model.views[i].type === "View") ? "Augmented." : "Augmented.Presentation.") +
@@ -81,14 +82,28 @@ define('compiler', ['augmented', 'models'],
                             }
                         req = req + "});\n";
                     }
+                    if (model.views[i].type === "Mediator") {
+                        mediation = mediation + this.compileMediation(model.views[i]);
+                    }
                 }
 
-                req = req + "});";
+                req = req + "\n" + mediation + "\n});";
 
                 return html + " \n\n " + req + " \n\n " + router + " \n\n " + application;
                 //zip it
             }
             return "";
+        },
+        compileMediation: function(view) {
+            var code = "", i, l = view.observeList.length;
+            for(i = 0; i < l; i++) {
+                code = code + view.name + ".observeColleagueAndTrigger(\n" +
+                    "\t" + view.observeList[i].view + ",\n" +
+                    "\t'" + view.observeList[i].channel + "',\n" +
+                    "\t'" + view.observeList[i].identifier + "'\n" +
+                ");\n\n";
+            }
+            return code;
         },
         compileDialog: function(viewModel) {
             var code =  "var " + viewModel.name +
@@ -127,7 +142,7 @@ define('compiler', ['augmented', 'models'],
 
             for (i = 0; i < l; i++) {
                 if (arr[i].async === as) {
-                    a.push = arr[i];
+                    a.push(arr[i].stylesheet);
                 }
             }
 

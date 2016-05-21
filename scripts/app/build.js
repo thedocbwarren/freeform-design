@@ -12,8 +12,9 @@
         routesTemplate: "templates/routesTemplate",
         stylesheetsTemplate: "templates/stylesheetsTemplate",
         viewsTemplate: "templates/viewsTemplate",
-	    permissionsTemplate: "templates/permissionsTemplate",
-        controllersTemplate: "templates/controllersTemplate"
+        permissionsTemplate: "templates/permissionsTemplate",
+        controllersTemplate: "templates/controllersTemplate",
+        observeViewsListTemplate: "templates/observeViewsListTemplate"
     },
     include: ["jszip", "filesaver"],
     name: "freeform-designRequire",

@@ -211,6 +211,7 @@ require(["augmented", "augmentedPresentation", "application", "mainProject", "ta
                 var clone = document.importNode(t.content, true);
                 this.injectTemplate(clone, this.el);
                 this.modal = true;
+                Augmented.D.setValue("#version", "Running version " + Augmented.VERSION);
             }
         },
         aboutButtonClose: function() {
@@ -321,7 +322,7 @@ require(["augmented", "augmentedPresentation", "application", "mainProject", "ta
     mediatorView.observeColleagueAndTrigger(
         headerView, // colleague view
         "header",   // channel
-        "header"    // identifer
+        "header"    // identifier
     );
 
     app.log("Ready.");

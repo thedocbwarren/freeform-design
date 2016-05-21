@@ -129,19 +129,19 @@ function(Augmented, Presentation, app, BasicInfoView, EditDialog, AbstractEditor
             this.mediator.observeColleagueAndTrigger(
                 basicView, // colleague view
                 "basic",   // channel
-                "basic"    // identifer
+                "basic"    // identifier
             );
 
             this.mediator.observeColleagueAndTrigger(
                 dialogEditorView, // colleague view
                 "dialog",   // channel
-                "dialogEditor"    // identifer
+                "dialogEditor"    // identifier
             );
 
             this.mediator.observeColleagueAndTrigger(
                 dialogViewerView, // colleague view
                 "dialog",   // channel
-                "dialogViewer"    // identifer
+                "dialogViewer"    // identifier
             );
 
             this.mediator.publish("basic", "updateName", this.mediator.currentView.model.name);

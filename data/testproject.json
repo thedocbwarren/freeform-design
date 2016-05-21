@@ -32,11 +32,11 @@
 		"observeList": [{
 			"view": "TestAutotableView",
 			"channel": " table ",
-			"identifer": "table"
+			"identifier": "table"
 		}, {
 			"view": "MyDialogView",
 			"channel": " dialog",
-			"identifer": "dialog"
+			"identifier": "dialog"
 		}]
 	}, {
 		"name": "TestView",

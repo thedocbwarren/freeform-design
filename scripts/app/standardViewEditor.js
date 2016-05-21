@@ -174,13 +174,13 @@ function(Augmented, Presentation, app, BasicInfoView, EditDialog, AbstractEditor
             this.mediator.observeColleagueAndTrigger(
                 basicView, // colleague view
                 "basic",   // channel
-                "basic"    // identifer
+                "basic"    // identifier
             );
 
             this.mediator.observeColleagueAndTrigger(
                 permissionsView, // colleague view
                 "permissions",   // channel
-                "permissions"    // identifer
+                "permissions"    // identifier
             );
 
             this.mediator.publish("basic", "updateName", this.mediator.currentView.model.name);

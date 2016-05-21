@@ -392,25 +392,25 @@ function(Augmented, Presentation, app, BasicInfoView, Compiler) {
             this.tableCreateMediatorView.observeColleagueAndTrigger(
                 this.basicView, // colleague view
                 "basic",   // channel
-                "basic"    // identifer
+                "basic"    // identifier
             );
 
             this.tableCreateMediatorView.observeColleagueAndTrigger(
                 this.schemaView, // colleague view
                 "schema",   // channel
-                "schema"    // identifer
+                "schema"    // identifier
             );
 
             this.tableCreateMediatorView.observeColleagueAndTrigger(
                 this.viewerView, // colleague view
                 "viewer",   // channel
-                "viewer"    // identifer
+                "viewer"    // identifier
             );
 
             this.tableCreateMediatorView.observeColleagueAndTrigger(
                 this.sourceView, // colleague view
                 "source",   // channel
-                "source"    // identifer
+                "source"    // identifier
             );
 
             this.tableCreateMediatorView.publish("basic", "updateName", this.tableCreateMediatorView.currentView.model.name);
