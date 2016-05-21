@@ -1,0 +1,17 @@
+<div>
+    <ul class="center">
+        {{#each views}}
+        <li>
+            <div class="flexContainer">
+                <div>
+                    <div class="avatar circle float left">C</div>
+                    <p>{{view}}<br/><span class="secondary">{{channel}}</span><br/><span class="secondary">{{identifer}}</span></p>
+                </div>
+                <div>
+                    <div class="inlineButton large" data-index="{{@index}}" data-mediator="edit" data-click="editView"><i class="material-icons md-dark">edit</i></div>
+                </div>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+</div>

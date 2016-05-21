@@ -1,80 +1,62 @@
 require.config({
-	'baseUrl': 'scripts/',
+	"baseUrl": "scripts/",
 
-    'paths': {
+    "paths": {
         //base libraries
-		'jquery': 'lib/jquery.min',
-		'underscore': 'lib/lodash.min',
-		'backbone': 'lib/backbone-min',
-        'handlebars': 'lib/handlebars.runtime.min',
+		"jquery": "lib/jquery.min",
+		"underscore": "lib/lodash.min",
+		"backbone": "lib/backbone-min",
+        "handlebars": "lib/handlebars.runtime.min",
 
         // hosted version
-		//'augmented': '/augmented/scripts/core/augmented',
-        //'augmentedPresentation': '/augmented/scripts/presentation/augmentedPresentation',
+		//"augmented": "/augmented/scripts/core/augmented",
+        //"augmentedPresentation": "/augmented/scripts/presentation/augmentedPresentation",
 
         // local version
-		'augmented': 'lib/augmented',
-        'augmentedPresentation': 'lib/augmentedPresentation',
+		"augmented": "lib/augmented",
+        "augmentedPresentation": "lib/augmentedPresentation",
 
         // FileSave Polyfill
-        'filesaver': 'lib/FileSaver.min',
+        "filesaver": "lib/FileSaver.min",
         // Zip library
-        'jszip': 'lib/jzsip.min.js',
+        "jszip": "lib/jzsip.min.js",
 
         // other modules
-        'mainProject': 'app/mainProject',
-        'tableCreate': 'app/tableCreate',
-        'standardViewEditor': 'app/standardViewEditor',
-        'models': 'app/models',
-        'compiler': 'app/compiler',
-        'basicInfoView': 'app/basicInfoView',
-        'editDialog': 'app/editDialog',
-        'dialogEditor': 'app/dialogEditor',
+        "application": "app/application",
+        "mainProject": "app/mainProject",
+        "tableCreate": "app/tableCreate",
+        "standardViewEditor": "app/standardViewEditor",
+        "models": "app/models",
+        "compiler": "app/compiler",
+        "basicInfoView": "app/basicInfoView",
+        "abstractEditorMediator": "app/abstractEditorMediator",
+        "abstractEditorView": "app/abstractEditorView",
+        "editDialog": "app/editDialog",
+        "dialogEditor": "app/dialogEditor",
+        "mediatorEditor": "app/mediatorEditor",
+
         //subviews
-        'stylesheetsSubView': 'app/stylesheetsSubView',
-        'routesSubView': 'app/routesSubView',
-        'controllersSubView': 'app/controllersSubView',
-        'viewsSubView': 'app/viewsSubView',
+        "stylesheetsSubView": "app/stylesheetsSubView",
+        "routesSubView": "app/routesSubView",
+        "controllersSubView": "app/controllersSubView",
+        "viewsSubView": "app/viewsSubView",
 
         // compiled templates
-        'stylesheetsTemplate': 'app/templates/stylesheetsTemplate',
-        'routesTemplate': 'app/templates/routesTemplate',
-        'viewsTemplate': 'app/templates/viewsTemplate',
-        'permissionsTemplate': 'app/templates/permissionsTemplate',
-        'controllersTemplate': 'app/templates/controllersTemplate'
+        "stylesheetsTemplate": "app/templates/stylesheetsTemplate",
+        "routesTemplate": "app/templates/routesTemplate",
+        "viewsTemplate": "app/templates/viewsTemplate",
+        "permissionsTemplate": "app/templates/permissionsTemplate",
+        "controllersTemplate": "app/templates/controllersTemplate",
+        "observeViewsListTemplate": "app/templates/observeViewsListTemplate"
 	},
-    'shim': {
+    "shim": {
     }
-});
-
-// Create base application
-
-define('application', ['augmented', 'augmentedPresentation'], function(Augmented, Presentation) {
-    "use strict";
-    // create an application
-    var app = new Augmented.Presentation.Application("freeForm Designer");
-    app.registerStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons");
-    app.registerStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto:400,300,400italic,100,700");
-    // adding style packs
-    app.registerStylesheet("styles/table/material.css");
-    app.registerStylesheet("styles/table/plain.css");
-    app.registerStylesheet("styles/table/spaceGray.css");
-
-    // setup a logger
-    app.logger = Augmented.Logger.LoggerFactory.getLogger(Augmented.Logger.Type.console, Augmented.Logger.Level.debug);
-    app.APP_NAME = "FREEFORM: ";
-
-    app.log = function(message) {
-        this.logger.log(app.APP_NAME + message);
-    };
-
-    return app;
 });
 
 //  main app
 
-require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'tableCreate', 'standardViewEditor', 'dialogEditor', 'models', 'compiler'],
-    function(Augmented, Presentation, app, MainProject, TableCreate, StandardViewEditor, DialogEditor, Models, Compiler) {
+require(["augmented", "augmentedPresentation", "application", "mainProject", "tableCreate", "standardViewEditor", "dialogEditor", "mediatorEditor", "models", "compiler"],
+    function(Augmented, Presentation, app, MainProject, TableCreate, StandardViewEditor, DialogEditor, MediatorEditor, Models, Compiler) {
     "use strict";
     app.log("Beginning Application...");
 
@@ -102,7 +84,8 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
             "project":              "project",  // #project
             "table":                "table",    // #table
             "view":                 "view",     // #view
-            "dialog":               "dialog"    // #dialog
+            "dialog":               "dialog",   // #dialog
+            "mediator":             "mediator"
         },
 
         index: function() {
@@ -119,6 +102,9 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         },
         dialog: function() {
             this.loadView(DialogEditor.initialize());
+        },
+        mediator: function() {
+            this.loadView(MediatorEditor.initialize());
         }
     });
 
@@ -132,13 +118,13 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         el: "#main",
         init: function(options) {
             // hamburger events
-            this.on('createProject', function(name) {
+            this.on("createProject", function(name) {
                 app.log("Created new project - " + name);
                 app.datastore.set("project", name);
                 app.router.navigate("project", {trigger: true});
                 this.publish("header", "notification", "Project " + name + " Created.");
             });
-            this.on('openProject', function(file) {
+            this.on("openProject", function(file) {
                 app.log("Opening a project - " + file);
 
                 var reader = new FileReader(), that = this;
@@ -159,13 +145,13 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
 
                 reader.readAsText(file);
             });
-            this.on('saveProject', function(file) {
+            this.on("saveProject", function(file) {
                 app.log("Saving a project - " + file);
                 var blob = new Blob([JSON.stringify(app.datastore.toJSON())], {type: "text/plain;charset=utf-8"});
                 saveAs(blob, file);
                 this.publish("header", "notification", "Save Project Complete.");
             });
-            this.on('compileProject', function() {
+            this.on("compileProject", function() {
                 app.log("Compiling a project");
                 var stuff = Compiler.compile(app.datastore.toJSON());
                 var blob = new Blob([stuff], {type: "text/plain;charset=utf-8"});
@@ -213,14 +199,14 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
             if (!this.modal) {
                 var menu = this.boundElement("hamburgerMenu");
                 var r = this.boundElement("hamburgerClickRegion");
-                r.classList.toggle('model');
-                menu.classList.toggle('menu--on');
+                r.classList.toggle("model");
+                menu.classList.toggle("menu--on");
             }
         },
         about: function() {
             if (!this.modal) {
                 this.hamburger();
-                var t = document.querySelector('#aboutDialogTemplate');
+                var t = document.querySelector("#aboutDialogTemplate");
                 // consider an inject template method
                 var clone = document.importNode(t.content, true);
                 this.injectTemplate(clone, this.el);
@@ -237,7 +223,7 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
         create: function() {
             if (!this.modal) {
                 this.hamburger();
-                var t = document.querySelector('#createProjectDialogTemplate');
+                var t = document.querySelector("#createProjectDialogTemplate");
                 // consider an inject template method
                 var clone = document.importNode(t.content, true);
                 this.injectTemplate(clone, this.el);
@@ -263,7 +249,7 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
                 this.hamburger();
                 // Check for the various File API support.
                 if (window.File && window.FileReader && window.FileList && window.Blob) {
-                    var t = document.querySelector('#openProjectDialogTemplate');
+                    var t = document.querySelector("#openProjectDialogTemplate");
                     // consider an inject template method
                     var clone = document.importNode(t.content, true);
                     this.injectTemplate(clone, this.el);
@@ -292,7 +278,7 @@ require(['augmented', 'augmentedPresentation', 'application', 'mainProject', 'ta
             if (!this.modal) {
                 this.hamburger();
 
-                var t = document.querySelector('#saveProjectDialogTemplate');
+                var t = document.querySelector("#saveProjectDialogTemplate");
                 // consider an inject template method
                 var clone = document.importNode(t.content, true);
                 this.injectTemplate(clone, this.el);

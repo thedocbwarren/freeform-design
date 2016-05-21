@@ -23,6 +23,22 @@
 		"type": "controller"
 	}],
 	"views": [{
+		"name": "MediatorView",
+		"type": "Mediator",
+		"permissions": {
+			"include": ["admin"],
+			"exclude": ["purchaser"]
+		},
+		"observeList": [{
+			"view": "TestAutotableView",
+			"channel": " table ",
+			"identifer": "table"
+		}, {
+			"view": "MyDialogView",
+			"channel": " dialog",
+			"identifer": "dialog"
+		}]
+	}, {
 		"name": "TestView",
 		"type": "View",
 		"permissions": {

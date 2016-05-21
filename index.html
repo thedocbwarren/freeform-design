@@ -7,12 +7,11 @@
 		<title>freeForm Design in Augmented.js</title>
         <link type="text/css" rel="stylesheet" href="styles/main.css"/>
 		<!-- requirejs pulls in all necessary js for this component -->
-        <!-- for production -->
+        <!-- for production
 		<script data-main="scripts/app/freeform-designRequire-built.js" src="scripts/lib/require.js"></script>
-        
-        <!-- dev
+        -->
+        <!-- dev -->
         <script data-main="scripts/app/freeform-designRequire.js" src="scripts/lib/require.js"></script>
-    -->
 	</head>
 	<body>
 		<article>
@@ -289,6 +288,21 @@
                         <div data-dialogViewer="body"></div>
                         <div data-dialogViewer="buttons" class="buttonGroup" data-style="description-list"></div>
                     </dialog>
+                </div>
+            </template>
+            <template id="mediatorEditorTemplate">
+                <div id="basic">
+                    <header>
+                        <h1 data-basic="name"></h1>
+                        <div class="icon right" data-basic="back" data-click="back"><i class="material-icons">arrow_back</i></div>
+                    </header>
+                </div>
+                <div id="mediator" class="panel editor">
+                    <button id="observeNewView" class="round hugTop red" data-mediator="observeNewView" data-click="observeNewView" title="Observe a view"><i class="material-icons md-light">add</i></button>
+                    <div id="mediatorIcon" class="avatar circle large float left">M</div>
+                    <h4 class="avatarTitle large">Observing These Colleagues</h4>
+                    <div data-mediator="observeList"></div>
+                    <div id="editDialog"></div>
                 </div>
             </template>
 		</article>

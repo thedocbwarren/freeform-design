@@ -977,8 +977,13 @@ div.blur {
     background-color: rgba(0,0,0,0.1);
 }
 
-.center {
+p.center, h1.center, h2.center, h3.center, h4.center {
     text-align: center;
+}
+
+div.center, ul.center, ol.center {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 article section#header {
@@ -1271,7 +1276,7 @@ div.flexContainer {
     margin: 8px 0  !important;
 }
 
-div.flexContainer p, div.flexContainer div {
+div.flexContainer > p, div.flexContainer > div {
     margin: 0 !important;
 }
 
@@ -1409,7 +1414,7 @@ article section div.panel ul li {
     margin-right: 0;
     padding: 8px 16px;
     vertical-align: text-bottom;
-    border-bottom: 1px solid #eeeeee;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
     text-overflow: clip ellipsis;
     word-wrap: break-word;
     white-space: nowrap;
@@ -1426,6 +1431,57 @@ div.panel.stack {
     vertical-align: text-top;
 }
 
+div.avatar {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: block;
+    font-size: 1em;
+    height: 50px;
+    line-height: 50px;
+    margin: 15px !important;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    width: 50px;
+}
+
+div.avatar.large {
+    width: 100px;
+    height: 100px;
+    font-size: 2em;
+    line-height: 100px;
+    flex: 0 0 100px;
+}
+
+.avatarTitle {
+    margin-top: 22px;
+}
+
+.avatarTitle.large{
+    margin-top: 55px;
+}
+
+div.circle {
+    border-radius: 25px;
+}
+
+div.circle.large {
+    border-radius: 50px;
+}
+
+.float.left {
+    float: left;
+}
+
+.float.right {
+    float: right;
+}
+
+.vcenter {
+    vertical-align: center;
+
+}
+
 /*
 article section#activePanel div.panel.stack {
     display: inline-block;
@@ -1440,8 +1496,6 @@ article section#main h1 {
     margin-top: 20%;
     text-align: center;
 }
-
-
 
 article section#activePanel div.panel#schema {
     top: 0;

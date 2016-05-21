@@ -1,7 +1,7 @@
-define('viewsSubView', ['augmented', 'augmentedPresentation', 'application', 'models', 'editDialog', 'handlebars',
+define("viewsSubView", ["augmented", "augmentedPresentation", "application", "models", "editDialog", "abstractEditorView", "handlebars",
 //templates
-'viewsTemplate'],
-    function(Augmented, Presentation, app, Models, EditDialog, Handlebars) {
+"viewsTemplate"],
+    function(Augmented, Presentation, app, Models, EditDialog, AbstractEditorView, Handlebars) {
     "use strict";
 
     var ViewCollection = Augmented.Collection.extend({
@@ -23,7 +23,7 @@ define('viewsSubView', ['augmented', 'augmentedPresentation', 'application', 'mo
     // register panels to a view type
     var panelRegistry = {
         "View": "view",
-        "Mediator": "view",
+        "Mediator": "mediator",
         "Colleague": "view",
         "DecoratorView": "view",
         "DialogView": "dialog",
@@ -44,22 +44,22 @@ define('viewsSubView', ['augmented', 'augmentedPresentation', 'application', 'mo
     };
 
     // {{#compare unicorns ponies operator="<"}}
-    Handlebars.registerHelper('compare', function(lvalue, rvalue, options) {
+    Handlebars.registerHelper("compare", function(lvalue, rvalue, options) {
         if (arguments.length < 3)
-            throw new Error("Handlerbars Helper 'compare' needs 2 parameters");
+            throw new Error("Handlerbars Helper \"compare\" needs 2 parameters");
         var operator = options.hash.operator || "==";
         var operators = {
-            '==':       function(l,r) { return l == r; },
-            '===':      function(l,r) { return l === r; },
-            '!=':       function(l,r) { return l != r; },
-            '<':        function(l,r) { return l < r; },
-            '>':        function(l,r) { return l > r; },
-            '<=':       function(l,r) { return l <= r; },
-            '>=':       function(l,r) { return l >= r; },
-            'typeof':   function(l,r) { return typeof l == r; }
+            "==":       function(l,r) { return l == r; },
+            "===":      function(l,r) { return l === r; },
+            "!=":       function(l,r) { return l != r; },
+            "<":        function(l,r) { return l < r; },
+            ">":        function(l,r) { return l > r; },
+            "<=":       function(l,r) { return l <= r; },
+            ">=":       function(l,r) { return l >= r; },
+            "typeof":   function(l,r) { return typeof l == r; }
         };
         if (!operators[operator])
-            throw new Error("Handlerbars Helper 'compare' doesn't know the operator "+operator);
+            throw new Error("Handlerbars Helper \"compare\" doesn't know the operator "+operator);
         var result = operators[operator](lvalue,rvalue);
         if( result ) {
             return options.fn(this);
@@ -70,7 +70,7 @@ define('viewsSubView', ['augmented', 'augmentedPresentation', 'application', 'mo
 
     // views
 
-    var ViewsView = Augmented.Presentation.DecoratorView.extend({
+    var ViewsView = AbstractEditorView.extend({
         name: "views",
         el: "#views",
         init: function() {
@@ -90,9 +90,7 @@ define('viewsSubView', ['augmented', 'augmentedPresentation', 'application', 'mo
             this.injectTemplate(Handlebars.templates.viewsTemplate({"currentViews": this.collection.toJSON()}), e);
         },
         editView: function(event) {
-            var index = (event.currentTarget.getAttribute("data-index"));
-            var model = this.collection.at(index);
-            this.openDialog(model, index);
+            this.editCurrent(event);
         },
         editViewType: function(event) {
             var index = (event.currentTarget.getAttribute("data-index"));
@@ -128,10 +126,7 @@ define('viewsSubView', ['augmented', 'augmentedPresentation', 'application', 'mo
             }
         },
         deleteView: function() {
-            var index = this.dialog.model.get("index");
-            var model = this.collection.at(index);
-            this.collection.remove(model);
-            this.render();
+            this.deleteCurrent();
         },
         currentViews: function(event) {
             var index = (event.target.getAttribute("data-index"));
@@ -175,19 +170,8 @@ define('viewsSubView', ['augmented', 'augmentedPresentation', 'application', 'mo
             this.dialog.syncBoundElement("edit-view");
             this.dialog.syncBoundElement("edit-view-type");
         },
-        closeDialog: function() {
-        },
         addView: function() {
-            this.openDialog(null, -1);
-        },
-        remove: function() {
-            if (this.dialog) {
-                this.dialog.remove();
-            }
-            /* off to unbind the events */
-            this.off();
-            this.stopListening();
-            return this;
+            this.addNew();
         }
     });
     return ViewsView;

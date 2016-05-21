@@ -1,8 +1,8 @@
-define('controllersSubView', ['augmented', 'augmentedPresentation', 'application', 'models', 'editDialog', 'handlebars',
+define("controllersSubView", ["augmented", "augmentedPresentation", "application", "models", "editDialog", "abstractEditorView", "handlebars",
 //templates
-'controllersTemplate'
+"controllersTemplate"
 ],
-    function(Augmented, Presentation, app, Models, EditDialog, Handlebars) {
+    function(Augmented, Presentation, app, Models, EditDialog, AbstractEditorView, Handlebars) {
     "use strict";
 
     var EditControllerDialog = EditDialog.extend({
@@ -14,7 +14,7 @@ define('controllersSubView', ['augmented', 'augmentedPresentation', 'application
         model: Models.ControllerModel
     });
 
-    var ControllersView = Augmented.Presentation.DecoratorView.extend({
+    var ControllersView = AbstractEditorView.extend({
         name: "controllers",
         el: "#controllers",
         init: function() {
@@ -34,9 +34,7 @@ define('controllersSubView', ['augmented', 'augmentedPresentation', 'application
             this.injectTemplate(Handlebars.templates.controllersTemplate({"controllers": this.collection.toJSON()}), e);
         },
         editController: function(event) {
-            var index = (event.currentTarget.getAttribute("data-index"));
-            var model = this.collection.at(index);
-            this.openDialog(model, index);
+            this.editCurrent(event);
         },
         setModel: function(arr) {
             this.model.set("currentControllers", arr);
@@ -60,10 +58,7 @@ define('controllersSubView', ['augmented', 'augmentedPresentation', 'application
             }
         },
         deleteController: function() {
-            var index = this.dialog.model.get("index");
-            var model = this.collection.at(index);
-            this.collection.remove(model);
-            this.render();
+            this.deleteCurrent();
         },
         currentControllers: function(event) {
             var index = (event.target.getAttribute("data-index"));
@@ -103,20 +98,9 @@ define('controllersSubView', ['augmented', 'augmentedPresentation', 'application
             this.dialog.render();
             this.dialog.syncBoundElement("controller");
         },
-        closeDialog: function() {
-        },
         addController: function() {
-            this.openDialog(null, -1);
-        },
-        remove: function() {
-            if (this.dialog) {
-                this.dialog.remove();
-            }
-            /* off to unbind the events */
-            this.off();
-            this.stopListening();
-            return this;
+            this.addNew();
         }
     });
-return ControllersView;
+    return ControllersView;
 });

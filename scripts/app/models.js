@@ -44,9 +44,15 @@ define('models', ['augmented'],
             }
         }),
         PermissionModel: Augmented.Model.extend({
-            defaults : {
+            defaults: {
                 "permission": "",
                 "exclude": false
+            }
+        }),
+        ObserveViewModel: Augmented.Model.extend({
+            defaults: {
+                "view": "",
+                "channel": ""
             }
         })
     };

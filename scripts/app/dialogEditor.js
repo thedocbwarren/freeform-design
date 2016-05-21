@@ -1,10 +1,9 @@
-define(['augmented', 'augmentedPresentation', 'application', 'basicInfoView', 'editDialog', 'models', 'handlebars'],
-function(Augmented, Presentation, app, BasicInfoView, EditDialog, Models, Handlebars) {
+define(['augmented', 'augmentedPresentation', 'application', 'basicInfoView', 'editDialog', 'abstractEditorMediator', 'models', 'handlebars'],
+function(Augmented, Presentation, app, BasicInfoView, EditDialog, AbstractEditorMediator, Models, Handlebars) {
     "use strict";
 
-    var DialogEditorMediator = Augmented.Presentation.Mediator.extend({
+    var DialogEditorMediator = AbstractEditorMediator.extend({
         name:"DialogEditorMediator",
-        el: "#activePanel",
         init: function() {
             this.on("goToProject", function() {
                 this.goToProject();
@@ -38,26 +37,7 @@ function(Augmented, Presentation, app, BasicInfoView, EditDialog, Models, Handle
             // consider an inject template method simular to DecoratorView
             var clone = document.importNode(t.content, true);
             this.el.appendChild(clone);
-        },
-        remove: function() {
-            /* off to unbind the events */
-            this.off(this.el);
-            this.stopListening();
-            Augmented.Presentation.Dom.empty(this.el);
-            return this;
-        },
-        goToProject: function() {
-            this.currentView = null;
-            app.datastore.unset("currentView");
-            app.router.navigate("project", {trigger: true});
-        },
-        saveData: function() {
-            app.datastore.set("currentView", this.currentView);
-            var views = app.datastore.get("views");
-            if (views) {
-                views[this.currentView.index] = this.currentView.model;
-            }
-        },
+        }
     });
 
     var DialogEditorView = Augmented.Presentation.DecoratorView.extend({

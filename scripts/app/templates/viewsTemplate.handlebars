@@ -10,6 +10,9 @@
                 {{#compare type "DialogView" operator="==="}}
                 <div class="inlineButton large" data-name="{{name}}" data-type="{{type}}" data-index="{{@index}}" data-views="editType" data-click="editViewType"><i class="material-icons md-dark">add_circle</i></div>
                 {{/compare}}
+                {{#compare type "Mediator" operator="==="}}
+                <div class="inlineButton large" data-name="{{name}}" data-type="{{type}}" data-index="{{@index}}" data-views="editType" data-click="editViewType"><i class="material-icons md-dark">add_circle</i></div>
+                {{/compare}}
                 <div class="inlineButton large" data-name="{{name}}" data-type="{{type}}" data-index="{{@index}}" data-views="editViewPermissions" data-click="editViewPermissions"><i class="material-icons md-dark">security</i></div>
                 <div class="inlineButton large" data-name="{{name}}" data-type="{{type}}" data-index="{{@index}}" data-views="edit" data-click="editView"><i class="material-icons md-dark">edit</i></div>
             </div>

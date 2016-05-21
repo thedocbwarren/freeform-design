@@ -1,5 +1,5 @@
-define(['augmented', 'augmentedPresentation', 'application', 'basicInfoView', 'editDialog', 'models', 'handlebars', 'permissionsTemplate'],
-function(Augmented, Presentation, app, BasicInfoView, EditDialog, Models, Handlebars) {
+define(['augmented', 'augmentedPresentation', 'application', 'basicInfoView', 'editDialog', 'abstractEditorMediator', 'models', 'handlebars', 'permissionsTemplate'],
+function(Augmented, Presentation, app, BasicInfoView, EditDialog, AbstractEditorMediator, Models, Handlebars) {
     "use strict";
 
     var PermissionCollection = Augmented.Collection.extend({
@@ -11,9 +11,8 @@ function(Augmented, Presentation, app, BasicInfoView, EditDialog, Models, Handle
         name: "edit-permission"
     });
 
-    var StandardViewEditorMediator = Augmented.Presentation.Mediator.extend({
+    var StandardViewEditorMediator = AbstractEditorMediator.extend({
         name:"standardViewEditorMediator",
-        el: "#activePanel",
         init: function() {
             this.on("goToProject", function() {
                 this.goToProject();
@@ -54,26 +53,7 @@ function(Augmented, Presentation, app, BasicInfoView, EditDialog, Models, Handle
             // consider an inject template method simular to DecoratorView
             var clone = document.importNode(t.content, true);
             this.el.appendChild(clone);
-        },
-        remove: function() {
-            /* off to unbind the events */
-            this.off(this.el);
-            this.stopListening();
-            Augmented.Presentation.Dom.empty(this.el);
-            return this;
-        },
-        goToProject: function() {
-            this.currentView = null;
-            app.datastore.unset("currentView");
-            app.router.navigate("project", {trigger: true});
-        },
-        saveData: function() {
-            app.datastore.set("currentView", this.currentView);
-            var views = app.datastore.get("views");
-            if (views) {
-                views[this.currentView.index] = this.currentView.model;
-            }
-        },
+        }
     });
 
     var PermissionsView = Augmented.Presentation.DecoratorView.extend({
@@ -205,7 +185,7 @@ function(Augmented, Presentation, app, BasicInfoView, EditDialog, Models, Handle
 
             this.mediator.publish("basic", "updateName", this.mediator.currentView.model.name);
             this.mediator.publish("permissions", "updatePermissions",
-            this.mediator.currentView.model.permissions);
+                this.mediator.currentView.model.permissions);
         },
         initialize: function() {
             app.log("Creating StandardViewEditorController ...");
