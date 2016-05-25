@@ -19,7 +19,7 @@ require.config({
         // FileSave Polyfill
         "filesaver": "lib/FileSaver.min",
         // Zip library
-        "jszip": "lib/jzsip.min.js",
+        "jszip": "lib/jszip.min",
 
         // other modules
         "application": "app/application",
@@ -153,9 +153,10 @@ require(["augmented", "augmentedPresentation", "application", "mainProject", "ta
             });
             this.on("compileProject", function() {
                 app.log("Compiling a project");
-                var stuff = Compiler.compile(app.datastore.toJSON());
-                var blob = new Blob([stuff], {type: "text/plain;charset=utf-8"});
-                saveAs(blob, app.datastore.get("project") + ".txt");
+                //var stuff =
+                Compiler.compile(app.datastore.toJSON());
+                //var blob = new Blob([stuff], {type: "text/plain;charset=utf-8"});
+                //saveAs(blob, app.datastore.get("project") + ".txt");
                 this.publish("header", "notification", "Compile Complete!");
             });
             // end hamburger events

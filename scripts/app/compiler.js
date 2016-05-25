@@ -1,9 +1,11 @@
-define('compiler', ['augmented', 'models'],
-    function(Augmented, Models) {
+define("compiler", ["augmented", "models", "jszip"],
+    function(Augmented, Models, JSZip) {
     "use strict";
 
     var Compiler = {
         compile: function(model) {
+            var zip = new JSZip();
+
             if (model) {
                 var i = 0, l;
 
@@ -89,8 +91,22 @@ define('compiler', ['augmented', 'models'],
 
                 req = req + "\n" + mediation + "\n});";
 
-                return html + " \n\n " + req + " \n\n " + router + " \n\n " + application;
+                zip.file("index.html", html);
+                zip.folder("scripts").file(model.project + ".js", req);
+                zip.folder("scripts").file("router.js", router);
+                zip.folder("scripts").file("application.js", application);
+                zip.folder("styles");
+
+                zip.generateAsync({type:"blob"})
+                .then(function(blob) {
+                    saveAs(blob, model.project + ".zip");
+                });
+
+
+
+                //return html + " \n\n " + req + " \n\n " + router + " \n\n " + application;
                 //zip it
+                return zip;
             }
             return "";
         },
