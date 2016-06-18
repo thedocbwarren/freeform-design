@@ -111,7 +111,7 @@ define("compiler", ["augmented", "models", "jszip"],
             return "";
         },
         compileMediation: function(view) {
-            var code = "", i, l = view.observeList.length;
+            var code = "", i, l = (view.observeList) ? view.observeList.length : 0;
             for(i = 0; i < l; i++) {
                 code = code + view.name + ".observeColleagueAndTrigger(\n" +
                     "\t" + view.observeList[i].view + ",\n" +

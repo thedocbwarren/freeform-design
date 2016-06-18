@@ -212,7 +212,7 @@ require(["augmented", "augmentedPresentation", "application", "mainProject", "ta
                 var clone = document.importNode(t.content, true);
                 this.injectTemplate(clone, this.el);
                 this.modal = true;
-                Augmented.D.setValue("#version", "Running version " + Augmented.VERSION);
+                Augmented.D.setValue("#version", "Version " + app.VERSION);
             }
         },
         aboutButtonClose: function() {
