@@ -16,7 +16,7 @@ define("application", ["augmented", "augmentedPresentation"], function(Augmented
     app.log = function(message) {
         this.logger.log(app.APP_NAME + message);
     };
-    app.VERSION = "0.3.1";
+    app.VERSION = "0.4.0";
 
     return app;
 });

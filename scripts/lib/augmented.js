@@ -5,7 +5,7 @@
  *
  * @requires Backbone.js
  * @module Augmented
- * @version 0.3.0
+ * @version 0.4.0
  * @license Apache-2.0
  */
 (function(root, factory) {
@@ -56,7 +56,7 @@
      * The standard version property
      * @constant VERSION
      */
-    Augmented.VERSION = '0.3.0';
+    Augmented.VERSION = '0.4.0α';
     /**
      * A codename for internal use
      * @constant codename
@@ -66,13 +66,13 @@
      * A release name to help with identification of minor releases
      * @constant releasename
      */
-    Augmented.releasename = "The Hive";
+    Augmented.releasename = "Praxis";
 
     /**
      * Runs Augmented.js in 'noConflict' mode, returning the 'Augmented'
      * variable to its previous owner. Returns a reference to 'this' Augmented
      * object.
-     * @function noConflict
+     * @method noConflict
      * @memberof Augmented
      */
     Augmented.noConflict = function() {
@@ -85,17 +85,12 @@
      * Augmented underscore (if it exists from Backbone.js)
      * @module _
      * @name _
-     * @private
      * @memberof Augmented
+     * @borrows Backbone._
      */
-    var _ = Augmented._ = Backbone._;
-    /**
-     * Augmented jQuery (if it exists from Backbone.js)
-     * @module $
-     * @name $
-     * @private
-     * @memberof Augmented
-     */
+    Augmented._ = Backbone._;
+
+
     Augmented.$ = (Backbone.$) ? Backbone.$ : $; // Does $ exist?
 
     /**
@@ -122,6 +117,7 @@
     /**
      * Augmented.has
      * @method has
+     * @memberof Augmented
      * @param {object} obj The input object
      * @param {object} key The test key
      * @returns {boolean} Returns true of the key exists
@@ -151,6 +147,7 @@
     /**
      * Augmented.isObject
      * @method isObject
+     * @memberof Augmented
      * @param {object} obj The input object
      * @returns {boolean} Returns true of the param is an object
      */
@@ -162,6 +159,7 @@
     /**
      * Augmented.allKeys
      * @method allKeys
+     * @memberof Augmented
      * @param {object} obj The input object
      * @returns {array} Returns the array of ALL keys including prototyped
      */
@@ -173,6 +171,7 @@
     /**
      * Augmented.create
      * @method create
+     * @memberof Augmented
      * @param {object} prototype The input prototype
      * @param {object} props The properties (optional)
      * @returns {object} Returns the created object
@@ -218,15 +217,16 @@
 
      /**
       * Augmented.extend - Can extend base classes via .extend simular to Backbone.js
-      * @function extend
+      * @method extend
       * @memberof Augmented
       */
     Augmented.extend = Backbone.Model.extend;
 
     /**
      * Augmented.sync - Base sync method that can pass special augmented features
-     * @function sync
+     * @method sync
      * @memberof Augmented
+     * @borrows Backbone.sync
      */
     Augmented.sync = Backbone.sync;
 
@@ -234,12 +234,12 @@
      * Augmented.isFunction -
      * returns true if called name is a function
      * simular to jQuery .isFunction method
-     * @function Augmented.isFunction
+     * @method Augmented.isFunction
      * @param {function} name The name of the function to test
      * @memberof Augmented
      * @returns true if called name is a function
      */
-    var isFunction = Augmented.isFunction = function(name) {
+    Augmented.isFunction = function(name) {
         return Object.prototype.toString.call(name) == '[object Function]';
     };
 
@@ -256,11 +256,45 @@
         return Augmented.isFunction(value) ? value.call(object) : value;
     };
 
-    // Polyfill for ES6 function
+    // Polyfills for ES6 functions
     if (!Number.isInteger) {
         Number.isInteger = function(value) {
             return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
         };
+    }
+
+    if (!Array.prototype.find) {
+        /**
+         * The find() method returns a value in the array, if an element in the array satisfies the provided testing function. Otherwise undefined is returned.
+         * <em>ES6 Polyfill</em>
+         * @function Array.find
+         * @memberof Array
+         * @param {object} predicate Function to execute on each value in the array, taking three arguments:
+         * @param {object++} args Optional. Object to use as this when executing callback.
+         * @returns Returns value in the array
+         * @example arr.find(callback[, thisArg]);
+         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find#Polyfill
+         */
+      Array.prototype.find = function(predicate) {
+        if (this === null) {
+          throw new TypeError('Array.prototype.find called on null or undefined');
+        }
+        if (typeof predicate !== 'function') {
+          throw new TypeError('predicate must be a function');
+        }
+        var list = Object(this);
+        var length = list.length >>> 0;
+        var thisArg = arguments[1];
+        var value;
+
+        for (var i = 0; i < length; i++) {
+          value = list[i];
+          if (predicate.call(thisArg, value, i, list)) {
+            return value;
+          }
+        }
+        return undefined;
+      };
     }
 
     if (!Array.prototype.includes) {
@@ -316,6 +350,7 @@
     /**
      * exec method - Execute a function by name
      * @method exec
+     * @memberof Augmented
      * @param {string} functionName The name of the function
      * @param {object} context The context to call from
      * @param (object) args Arguments
@@ -343,16 +378,17 @@
      * Helper function to correctly set up the prototype chain for subclasses.<br/>
      * Similar to `goog.inherits`, but uses a hash of prototype properties and
      * class properties to be extended.
+     * @constructor Augmented.Utility.ClassExtend
      * @param {any} protoProps Properties from prototype
      * @param {any} staticProps Static Properties to add if provided
-     * @namespace Augmented.Utility
+     * @memberof Augmented.Utility
      */
     Augmented.Utility.ClassExtend = classExtend;
 
     /**
      * Prints an object nicely
-     * @function PrettyPrint
-     * @namespace Augmented.Utility
+     * @constructor Augmented.Utility.PrettyPrint
+     * @memberof Augmented.Utility
      * @param {object} obj The object to print
      * @param {boolean} spaces Use spaces instead of tabs
      * @returns {number} number The number of spaces to pad
@@ -367,8 +403,8 @@
 
     /**
      * Sorts an array of objects by propery in object
-     * @function Sort
-     * @namespace Augmented.Utility
+     * @constructor Augmented.Utility.Sort
+     * @memberof Augmented.Utility
      * @param {array} array The object array to sort
      * @param {object} key The property to sort by
      * @returns {array} The sorted array
@@ -383,34 +419,36 @@
 
     /**
      * Performs a binary search on the host array. vs indexOf<br/>
-     * Binary Search is a complexity of <em>O(log n)</em> vs <em>O(n)</em> with indexOf
-     * @namespace Augmented.Utility
-     * @param {Array} items The array.
-     * @param {Any} value The item to search for within the array.
+     * Binary Search is a complexity of <em>O(n log n)</em> vs <em>O(n)</em> with indexOf
+     * @constructor Augmented.Utility.BinarySearch
+     * @memberof Augmented.Utility
+     * @param {Array} arr The array.
+     * @param {Any} find The item to search for within the array.
+     * @param {function} comparator The comparator to use
      * @returns {Number} The index of the element which defaults to -1 when not found.
      */
-    Augmented.Utility.BinarySearch = function(items, value){
-        var startIndex  = 0,
-            stopIndex   = items.length - 1,
-            middle      = Math.floor((stopIndex + startIndex)/2);
+    Augmented.Utility.BinarySearch = function(arr, find, comparator) {
+        var low = 0, high = arr.length - 1,
+            i, comparison;
 
-        while(items[middle] != value && startIndex < stopIndex){
-            //adjust search area
-            if (value < items[middle]){
-                stopIndex = middle - 1;
-            } else if (value > items[middle]){
-                startIndex = middle + 1;
+        while (low <= high) {
+            i = Math.floor((low + high) / 2);
+            comparison = comparator(arr[i], find);
+            if (comparison < 0) {
+                low = i + 1; continue;
             }
-            //recalculate middle
-            middle = Math.floor((stopIndex + startIndex)/2);
+            if (comparison > 0) {
+                high = i - 1; continue;
+            }
+            return i;
         }
-        //make sure it's the right value
-        return (items[middle] != value) ? -1 : middle;
+        return null;
     };
 
     /**
      * Quick Sort implimentation for Arrays -
-     * @namespace Augmented.Utility
+     * @constructor Augmented.Utility.QuickSort
+     * @memberof Augmented.Utility
      * @param {Array} arr Array to Sort
      * @returns {Array} Returns a sorted array
      */
@@ -421,9 +459,10 @@
         }
         var left = [];
         var right = [];
+        var i = 1, l = arr.length;
         var pivot = arr[0];
         //go through each element in array
-        for (var i = 1; i < arr.length; i++) {
+        for (i = 1; i < l; i++) {
             if (arr[i] < pivot) {
                 left.push(arr[i]);
             } else {
@@ -447,7 +486,7 @@
      * @property {number} xObject Any Object
      * @property {number} xNull Null
      */
-    var transformerType = Augmented.Utility.TransformerType = {
+    Augmented.Utility.TransformerType = {
         "xString": 0,
         "xInteger": 1,
         "xNumber": 2,
@@ -463,14 +502,14 @@
      * @namespace Augmented.Utility.Transformer
      * @memberof Augmented.Utility
      */
-    var transformer = Augmented.Utility.Transformer = {
+    Augmented.Utility.Transformer = {
         /**
          * The transformer type enum
          * @method type The transformer type enum
          * @type {Augmented.Utility.TransformerType}
          * @memberof Augmented.Utility.Transformer
          */
-        type: transformerType,
+        type: Augmented.Utility.TransformerType,
         /**
          * Transform an object, primitive, or array to another object, primitive, or array
          * @method transform
@@ -482,23 +521,23 @@
         transform: function(source, type) {
             var out = null;
             switch(type) {
-                case transformerType.xString:
+                case Augmented.Utility.TransformerType.xString:
                     if (typeof source === 'object') {
                         out = JSON.stringify(source);
                     } else {
                         out = String(source);
                     }
                 break;
-                case transformerType.xInteger:
+                case Augmented.Utility.TransformerType.xInteger:
                     out = parseInt(source);
                 break;
-                case transformerType.xNumber:
+                case Augmented.Utility.TransformerType.xNumber:
                     out = Number(source);
                 break;
-                case transformerType.xBoolean:
+                case Augmented.Utility.TransformerType.xBoolean:
                     out = Boolean(source);
                 break;
-                case transformerType.xArray:
+                case Augmented.Utility.TransformerType.xArray:
                     if (!Array.isArray(source)) {
                         out = [];
                         out[0] = source;
@@ -506,7 +545,7 @@
                         out = source;
                     }
                 break;
-                case transformerType.xObject:
+                case Augmented.Utility.TransformerType.xObject:
                     if (typeof source !== 'object') {
                         out = {};
                         out[source] = source;
@@ -526,17 +565,17 @@
          */
         isType: function(source) {
             if (source === null) {
-                return transformerType.xNull;
+                return Augmented.Utility.TransformerType.xNull;
             } else if (typeof source === 'string') {
-                return transformerType.xString;
+                return Augmented.Utility.TransformerType.xString;
             } else if (typeof source === 'number') {
-                return transformerType.xNumber;
+                return Augmented.Utility.TransformerType.xNumber;
             } else if (typeof source === 'boolean') {
-                return transformerType.xBoolean;
+                return Augmented.Utility.TransformerType.xBoolean;
             } else if (Array.isArray(source)) {
-                return transformerType.xArray;
+                return Augmented.Utility.TransformerType.xArray;
             } else if (typeof source === 'object') {
-                return transformerType.xObject;
+                return Augmented.Utility.TransformerType.xObject;
             }
         }
     };
@@ -544,7 +583,7 @@
     /**
      * Augmented.isString -
      * checks is a value is a String
-     * @function isString
+     * @method isString
      * @memberof Augmented
      * @param {string} variable to check
      * @returns {boolean} true if value is a string
@@ -558,7 +597,7 @@
     /**
      * Augmented.Utility.extend -
      * Object Extend ability simular to jQuery.extend()
-     * @function Augmented.Utility.extend
+     * @method Augmented.Utility.extend
      * @memberof Augmented.Utility
      */
     Augmented.Utility.extend = extend;
@@ -606,16 +645,131 @@
     Augmented.Ajax = {};
 
     /**
-     * Object of configuration properties and callbacks.
+     * Object of configuration properties and callbacks.  Pass this to the ajax call to setup configutation
      * @namespace Augmented.Ajax.Configuration
      * @name Augmented.Ajax.Configuration
      * @memberof Augmented.Ajax
      */
     Augmented.Ajax.Configuration = {
+        /**
+         * url property
+         * @property {string} url the url
+         * @memberof Augmented.Ajax.Configuration
+         */
         url: 'localhost',
+        /**
+         * contentType property
+         * @property {string} contentType the content type (default is text/plain)
+         * @memberof Augmented.Ajax.Configuration
+         */
         contentType: 'text/plain',
+        /**
+         * dataType property
+         * @property {string} dataType the data type (default is text)
+         * @memberof Augmented.Ajax.Configuration
+         */
         dataType: 'text',
-        async: true
+        /**
+         * async property
+         * @property {boolean} async set async (default true)
+         * @memberof Augmented.Ajax.Configuration
+         */
+        async: true,
+        /**
+         * method property
+         * @property {string} method the ajax method (default GET)
+         * @memberof Augmented.Ajax.Configuration
+         */
+         method: "GET",
+        /**
+         * cache property
+         * @property {boolean} cache the cache toggle (default true)
+         * @memberof Augmented.Ajax.Configuration
+         */
+        cache: true,
+        /**
+         * timeout property
+         * @property {number} timeout the timeout property
+         * @memberof Augmented.Ajax.Configuration
+         */
+
+        /**
+         * crossDomain property - sets withCredentials to true
+         * @property {boolean} crossDomain the cross domain property
+         * @memberof Augmented.Ajax.Configuration
+         */
+
+        /**
+         * xhrFields property
+         * @namespace xhrFields
+         * @memberof Augmented.Ajax.Configuration
+         */
+
+        /**
+         * withCredentials property
+         * @property {boolean} withCredentials the setting for credentails
+         * @memberof Augmented.Ajax.Configuration.xhrFields
+         */
+
+        /**
+         * user property
+         * @property {string} user the username for credentials
+         * @memberof Augmented.Ajax.Configuration
+         */
+
+        /**
+         * password property
+         * @property {string} password the password for credentials
+         * @memberof Augmented.Ajax.Configuration
+         */
+
+        /**
+         * allowOrigins property
+         * @property {string} allowOrigins the allowed origins for crossDomain
+         * @memberof Augmented.Ajax.Configuration
+         */
+
+        /**
+         * allowMethods property
+         * @property {string} allowMethods the allowed methods for crossDomain
+         * @memberof Augmented.Ajax.Configuration
+         */
+
+        /**
+         * headers property
+         * @property {object} headers an object of headers (key, value)
+         * @memberof Augmented.Ajax.Configuration
+         */
+
+        /**
+         * success callback
+         * @property {function} success a callback for success
+         * @memberof Augmented.Ajax.Configuration
+         */
+
+        /**
+         * error callback
+         * @property {function} error a callback for error
+         * @memberof Augmented.Ajax.Configuration
+         */
+
+        /**
+         * complete callback
+         * @property {function} complete a callback after the ajax call
+         * @memberof Augmented.Ajax.Configuration
+         */
+
+        /**
+         * beforeSend callback
+         * @property {function} beforeSend a callback before the ajax call
+         * @memberof Augmented.Ajax.Configuration
+         */
+
+        /**
+         * mock
+         * @property {boolean} mock a toggle to mock the ajax call
+         * @memberof Augmented.Ajax.Configuration
+         */
     };
 
     /**
@@ -649,7 +803,7 @@
      *         dataType: 'text',
      *         async: true,
      *         success: function (data, status) { ... },
-     *         failure: function (data, status) { ... }
+     *         error: function (data, status) { ... }
      *     });
      */
     Augmented.ajax = Augmented.Ajax.ajax = function(ajaxObject) {
@@ -808,7 +962,7 @@
      * @property {string} rest A REST-based logger
      * @memberof Augmented.Logger
      */
-    var loggerType = Augmented.Logger.Type = {
+    Augmented.Logger.Type = {
         console: "console",
         rest: "rest"
     };
@@ -823,7 +977,7 @@
      * @property {string} warn The warning level
      * @memberof Augmented.Logger
      */
-    var loggerLevelTypes = Augmented.Logger.Level = {
+    Augmented.Logger.Level = {
         info: "info",
         debug: "debug",
         error: "error",
@@ -843,9 +997,9 @@
         this.OPEN_GROUP = " [ ";
         this.CLOSE_GROUP = " ] ";
 
-        this.label = loggerLevelTypes;
+        this.label = Augmented.Logger.Level;
 
-        this.loggerLevel = (l) ? l : loggerLevelTypes.info;
+        this.loggerLevel = (l) ? l : Augmented.Logger.Level.info;
 
         this.getLogTime = function() {
             var now = new Date();
@@ -863,17 +1017,17 @@
         this.log = function(message, level) {
             if (message) {
                 if (!level) {
-                    level = loggerLevelTypes.info;
+                    level = Augmented.Logger.Level.info;
                 }
 
-                if (this.loggerLevel === loggerLevelTypes.debug && level === loggerLevelTypes.debug) {
-                    this.logMe(this.getLogTime() + this.OPEN_GROUP + loggerLevelTypes.debug + this.CLOSE_GROUP + message, level);
-                } else if (level === loggerLevelTypes.error) {
-                    this.logMe(this.getLogTime() + this.OPEN_GROUP + loggerLevelTypes.error + this.CLOSE_GROUP + message, level);
-                } else if (level === loggerLevelTypes.warn) {
-                    this.logMe(this.getLogTime() + this.OPEN_GROUP + loggerLevelTypes.warn + this.CLOSE_GROUP + message, level);
-                } else if (this.loggerLevel === loggerLevelTypes.debug || this.loggerLevel === loggerLevelTypes.info) {
-                    this.logMe(this.getLogTime() + this.OPEN_GROUP + loggerLevelTypes.info + this.CLOSE_GROUP + message, level);
+                if (this.loggerLevel === Augmented.Logger.Level.debug && level === Augmented.Logger.Level.debug) {
+                    this.logMe(this.getLogTime() + this.OPEN_GROUP + Augmented.Logger.Level.debug + this.CLOSE_GROUP + message, level);
+                } else if (level === Augmented.Logger.Level.error) {
+                    this.logMe(this.getLogTime() + this.OPEN_GROUP + Augmented.Logger.Level.error + this.CLOSE_GROUP + message, level);
+                } else if (level === Augmented.Logger.Level.warn) {
+                    this.logMe(this.getLogTime() + this.OPEN_GROUP + Augmented.Logger.Level.warn + this.CLOSE_GROUP + message, level);
+                } else if (this.loggerLevel === Augmented.Logger.Level.debug || this.loggerLevel === Augmented.Logger.Level.info) {
+                    this.logMe(this.getLogTime() + this.OPEN_GROUP + Augmented.Logger.Level.info + this.CLOSE_GROUP + message, level);
                 }
             }
         };
@@ -885,7 +1039,7 @@
     	 * @memberof abstractLogger
     	 */
         this.info = function(message) {
-            this.log(message, loggerLevelTypes.info);
+            this.log(message, Augmented.Logger.Level.info);
         };
 
     	/**
@@ -895,7 +1049,7 @@
     	 * @memberof abstractLogger
     	 */
         this.error = function(message) {
-            this.log(message, loggerLevelTypes.error);
+            this.log(message, Augmented.Logger.Level.error);
         };
 
     	/**
@@ -905,7 +1059,7 @@
     	 * @memberof abstractLogger
     	 */
         this.debug = function(message) {
-            this.log(message, loggerLevelTypes.debug);
+            this.log(message, Augmented.Logger.Level.debug);
         };
 
     	/**
@@ -915,7 +1069,7 @@
     	 * @memberof abstractLogger
     	 */
         this.warn = function(message) {
-            this.log(message, loggerLevelTypes.warn);
+            this.log(message, Augmented.Logger.Level.warn);
         };
 
       /**
@@ -936,13 +1090,13 @@
     consoleLogger.prototype.constructor = consoleLogger;
 
     consoleLogger.prototype.logMe = function(message, level) {
-        if (level === loggerLevelTypes.info) {
+        if (level === Augmented.Logger.Level.info) {
             console.info(message);
-        } else if (level === loggerLevelTypes.error) {
+        } else if (level === Augmented.Logger.Level.error) {
             console.error(message);
-        } else if (level === loggerLevelTypes.debug) {
+        } else if (level === Augmented.Logger.Level.debug) {
             console.log(message);
-        } else if (level === loggerLevelTypes.warn) {
+        } else if (level === Augmented.Logger.Level.warn) {
             console.warn(message);
         } else {
             console.log(message);
@@ -987,9 +1141,9 @@
     	 * @example Augmented.Logger.LoggerFactory.getLogger(Augmented.Logger.Type.console, Augmented.Logger.Level.debug);
     	 */
         getLogger: function(type, level) {
-            if (type === loggerType.console) {
+            if (type === Augmented.Logger.Type.console) {
                return new consoleLogger(level);
-            } else if (type === loggerType.rest) {
+            } else if (type === Augmented.Logger.Type.rest) {
                return new restLogger(level);
             }
         }
@@ -999,14 +1153,14 @@
     * A private logger for use in the framework only
     * @private
     */
-   var logger = Augmented.Logger.LoggerFactory.getLogger(loggerType.console, Augmented.Configuration.LoggerLevel);
+   var logger = Augmented.Logger.LoggerFactory.getLogger(Augmented.Logger.Type.console, Augmented.Configuration.LoggerLevel);
 
     /**
     * Wrap method to handle wrapping functions (simular to _.wrap)
     * @method wrap
     * @memberof Augmented.Utility
     */
-    var wrap = Augmented.Utility.wrap = function(fn, wrap) {
+    Augmented.Utility.wrap = function(fn, wrap) {
         return function () {
             return wrap.apply(this, [fn].concat(Array.prototype.slice.call(arguments)));
         };
@@ -1018,14 +1172,31 @@
      * @param myData {object} Map data to fill map
      * @memberof Augmented.Utility
      */
-    var augmentedMap = Augmented.Utility.AugmentedMap = function(myData) {
+
+
+     /**
+      * ES6-like Map, same as Map
+      * @constructor Augmented.Utility.AugmentedMap
+      * @param myData {object} Map data to fill map
+      * @memberof Augmented.Utility
+      * @deprecated
+      */
+    Augmented.Utility.AugmentedMap =
+
+    /**
+     * ES6-like Map
+     * @constructor Augmented.Utility.Map
+     * @param myData {object} Map data to fill map
+     * @memberof Augmented.Utility
+     */
+    Augmented.Utility.Map = function(myData) {
     	this.keys = [];
     	this.data = {};
 
       /**
        * Set the value by key in the map
        * @method set
-       * @memberof Augmented.Utility.AugmentedMap
+       * @memberof Augmented.Utility.Map
        * @param key {string} name of the key
        * @param value {any} value for the key
        */
@@ -1041,7 +1212,7 @@
       /**
        * Get the value by key in the map
        * @method get
-       * @memberof Augmented.Utility.AugmentedMap
+       * @memberof Augmented.Utility.Map
        * @param key {string} name of the key
        * @returns The value for the key
        */
@@ -1052,7 +1223,7 @@
       /**
        * Index of the key in the map
        * @method indexOf
-       * @memberof Augmented.Utility.AugmentedMap
+       * @memberof Augmented.Utility.Map
        * @param key {string} name of the key
        * @returns index of the key
        */
@@ -1063,7 +1234,7 @@
       /**
        * Remove the value by key in the map
        * @method remove
-       * @memberof Augmented.Utility.AugmentedMap
+       * @memberof Augmented.Utility.Map
        * @param key {string} name of the key
        */
     	this.remove = function(key) {
@@ -1075,7 +1246,7 @@
       /**
        * Has returns whether a key exists in the map
        * @method has
-       * @memberof Augmented.Utility.AugmentedMap
+       * @memberof Augmented.Utility.Map
        * @param key {string} name of the key
        * @returns true if the key exists in the map
        */
@@ -1086,7 +1257,7 @@
       /**
        * Iterator forEach key to value in the map
        * @method forEach
-       * @memberof Augmented.Utility.AugmentedMap
+       * @memberof Augmented.Utility.Map
        * @param fn {function} callback for the iterator
        */
     	this.forEach = function(fn) {
@@ -1105,7 +1276,7 @@
       /**
        * Get the key for the index in the map
        * @method key
-       * @memberof Augmented.Utility.AugmentedMap
+       * @memberof Augmented.Utility.Map
        * @param i {number} index of the key
        * @returns the key at index
        */
@@ -1116,7 +1287,7 @@
       /**
        * The entries value object in the map
        * @method entries
-       * @memberof Augmented.Utility.AugmentedMap
+       * @memberof Augmented.Utility.Map
        * @returns Array of entries value objects
        */
     	this.entries = function() {
@@ -1134,7 +1305,7 @@
       /**
        * The values in the map as an Array
        * @method values
-       * @memberof Augmented.Utility.AugmentedMap
+       * @memberof Augmented.Utility.Map
        * @returns values as an Array
        */
     	this.values = function() {
@@ -1149,7 +1320,7 @@
       /**
        * Clear the map
        * @method clear
-       * @memberof Augmented.Utility.AugmentedMap
+       * @memberof Augmented.Utility.Map
        */
     	this.clear = function() {
     	    this.keys = [];
@@ -1159,7 +1330,7 @@
       /**
        * The size of the map in keys
        * @method size
-       * @memberof Augmented.Utility.AugmentedMap
+       * @memberof Augmented.Utility.Map
        * @returns size of map by keys
        */
     	this.size = function() {
@@ -1169,7 +1340,7 @@
       /**
        * Represent the map in JSON
        * @method toJSON
-       * @memberof Augmented.Utility.AugmentedMap
+       * @memberof Augmented.Utility.Map
        * @returns JSON of the map
        */
     	this.toJSON = function() {
@@ -1179,7 +1350,7 @@
       /**
        * Represent the map in a String of JSON
        * @method toString
-       * @memberof Augmented.Utility.AugmentedMap
+       * @memberof Augmented.Utility.Map
        * @returns Stringified JSON of the map
        */
     	this.toString = function() {
@@ -1191,7 +1362,7 @@
       /**
        * Checks of the map is empty (not ES6)
        * @method isEmpty
-       * @memberof Augmented.Utility.AugmentedMap
+       * @memberof Augmented.Utility.Map
        * @returns true if the map is empty
        */
     	this.isEmpty = function() {
@@ -1201,8 +1372,8 @@
         /**
          * Marshalls a map
          * @method marshall
-         * @param {Augmented.Utility.AugmentedMap} data Data to marsh as a map
-         * @memberof Augmented.Utility.AugmentedMap
+         * @param {Augmented.Utility.Map} data Data to marsh as a map
+         * @memberof Augmented.Utility.Map
          */
         this.marshall = function(dataToMarshall) {
             /* dataToMarshall must be the following type of data to parse:
@@ -1210,7 +1381,7 @@
              * JSON object with properties (key/value)
              */
             var dataToParse;
-            if (dataToMarshall && dataToMarshall instanceof Augmented.Utility.AugmentedMap) {
+            if (dataToMarshall && dataToMarshall instanceof Augmented.Utility.Map) {
                 dataToParse = dataToMarshall.toJSON();
             } else if(dataToMarshall && dataToMarshall instanceof Object && (Object.keys(dataToMarshall).length > 0)) {
                 dataToParse = dataToMarshall;
@@ -1301,7 +1472,7 @@
      * @property {string} login The login of the principal
      * @property {string} email The email of the principal
      */
-    var principal = Augmented.Security.Principal = {
+    Augmented.Security.Principal = {
         fullName: "",
         id: 0,
         login: "",
@@ -1396,14 +1567,13 @@
     };
 
     /**
-     * The abstract Security Client
-     * @name abstractSecurityClient
-     * @constructor abstractSecurityClient
+     * The abstract Security Client - for use to extend your own
+     * @name AbstractSecurityClient
+     * @constructor AbstractSecurityClient
      * @property {Augmented.Security.ClientType} type The client type
      * @property {string} uri The base uri
-     * @private
      */
-    var abstractSecurityClient = Augmented.Object.extend({
+    var AbstractSecurityClient = Augmented.Object.extend({
         type: null,
         uri: ""
     });
@@ -1414,7 +1584,7 @@
      * @constructor Augmented.Security.Client.OAUTH2Client
      * @memberof Augmented.Security.Client
      */
-    Augmented.Security.Client.OAUTH2Client = abstractSecurityClient.extend({
+    Augmented.Security.Client.OAUTH2Client = AbstractSecurityClient.extend({
         type: Augmented.Security.ClientType.OAUTH2,
         /**
          * Access Token
@@ -1456,7 +1626,7 @@
      * @constructor Augmented.Security.Client.ACLClient
      * @memberof Augmented.Security.Client
      */
-  Augmented.Security.Client.ACLClient = abstractSecurityClient.extend({
+  Augmented.Security.Client.ACLClient = AbstractSecurityClient.extend({
     type: Augmented.Security.ClientType.ACL,
     /**
      * authenticate the user
@@ -1525,7 +1695,7 @@
      * @param {array} permissions Permissions to add to the entry (optional)
      * @param {boolean} negaive Sets negative permissions (optional)
      */
-    var securityEntry = Augmented.Security.Entry = function(p, neg) {
+    Augmented.Security.Entry = function(p, neg) {
         /**
          * Gets the permissions
          * @property {array} permissions
@@ -3114,9 +3284,6 @@
     };
     // End of TV4 fork, will provide base JSON-Schema Draft 4 support and then some
 
-    //var i18nBase = {};
-
-
     /* Assign an object if null */
     //var resourceBundle = (!resourceBundle) ? new i18nBase() : resourceBundle;
 
@@ -3242,7 +3409,15 @@
 	    }
     };
 
-    var schemaGenerator = function(data) {
+    /**
+     * <p>Augmented.Utility.SchemaGenerator<br/>
+     *
+     * Genrate a schema from a set of data</p>
+     * @constructor Augmented.Utility.SchemaGenerator
+     * @param {object} data a dataset to produce a schema from
+     * @memberof Augmented.Utility
+     */
+    Augmented.Utility.SchemaGenerator = function(data) {
         var obj = {
             "$schema": "http://json-schema.org/draft-04/schema#",
             "title": "model",
@@ -3353,10 +3528,10 @@
 
         this.generateSchema = function(model) {
             if (model && model instanceof Augmented.Model) {
-                return schemaGenerator(model.toJSON());
+                return Augmented.Utility.SchemaGenerator(model.toJSON());
             }
 
-            return schemaGenerator(model);
+            return Augmented.Utility.SchemaGenerator(model);
         };
     };
 
@@ -3478,6 +3653,15 @@
             if (data) {
                 this.set(data);
             }
+        },
+        /**
+         * Model.isEmpty - returns true is the model is empty
+         * @method isEmpty
+         * @memberof Augmented.Model
+         * @returns {boolean} returns true is the model is empty
+         */
+        isEmpty: function() {
+            return ( (this.attributes) ? (Object.keys(this.attributes).length === 0) : true );
         }
     });
 
@@ -3637,6 +3821,24 @@
                     this.reset(sorted);
                 }
             }
+        },
+        /**
+         * Collection.isEmpty - returns true is the collection is empty
+         * @method isEmpty
+         * @memberof Augmented.Collection
+         * @returns {boolean} returns true is the collection is empty
+         */
+        isEmpty: function() {
+            return (this.length === 0);
+        },
+        /**
+         * Collection.size - returns the size of the collection
+         * @method size
+         * @memberof Augmented.Collection
+         * @returns {number} returns the size of the collection
+         */
+        size: function() {
+            return this.length;
         }
     });
 
@@ -3818,7 +4020,7 @@
      * @namespace Augmented.PaginationFactory
      * @memberof Augmented
      */
-    var paginationFactory = Augmented.PaginationFactory = {
+    Augmented.PaginationFactory = {
         type: paginationAPIType,
         /**
          * Get a pagination collection of type
@@ -3888,7 +4090,6 @@
             this.render = Augmented.Utility.wrap(this.render, function(render) {
                 this.beforeRender();
                 render.apply(this);
-                //render();
                 this.afterRender();
                 return this;
             });
@@ -4058,16 +4259,13 @@
         }
     });
 
-    // Extend View with Object base functions
-    //Augmented.Utility.extend(augmentedView, Augmented.Object);
-
     /* Augmented Backbone - Extend Backbone with awesome */
     Augmented.Model = augmentedModel;
     Augmented.Collection = augmentedCollection;
     Augmented.View = augmentedView;
 
     /**
-     * @function history
+     * @class history
      * @extends Backbone.history
      * @memberof Augmented
      */
@@ -4088,18 +4286,27 @@
          * Load a view safely and remove the last view by calling cleanup, then remove
          * @method loadView
          * @param {Augmented.View} view The View to load
-         * @memberof Augmented
+         * @memberof Augmented.Router
          */
         loadView: function(view) {
+            this.cleanup();
+    		this._view = view;
+            this._view.render();
+    	},
+        /**
+         * remove the last view by calling cleanup, then remove
+         * @method cleanup
+         * @memberof Augmented.Router
+         */
+        cleanup: function() {
             if (this._view) {
                 if (this._view.cleanup) {
                     this._view.cleanup();
                 }
                 this._view.remove();
+                this._view = null;
             }
-    		this._view = view;
-            this._view.render();
-    	}
+        }
     });
 
     Augmented.Object.extend = Augmented.Model.extend = Augmented.Collection.extend = Augmented.Router.extend = Augmented.View.extend = Augmented.History.extend = Augmented.extend;
@@ -4109,9 +4316,9 @@
     /* local Storage */
 
     /**
-     * Local Storage API
-     * @constructor augmentedLocalStorage
-     * @name augmentedLocalStorage
+     * Local Storage API - returned from LocalStorageFactory
+     * @constructor AbstractLocalStorage
+     * @name AbstractLocalStorage
      * @memberof Augmented
      * @param {boolean} persist Persistant storage or not
      */
@@ -4119,7 +4326,7 @@
         /**
          * is Persistant or not
          * @property {boolean} isPersisted Persistant property
-         * @memberof augmentedLocalStorage
+         * @memberof AbstractLocalStorage
          */
     	this.isPersisted = persist;
 
@@ -4127,7 +4334,7 @@
         /**
          * Is storage supported
          * @method isSupported
-         * @memberof augmentedLocalStorage
+         * @memberof AbstractLocalStorage
          * @returns {boolean} Returns true if supported
          */
     	this.isSupported = function() {
@@ -4150,7 +4357,7 @@
         /**
          * Gets an item from storage
          * @method getItem
-         * @memberof augmentedLocalStorage
+         * @memberof AbstractLocalStorage
          * @param {string} key The key in storage
          * @returns {object} Returns object from storage
          */
@@ -4165,7 +4372,7 @@
         /**
          * Sets an item to storage
          * @method setItem
-         * @memberof augmentedLocalStorage
+         * @memberof AbstractLocalStorage
          * @param {string} key The key in storage
          * @param {object} object The data to set
          */
@@ -4176,7 +4383,7 @@
         /**
          * Removes an item from storage
          * @method removeItem
-         * @memberof augmentedLocalStorage
+         * @memberof AbstractLocalStorage
          * @param {string} key The key in storage
          */
     	this.removeItem = function(itemKey) {
@@ -4186,7 +4393,7 @@
         /**
          * Clears storage - <b>Warning: Destructive in non-namespaced instances!</b>
          * @method clear
-         * @memberof augmentedLocalStorage
+         * @memberof AbstractLocalStorage
          */
     	this.clear = function() {
     	    this.myStore.clear();
@@ -4195,7 +4402,7 @@
         /**
          * Gets the key from storage for index
          * @method key
-         * @memberof augmentedLocalStorage
+         * @memberof AbstractLocalStorage
          * @param {number} i The index in storage
          * @returns {string} Returns the key from storage
          */
@@ -4206,7 +4413,7 @@
         /**
          * The length of storage by keys
          * @method length
-         * @memberof augmentedLocalStorage
+         * @memberof AbstractLocalStorage
          * @returns {number} Returns the length of storage by keys
          */
     	this.length = function() {
@@ -4215,8 +4422,8 @@
     };
 
     var namespacedAugmentedLocalStorage = function(persist,namespace) {
-    	var ls = localStorageFactory.getStorage(persist);
-    	this.myNameSpacedStore = new Augmented.Utility.AugmentedMap();
+    	var ls = Augmented.LocalStorageFactory.getStorage(persist);
+    	this.myNameSpacedStore = new Augmented.Utility.Map();
     	this.namespace = namespace;
 
     	// public
@@ -4254,7 +4461,7 @@
 
     	this.setItem = function(itemKey, object) {
             if (!this.myNameSpacedStore) {
-    		    this.myNameSpacedStore = new Augmented.Utility.AugmentedMap();
+    		    this.myNameSpacedStore = new Augmented.Utility.Map();
     	    }
     	    this.myNameSpacedStore.set(itemKey, object);
     	    ls.setItem(namespace, JSON.stringify(this.myNameSpacedStore.toJSON()));
@@ -4295,12 +4502,12 @@
      * @name Augmented.LocalStorageFactory
      * @memberof Augmented
      */
-    var localStorageFactory = Augmented.LocalStorageFactory = {
+    Augmented.LocalStorageFactory = {
         /**
          * @method getStorage Get the storage instance
          * @param {boolean} persist Persistance or not
          * @param {string} namespace The namespace of the storage if needed (optional)
-         * @returns Returns an instance of local storage
+         * @returns {Augmented.AbstractLocalStorage} Returns an instance of local storage
          * @memberof Augmented.LocalStorageFactory
          */
 	    getStorage: function(persist, namespace) {
@@ -4320,7 +4527,7 @@
     /**
      * Augmented.LocalStorageCollection
      * A local storage-based Collection
-     * @constructor Augmented.Collection
+     * @constructor Augmented.LocalStorageCollection
      * @memberof Augmented
      * @extends Augmented.Collection
      */
@@ -4328,19 +4535,19 @@
         /**
          * Base key name for the collection (simular to url for rest-based)
          * @property {string} key The key
-         * @memberof augmentedLocalStorage
+         * @memberof Augmented.LocalStorageCollection
          */
         key: "augmented.localstorage.collection.key",
         /**
          * is Persistant or not
          * @property {boolean} isPersisted Persistant property
-         * @memberof LocalStorageCollection
+         * @memberof Augmented.LocalStorageCollection
          */
         persist: false,
         /**
          * Storage for the collection
          * @property {string} storage The storage used for the collection
-         * @memberof augmentedLocalStorage
+         * @memberof Augmented.LocalStorageCollection
          * @private
          */
         storage: null,
@@ -4357,7 +4564,7 @@
         /**
          * @method fetch Fetch the collection
          * @param {object} options Any options to pass
-         * @memberof Augmented.augmentedLocalStorage
+         * @memberof Augmented.LocalStorageCollection
          */
         fetch: function(options) {
             this.sync('read', this, options);
@@ -4365,7 +4572,7 @@
         /**
          * @method save Save the collection
          * @param {object} options Any options to pass
-         * @memberof Augmented.augmentedLocalStorage
+         * @memberof Augmented.LocalStorageCollection
          */
         save: function(options) {
             this.sync('create', this, options);
@@ -4373,7 +4580,7 @@
         /**
          * @method update Update the collection
          * @param {object} options Any options to pass
-         * @memberof Augmented.augmentedLocalStorage
+         * @memberof LocalStorageCollection
          */
         update: function(options) {
             this.sync('update', this, options);
@@ -4381,7 +4588,7 @@
         /**
          * @method destroy Destroy the collection
          * @param {object} options Any options to pass
-         * @memberof Augmented.augmentedLocalStorage
+         * @memberof Augmented.LocalStorageCollection
          */
         destroy: function(options) {
             this.sync('delete', this, options);
@@ -4414,7 +4621,7 @@
      * @constructor Augmented.Utility.Stack
      * @memberof Augmented.Utility
      */
-    var stack = Augmented.Utility.Stack = function() {
+    Augmented.Utility.Stack = function() {
         this.stack = [];
         /**
          * The empty method clears the stack
@@ -4495,7 +4702,7 @@
      * @param {number} timeout The timout period for each process in the queue (optional)
      * @memberof Augmented.Utility
      */
-    var asyncQueue = Augmented.Utility.AsynchronousQueue = function(timeout) {
+    Augmented.Utility.AsynchronousQueue = function(timeout) {
         var to = (timeout) ? timeout : Augmented.Configuration.AsynchronousQueueTimeout;
         this.queue = {};
 
@@ -4575,7 +4782,7 @@
      * app.beforeInitialize() = function() { do some stuff... };
      * app.start();
      */
-    var application = Augmented.Application = function(name) {
+    Augmented.Application = function(name) {
 		var metadata, routers = [];
 
         /**
@@ -4594,7 +4801,7 @@
         this.started = false;
 
         if (!metadata) {
-            metadata = new Augmented.Utility.AugmentedMap();
+            metadata = new Augmented.Utility.Map();
         } else {
             metadata.clear();
         }
@@ -4648,7 +4855,7 @@
         /** Get the metadata map
          * @method getMetadata
          * @memberof Augmented.Application
-         * @returns Map of metadata in an Augmented.Utility.AugmentedMap
+         * @returns Map of metadata in an Augmented.Utility.Map
          */
 		this.getMetadata = function() {
 			return metadata;
@@ -4719,7 +4926,7 @@
 		    this.started = false;
 		};
     };
-    Augmented.Application.prototype.constructor = application;
+    Augmented.Application.prototype.constructor = Augmented.Application;
 
     return Augmented;
 }));

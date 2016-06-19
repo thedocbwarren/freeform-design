@@ -7,12 +7,12 @@
 		<title>freeForm Design in Augmented.js</title>
         <link type="text/css" rel="stylesheet" href="styles/main.css"/>
 		<!-- requirejs pulls in all necessary js for this component -->
-        <!-- for production -->
+        <!-- for production
 		<script data-main="scripts/app/freeform-designRequire-built.js" src="scripts/lib/require.js"></script>
-
-        <!-- dev
-        <script data-main="scripts/app/freeform-designRequire.js" src="scripts/lib/require.js"></script>
         -->
+        <!-- dev -->
+        <script data-main="scripts/app/freeform-designRequire.js" src="scripts/lib/require.js"></script>
+
 	</head>
 	<body>
 		<article>
@@ -81,12 +81,11 @@
                         <label for="routePath">Path</label><input type="text" name="routePath" id="routePath" data-routes="routePath"/>
                         <label for="routeCallback">Callback</label><input type="text" name="routeCallback" id="routeCallback" data-routes="routeCallback"/>
                         <label for="routeCallback">Type</label>
-                            <select name="routeType" data-routes="routeType">
-                                <option value="function" selected="selected">Function</option>
-                                <option value="view">View</option>
-                                <option value="controller">Controller</option>
-                            </select>
-
+                        <select name="routeType" data-routes="routeType">
+                            <option value="function" selected="selected">Function</option>
+                            <option value="view">View</option>
+                            <option value="controller">Controller</option>
+                        </select>
                         <div class="buttonGroup">
                             <button data-routes="createButton" data-click="addRouteButton">Add</button>
                             <button data-routes="cancelButton" data-click="addRouteButtonClose">Cancel</button>
@@ -164,7 +163,7 @@
                 <div class="blur" id="aboutDialog" data-header="aboutDialog">
                     <dialog class="alert">
                         <h1 class="atariScroll"><em>free</em>Form Designer</h1>
-                        <h2 class="center">The Augmented.js UI Designer.<br/>Designed for Augmented.js v.0.3.x</h2>
+                        <h2 class="center">The Augmented.js UI Designer.<br/>Designed for Augmented.js v.0.4.x</h2>
                         <h4 id="version" class="secondary center"></h4>
                         <div class="buttonGroup">
                             <button data-header="okButton" data-click="aboutButtonClose">Ok</button>
@@ -306,6 +305,35 @@
                     <div data-mediator="observeList"></div>
                     <div id="editDialog"></div>
                 </div>
+            </template>
+            <template id="autoFormTemplate">
+                <div id="basic">
+                    <header>
+                        <h1 data-basic="name"></h1>
+                        <div class="icon right" data-basic="back" data-click="back"><i class="material-icons">arrow_back</i></div>
+                    </header>
+                </div>
+    			<div id="schema" class="panel editor">
+                    <header>
+                        <h1><i class="material-icons">description</i>JSON Schema</h1>
+                        <div class="tools" data-schema="clear" data-click="clear" title="Clear the schema"><i class="material-icons md-dark">clear</i></div>
+                    </header>
+                    <div>
+                        <textarea name="schema" placeholder="JSON Schema" data-schema="schema" data-function="validate" autofocus></textarea>
+                    </div>
+                    <footer>
+                        <p id="message" data-schema="message"></p>
+                    </footer>
+                    <button id="compile" class="round" data-schema="compile" data-click="compile" title="Compile the schema"><i class="material-icons md-light">add</i></button>
+    			</div>
+                <div id="viewer" class="panel viewer">
+                    <header>
+                        <h1><i class="material-icons">web</i>Viewer</h1>
+                    </header>
+                    <div id="renderWindow" data-viewer="renderWindow">
+                        <!-- Rendered content goes here -->
+                    </div>
+    			</div>
             </template>
 		</article>
 	</body>

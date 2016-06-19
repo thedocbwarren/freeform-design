@@ -25,6 +25,7 @@ require.config({
         "application": "app/application",
         "mainProject": "app/mainProject",
         "tableCreate": "app/tableCreate",
+        "autoForm": "app/autoForm",
         "standardViewEditor": "app/standardViewEditor",
         "models": "app/models",
         "compiler": "app/compiler",
@@ -34,6 +35,8 @@ require.config({
         "editDialog": "app/editDialog",
         "dialogEditor": "app/dialogEditor",
         "mediatorEditor": "app/mediatorEditor",
+        "autoViewMediator": "app/autoViewMediator",
+        "schemaDecoratorView": "app/schemaDecoratorView",
 
         //subviews
         "stylesheetsSubView": "app/stylesheetsSubView",
@@ -55,8 +58,8 @@ require.config({
 
 //  main app
 
-require(["augmented", "augmentedPresentation", "application", "mainProject", "tableCreate", "standardViewEditor", "dialogEditor", "mediatorEditor", "models", "compiler"],
-    function(Augmented, Presentation, app, MainProject, TableCreate, StandardViewEditor, DialogEditor, MediatorEditor, Models, Compiler) {
+require(["augmented", "augmentedPresentation", "application", "mainProject", "tableCreate", "autoForm", "standardViewEditor", "dialogEditor", "mediatorEditor", "models", "compiler"],
+    function(Augmented, Presentation, app, MainProject, TableCreate, AutoForm, StandardViewEditor, DialogEditor, MediatorEditor, Models, Compiler) {
     "use strict";
     app.log("Beginning Application...");
 
@@ -83,6 +86,7 @@ require(["augmented", "augmentedPresentation", "application", "mainProject", "ta
             "":                     "index",    // index
             "project":              "project",  // #project
             "table":                "table",    // #table
+            "form":                 "form",     // #form
             "view":                 "view",     // #view
             "dialog":               "dialog",   // #dialog
             "mediator":             "mediator"
@@ -96,6 +100,9 @@ require(["augmented", "augmentedPresentation", "application", "mainProject", "ta
         },
         table: function() {
             this.loadView(TableCreate.initialize());
+        },
+        form: function() {
+            this.loadView(AutoForm.initialize());
         },
         view: function() {
             this.loadView(StandardViewEditor.initialize());

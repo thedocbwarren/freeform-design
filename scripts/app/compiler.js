@@ -73,6 +73,8 @@ define("compiler", ["augmented", "models", "jszip"],
                 for(i = 0; i < l; i++) {
                     if (model.views[i].type === "AutomaticTable") {
                         req = req + "\n\n" + this.compileTable(model.views[i], model.views[i].settings);
+                    } else if(model.views[i].type === "AutomaticForm") {
+                        req = req + "\n\n" + this.compileForm(model.views[i]);
                     } else if (model.views[i].type === "DialogView") {
                         req = req + "\n\n" + this.compileDialog(model.views[i]);
                     } else {
@@ -101,8 +103,6 @@ define("compiler", ["augmented", "models", "jszip"],
                 .then(function(blob) {
                     saveAs(blob, model.project + ".zip");
                 });
-
-
 
                 //return html + " \n\n " + req + " \n\n " + router + " \n\n " + application;
                 //zip it
@@ -152,6 +152,19 @@ define("compiler", ["augmented", "models", "jszip"],
                     "\turl: \"http://www.example.com/data\"\n" +
                 "});\n\n" +
                 "at.render();";
+        },
+        compileForm: function(viewModel) {
+            return "var " + viewModel.name + "schema = " + JSON.stringify(viewModel.schema) + ";\n\n" +
+                "var " + viewModel.name +
+                " = Augmented.Presentation.AutomaticForm.extend({\n" +
+                "\tinit: function(options) { }\n" +
+                "});\n\n" +
+                "var f = new " + viewModel.name + "({ " +
+                    "\tschema: " + viewModel.name + "schema, \n" +
+                    "\tel: \"#autoForm\", \n",
+                    "\turl: \"http://www.example.com/data\"\n" +
+                "});\n\n" +
+                "f.render();";
         },
         extractStylesheets: function(arr, as) {
             var a = [], i = 0, l = arr.length;

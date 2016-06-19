@@ -7,6 +7,9 @@
                 {{#compare type "AutomaticTable" operator="==="}}
                 <div class="inlineButton large" data-name="{{name}}" data-type="{{type}}" data-index="{{@index}}" data-views="editType" data-click="editViewType"><i class="material-icons md-dark">add_circle</i></div>
                 {{/compare}}
+                {{#compare type "AutomaticForm" operator="==="}}
+                <div class="inlineButton large" data-name="{{name}}" data-type="{{type}}" data-index="{{@index}}" data-views="editType" data-click="editViewType"><i class="material-icons md-dark">add_circle</i></div>
+                {{/compare}}
                 {{#compare type "DialogView" operator="==="}}
                 <div class="inlineButton large" data-name="{{name}}" data-type="{{type}}" data-index="{{@index}}" data-views="editType" data-click="editViewType"><i class="material-icons md-dark">add_circle</i></div>
                 {{/compare}}

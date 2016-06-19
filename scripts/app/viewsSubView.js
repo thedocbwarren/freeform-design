@@ -17,7 +17,7 @@ define("viewsSubView", ["augmented", "augmentedPresentation", "application", "mo
 
     // Current support views
     var supportedViews = [
-        "View", "Mediator", "Colleague", "AutomaticTable", "DecoratorView", "DialogView"
+        "View", "Mediator", "Colleague", "AutomaticTable", "AutomaticForm", "DecoratorView", "DialogView"
     ];
 
     // register panels to a view type
@@ -27,7 +27,8 @@ define("viewsSubView", ["augmented", "augmentedPresentation", "application", "mo
         "Colleague": "view",
         "DecoratorView": "view",
         "DialogView": "dialog",
-        "AutomaticTable": "table"
+        "AutomaticTable": "table",
+        "AutomaticForm": "form"
     };
 
     // an option builder for the views
