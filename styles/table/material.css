@@ -114,6 +114,7 @@ table.material td input {
     display: inline-block;
     position: relative;
     background-color: transparent;
+    margin: 0;
 }
 /*
 table.material td input:focus {
