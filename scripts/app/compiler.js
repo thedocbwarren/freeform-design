@@ -161,7 +161,7 @@ define("compiler", ["augmented", "models", "jszip"],
                 "});\n\n" +
                 "var f = new " + viewModel.name + "({ " +
                     "\tschema: " + viewModel.name + "schema, \n" +
-                    "\tel: \"#autoForm\", \n",
+                    "\tel: \"#autoForm\", \n" +
                     "\turl: \"http://www.example.com/data\"\n" +
                 "});\n\n" +
                 "f.render();";
