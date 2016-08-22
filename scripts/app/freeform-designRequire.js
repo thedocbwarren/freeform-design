@@ -43,6 +43,7 @@ require.config({
         "routesSubView": "app/routesSubView",
         "controllersSubView": "app/controllersSubView",
         "viewsSubView": "app/viewsSubView",
+		"modelSubView": "app/modelSubView",
 
         // compiled templates
         "stylesheetsTemplate": "app/templates/stylesheetsTemplate",
@@ -58,8 +59,10 @@ require.config({
 
 //  main app
 
-require(["augmented", "augmentedPresentation", "application", "mainProject", "tableCreate", "autoForm", "standardViewEditor", "dialogEditor", "mediatorEditor", "models", "compiler"],
-    function(Augmented, Presentation, app, MainProject, TableCreate, AutoForm, StandardViewEditor, DialogEditor, MediatorEditor, Models, Compiler) {
+require(["augmented", "augmentedPresentation",
+		 "application", "mainProject", "tableCreate", "autoForm", "standardViewEditor", "dialogEditor", "mediatorEditor", "models", "compiler"],
+    function(Augmented, Presentation,
+		     app, MainProject, TableCreate, AutoForm, StandardViewEditor, DialogEditor, MediatorEditor, Models, Compiler) {
     "use strict";
     app.log("Beginning Application...");
 
@@ -89,7 +92,7 @@ require(["augmented", "augmentedPresentation", "application", "mainProject", "ta
             "form":                 "form",     // #form
             "view":                 "view",     // #view
             "dialog":               "dialog",   // #dialog
-            "mediator":             "mediator"
+            "mediator":             "mediator"  // #mediator
         },
 
         index: function() {

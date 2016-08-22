@@ -1,9 +1,9 @@
 // Main project module
 define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'models', 'editDialog', 'handlebars',
 // subviews
-'stylesheetsSubView', 'routesSubView', 'controllersSubView', 'viewsSubView'],
+'stylesheetsSubView', 'routesSubView', 'controllersSubView', 'viewsSubView', 'modelSubView'],
     function(Augmented, Presentation, app, Models, EditDialog, Handlebars,
-        StylesheetsView, RoutesView, ControllersView, ViewsView) {
+        StylesheetsView, RoutesView, ControllersView, ViewsView, ModelSubView) {
     "use strict";
 
     var ProjectSideNavigation = Augmented.Presentation.DecoratorView.extend({
@@ -34,6 +34,9 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
         },
         controllers: function() {
             this.sendMessage("navigation", "controllers");
+        },
+        models: function() {
+            this.sendMessage("navigation", "models");
         }
     });
 
@@ -53,6 +56,8 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
                     this.doNavigation(navigation, ViewsView);
                 } else if (navigation === "controllers" && this.currentNavigation !== navigation) {
                     this.doNavigation(navigation, ControllersView);
+                } else if (navigation === "models" && this.currentNavigation !== navigation) {
+                    this.doNavigation(navigation, ModelsView);
                 }
             });
             this.setViewportHeight();

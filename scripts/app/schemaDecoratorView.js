@@ -1,5 +1,5 @@
 define('schemaDecoratorView', ['augmented', 'augmentedPresentation', 'application'],
-function(Augmented, Presentation, app) {
+    function(Augmented, Presentation, app) {
     "use strict";
 
     var SchemaDecoratorView = Augmented.Presentation.DecoratorView.extend({
