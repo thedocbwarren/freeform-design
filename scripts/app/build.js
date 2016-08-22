@@ -14,6 +14,7 @@
         viewsTemplate: "templates/viewsTemplate",
         permissionsTemplate: "templates/permissionsTemplate",
         controllersTemplate: "templates/controllersTemplate",
+        modelsTemplate: "templates/modelsTemplate",
         observeViewsListTemplate: "templates/observeViewsListTemplate"
     },
     include: ["jszip", "filesaver"],

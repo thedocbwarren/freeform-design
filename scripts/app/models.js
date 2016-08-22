@@ -54,6 +54,11 @@ define('models', ['augmented'],
                 "view": "",
                 "channel": ""
             }
+        }),
+        ModelModel: Augmented.Model.extend({
+            defaults: {
+                model: ""
+            }
         })
     };
     return Models;

@@ -7,12 +7,12 @@
 		<title>freeForm Design in Augmented.js</title>
         <link type="text/css" rel="stylesheet" href="styles/main.css"/>
 		<!-- requirejs pulls in all necessary js for this component -->
-        <!-- for production -->
+        <!-- for production
 		<script data-main="scripts/app/freeform-designRequire-built.js" src="scripts/lib/require.js"></script>
-
-        <!-- dev
+		-->
+        <!-- dev -->
         <script data-main="scripts/app/freeform-designRequire.js" src="scripts/lib/require.js"></script>
-        -->
+
 	</head>
 	<body>
 		<article>
@@ -48,6 +48,15 @@
             <section id="activePanel">
             </section>
             <!-- Templates -->
+			<template id="modelsTemplate">
+                <div id="models">
+                    <h1><i class="material-icons">note</i> Models</h1>
+                    <!-- since the template requires a lot more than simple generation, it's handled in code -->
+                    <div id="editDialog"></div>
+                    <div id="currentModels" data-models="currentModels"></div>
+                    <button id="addModel" class="round hugTop" data-models="addModel" data-click="addModel" title="Add a new model"><i class="material-icons md-light">add</i></button>
+                </div>
+            </template>
             <template id="controllersTemplate">
                 <div id="controllers">
                     <h1><i class="material-icons">web</i> Controllers</h1>
@@ -59,7 +68,7 @@
             </template>
             <template id="viewsTemplate">
                 <div id="views">
-                    <h1><i class="material-icons">web</i> Views</h1>
+                    <h1><i class="material-icons">web_asset</i> Views</h1>
                     <div id="editDialog"></div>
                     <div id="currentViews" data-views="currentViews"></div>
                     <button id="addView" class="round hugTop" data-views="addView" data-click="addView" title="Add a new view"><i class="material-icons md-light">add</i></button>
@@ -114,6 +123,8 @@
                                 <li data-sideNav="routes" data-click="routes"><i class="material-icons md-dark">toc</i>Routes</li>
                                 <li data-sideNav="views" data-click="views"><i class="material-icons md-dark">web_asset</i>Views</li>
                                 <li data-sideNav="controllers" data-click="controllers"><i class="material-icons md-dark">web</i>Controllers</li>
+								<li data-sideNav="models" data-click="models"><i class="material-icons md-dark">note</i>Models</li>
+								<li data-sideNav="schemas" data-click="schemas"><i class="material-icons md-dark">code</i>Schemas</li>
                             </ul>
                         </nav>
                     </div>
@@ -163,7 +174,7 @@
                 <div class="blur" id="aboutDialog" data-header="aboutDialog">
                     <dialog class="alert">
                         <h1 class="atariScroll"><em>free</em>Form Designer</h1>
-                        <h2 class="center">The Augmented.js UI Designer.<br/>Designed for Augmented.js v.0.4.x</h2>
+                        <h2 class="center">The Augmented.js UI Designer.<br/>Designed for Augmented.js v.1.0.x</h2>
                         <h4 id="version" class="secondary center"></h4>
                         <div class="buttonGroup">
                             <button data-header="okButton" data-click="aboutButtonClose">Ok</button>

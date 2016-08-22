@@ -43,7 +43,7 @@ require.config({
         "routesSubView": "app/routesSubView",
         "controllersSubView": "app/controllersSubView",
         "viewsSubView": "app/viewsSubView",
-		"modelSubView": "app/modelSubView",
+		"modelsSubView": "app/modelsSubView",
 
         // compiled templates
         "stylesheetsTemplate": "app/templates/stylesheetsTemplate",
@@ -51,7 +51,8 @@ require.config({
         "viewsTemplate": "app/templates/viewsTemplate",
         "permissionsTemplate": "app/templates/permissionsTemplate",
         "controllersTemplate": "app/templates/controllersTemplate",
-        "observeViewsListTemplate": "app/templates/observeViewsListTemplate"
+        "observeViewsListTemplate": "app/templates/observeViewsListTemplate",
+		"modelsTemplate": "app/templates/modelsTemplate",
 	},
     "shim": {
     }
