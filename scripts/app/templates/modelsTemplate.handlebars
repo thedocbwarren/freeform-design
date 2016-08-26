@@ -3,14 +3,14 @@
         {{#each models}}
         <li>
             <div class="flexContainer">
-                <p>{{model}}<br/><span class="secondary">
+                <p>{{name}}<br/><span class="secondary">
                     {{#if url}}
-                        {{url}}
+                        <strong>URL</strong> : {{url}}
                     {{/if}}
                     </span>
                     <br/><span class="secondary">
                     {{#if schema}}
-                        {{schema}}
+                        <strong>Schema</strong> : {{schema}}
                     {{/if}}
                     </span>
                 </p>

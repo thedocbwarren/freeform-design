@@ -54,6 +54,26 @@ define("modelsSubView", ["augmented", "augmentedPresentation", "application", "m
             app.datastore.set("models", arr);
         },
         saveModel: function() {
+            var name = this.dialog.model.get("name");
+            if (name) {
+                var schema = this.dialog.model.get("schema");
+                var url = this.dialog.model.get("url");
+                var index = this.dialog.model.get("index");
+                var model = this.collection.at(index);
+
+                if (model && index != -1) {
+                    model.set("name", name);
+                    model.set("schema", schema);
+                    model.set("url", url);
+                    this.collection.push(model);
+                } else {
+                    model = new Models.ModelModel({"name": name, "schema": schema, "url": url});
+                    this.collection.add(model);
+                }
+
+                this.render();
+            }
+            /*
             var m = this.dialog.model.get("model");
             if (m) {
                 var index = this.dialog.model.get("index");
@@ -68,7 +88,7 @@ define("modelsSubView", ["augmented", "augmentedPresentation", "application", "m
                 }
 
                 this.render();
-            }
+            }*/
         },
         deleteModel: function() {
             this.deleteCurrent();
@@ -108,16 +128,16 @@ define("modelsSubView", ["augmented", "augmentedPresentation", "application", "m
             this.dialog.model.set("index", index);
             this.dialog.body =
                 "<label for=\"name\">Model</label>" +
-                "<input type=\"text\" value=\"" + ((model) ? model.get("model") : "") +
-                    "\" data-edit-model=\"model\" name=\"name\" placeholder=\"Name\" required/>" +
+                "<input type=\"text\" value=\"" + ((model) ? model.get("name") : "") +
+                    "\" data-edit-model=\"name\" name=\"name\" placeholder=\"Name\" required/>" +
                 "<label for=\"schema\">Schema</label>" +
                 "<select data-edit-model=\"schema\" name=\"schema\">" +
                     buildOptions(model.get("schema")) + "</select>" +
                 "<label for=\"url\">URL</label>" +
                 "<input type=\"text\" value=\"" + ((model) ? model.get("url") : "") +
-                    "\" data-edit-model=\"url\" placeholder=\"Service API\" />";
+                    "\" data-edit-model=\"url\" name=\"url\" placeholder=\"Service API\" />";
             this.dialog.render();
-            this.dialog.syncBoundElement("model");
+            this.dialog.syncBoundElement("name");
             this.dialog.syncBoundElement("schema");
             this.dialog.syncBoundElement("url");
         },

@@ -93,6 +93,12 @@ define("compiler", ["augmented", "models", "jszip"],
 
                 req = req + "\n" + mediation + "\n});";
 
+                // Models
+                l = model.models.length;
+                for(i = 0; i < l; i++) {
+                    req = req + "\n\n" + this.compileModel(model.models[i]);
+                }
+
                 zip.file("index.html", html);
                 zip.folder("scripts").file(model.project + ".js", req);
                 zip.folder("scripts").file("router.js", router);
@@ -101,7 +107,12 @@ define("compiler", ["augmented", "models", "jszip"],
 
                 zip.generateAsync({type:"blob"})
                 .then(function(blob) {
-                    saveAs(blob, model.project + ".zip");
+                    var fn = model.project + ".zip";
+                    var result =
+                          fn.
+                          split(" ").
+                          join("");
+                    saveAs(blob, result);
                 });
 
                 //return html + " \n\n " + req + " \n\n " + router + " \n\n " + application;
@@ -109,6 +120,11 @@ define("compiler", ["augmented", "models", "jszip"],
                 return zip;
             }
             return "";
+        },
+        compileModel: function(model) {
+            var code = "var " + model.name + " = Augmented.Model.extend({ \"url\": \"" + model.url + "\", \"schema\": \"" +  model.schema + "\" });";
+
+            return code;
         },
         compileMediation: function(view) {
             var code = "", i, l = (view.observeList) ? view.observeList.length : 0;

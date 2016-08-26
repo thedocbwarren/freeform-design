@@ -59,14 +59,14 @@ define('models', ['augmented'],
         }),
         ModelModel: Augmented.Model.extend({
             defaults: {
-                "model": "",
-                "schema": null,
-                "url": null
+                "name": "",
+                "schema": "",
+                "url": ""
             }
         }),
         SchemaModel: Augmented.Model.extend({
             defaults: {
-                "schema": null
+                "schema": ""
             }
         })
     };
