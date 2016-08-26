@@ -117,10 +117,10 @@ define('routesSubView', ['augmented', 'augmentedPresentation', 'application', 'm
             this.dialog.model.set("index", index);
             var body =
                 "<label for=\"edit-route\">Route</label>" +
-                "<input type=\"text\" name=\"edit-route\" data-edit-route=\"edit-route-x\" value=\"" + model.get("route") + "\" />" +
+                "<input type=\"text\" name=\"edit-route\" data-edit-route=\"edit-route-x\" value=\"" + model.get("route") + "\" placeholder=\"Route\" />" +
                 "<label for=\"edit-callback\">Callback</label>" +
                 "<input type=\"text\" name=\"edit-callback\" data-edit-route=\"edit-callback-x\"" +
-                    "value=\"" + model.get("callback") + "\"/>" +
+                    "value=\"" + model.get("callback") + "\" placeholder=\"Callback Function\"/>" +
                 "<label for=\"edit-type\">Type</label>" +
                 "<select name=\"edit-type\" data-edit-route=\"edit-type-x\">";
             // mark selected

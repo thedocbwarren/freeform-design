@@ -93,8 +93,10 @@ define("controllersSubView", ["augmented", "augmentedPresentation", "application
             }
 
             this.dialog.model.set("index", index);
-            this.dialog.body = "<input type=\"text\" value=\"" + ((model) ? model.get("controller") : "") +
-                "\" data-edit-controller=\"controller\" required/>";
+            this.dialog.body =
+                "<label for=\"edit-controller\">Name</label>" +
+                "<input type=\"text\" value=\"" + ((model) ? model.get("controller") : "") +
+                    "\" data-edit-controller=\"controller\" name=\"name\" placeholder=\"Name\" required/>";
             this.dialog.render();
             this.dialog.syncBoundElement("controller");
         },

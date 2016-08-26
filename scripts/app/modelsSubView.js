@@ -5,6 +5,7 @@ define("modelsSubView", ["augmented", "augmentedPresentation", "application", "m
     function(Augmented, Presentation, app, Models, EditDialog, AbstractEditorView, Handlebars) {
     "use strict";
     var EditModelDialog = EditDialog.extend({
+        style: "bigForm",
         title: "Edit Model",
         name: "edit-model"
     });
@@ -12,6 +13,19 @@ define("modelsSubView", ["augmented", "augmentedPresentation", "application", "m
     var ModelsCollection = Augmented.Collection.extend({
         model: Models.ModelModel
     });
+
+    // an option builder for the views
+    var buildOptions = function(selected) {
+        var html = "", i = 0, s = app.datastore.get("schemas"), l = s.length;
+        for (i = 0; i < l; i++) {
+            html = html + "<option";
+            if (s[i] === selected) {
+                html = html + " selected";
+            }
+            html = html + ">" + s[i] + "</option>";
+        }
+        return html;
+    };
 
     var ModelsView = AbstractEditorView.extend({
         name: "models",
@@ -92,10 +106,20 @@ define("modelsSubView", ["augmented", "augmentedPresentation", "application", "m
             }
 
             this.dialog.model.set("index", index);
-            this.dialog.body = "<input type=\"text\" value=\"" + ((model) ? model.get("model") : "") +
-                "\" data-edit-model=\"model\" required/>";
+            this.dialog.body =
+                "<label for=\"name\">Model</label>" +
+                "<input type=\"text\" value=\"" + ((model) ? model.get("model") : "") +
+                    "\" data-edit-model=\"model\" name=\"name\" placeholder=\"Name\" required/>" +
+                "<label for=\"schema\">Schema</label>" +
+                "<select data-edit-model=\"schema\" name=\"schema\">" +
+                    buildOptions(model.get("schema")) + "</select>" +
+                "<label for=\"url\">URL</label>" +
+                "<input type=\"text\" value=\"" + ((model) ? model.get("url") : "") +
+                    "\" data-edit-model=\"url\" placeholder=\"Service API\" />";
             this.dialog.render();
             this.dialog.syncBoundElement("model");
+            this.dialog.syncBoundElement("schema");
+            this.dialog.syncBoundElement("url");
         },
         addModel: function() {
             this.addNew();

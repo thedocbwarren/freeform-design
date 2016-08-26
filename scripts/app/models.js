@@ -12,7 +12,9 @@ define('models', ['augmented'],
                 "views": [],
                 "controllers": [],
                 "stylesheets": [],
-                "currentView": null,
+                "models": [],
+                "schemas": [],
+                "currentView": null
             }
         }),
         ControllerModel: Augmented.Model.extend({
@@ -57,7 +59,14 @@ define('models', ['augmented'],
         }),
         ModelModel: Augmented.Model.extend({
             defaults: {
-                model: ""
+                "model": "",
+                "schema": null,
+                "url": null
+            }
+        }),
+        SchemaModel: Augmented.Model.extend({
+            defaults: {
+                "schema": null
             }
         })
     };

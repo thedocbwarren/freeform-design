@@ -92,11 +92,12 @@ define('stylesheetsSubView', ['augmented', 'augmentedPresentation', 'application
             }
 
             this.dialog.model.set("index", index);
-            this.dialog.body = "<input type=\"text\" value=\"" + ((model) ? model.get("stylesheet") : "") +
-                "\" data-edit-stylesheet=\"edit-stylesheet\" required/>" +
+            this.dialog.body =
+                "<label for=\"edit-stylesheet\">Path</label>" +
+                "<input type=\"text\" value=\"" + ((model) ? model.get("stylesheet") : "") +
+                    "\" data-edit-stylesheet=\"edit-stylesheet\" placeholder=\"Path\" required/>" +
                 "<input type=\"checkbox\" name=\"edit-stylesheet-async\" data-edit-stylesheet=\"edit-stylesheet-async\"" +
-                ((model.get("async") === true) ? "checked=\"checked\"" : "") +
-                " />" +
+                    ((model.get("async") === true) ? "checked=\"checked\"" : "") + " />" +
                 "<label for=\"edit-stylesheet-async\">Asynchronous</label>";
             this.dialog.render();
             this.dialog.syncBoundElement("edit-stylesheet");

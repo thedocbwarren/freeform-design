@@ -3,7 +3,17 @@
         {{#each models}}
         <li>
             <div class="flexContainer">
-                <p>{{model}}</p>
+                <p>{{model}}<br/><span class="secondary">
+                    {{#if url}}
+                        {{url}}
+                    {{/if}}
+                    </span>
+                    <br/><span class="secondary">
+                    {{#if schema}}
+                        {{schema}}
+                    {{/if}}
+                    </span>
+                </p>
                 <div>
                     <div class="inlineButton large" data-index="{{@index}}" data-models="edit" data-click="editModel"><i class="material-icons md-dark">edit</i></div>
                 </div>

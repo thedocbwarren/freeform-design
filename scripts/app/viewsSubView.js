@@ -11,6 +11,7 @@ define("viewsSubView", ["augmented", "augmentedPresentation", "application", "mo
     // dialogs
 
     var EditViewDialog = EditDialog.extend({
+        style: "bigForm",
         title: "Edit View",
         name: "edit-view"
     });
@@ -162,11 +163,13 @@ define("viewsSubView", ["augmented", "augmentedPresentation", "application", "mo
             }
 
             this.dialog.model.set("index", index);
-            this.dialog.body = "<input type=\"text\" value=\"" + ((model) ? model.get("name") : "") +
-                "\" data-edit-view=\"edit-view\" required/>" +
+            this.dialog.body =
+                "<label for=\"edit-view-name\">View</label>" +
+                "<input type=\"text\" value=\"" + ((model) ? model.get("name") : "") +
+                    "\" data-edit-view=\"edit-view\" name=\"edit-view-name\" placeholder=\"Name\" required/>" +
+                "<label for=\"edit-view-type\">Type (Class)</label>" +
                 "<select data-edit-view=\"edit-view-type\" name=\"edit-view-type\">" +
-                buildOptions(model.get("type")) +
-                "</select>";
+                    buildOptions(model.get("type")) + "</select>";
             this.dialog.render();
             this.dialog.syncBoundElement("edit-view");
             this.dialog.syncBoundElement("edit-view-type");
