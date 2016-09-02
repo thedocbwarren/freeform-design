@@ -118,6 +118,30 @@
 			"include": [],
 			"exclude": []
 		}
+	}, {
+		"name": "AutoForm",
+		"type": "AutomaticForm",
+		"permissions": {
+			"include": [],
+			"exclude": []
+		},
+		"schema": {
+			"$schema": "http://json-schema.org/draft-04/schema#",
+			"title": "Login",
+			"description": "Login Form",
+			"type": "object",
+			"properties": {
+				"userid": {
+					"type": "string",
+					"description": "userid"
+				},
+				"password": {
+					"type": "string",
+					"description": "password"
+				}
+			},
+			"required": ["userid", "password"]
+		}
 	}],
 	"controllers": [{
 		"controller": "BigProjectController"
@@ -140,5 +164,11 @@
 		"stylesheet": "styles/theme.css",
 		"async": false
 	}],
+	"models": [{
+		"name": "mod",
+		"schema": "",
+		"url": "/mod"
+	}],
+	"schemas": [],
 	"application": {}
 }

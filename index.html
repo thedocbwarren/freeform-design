@@ -48,6 +48,15 @@
             <section id="activePanel">
             </section>
             <!-- Templates -->
+            <template id="schemasTemplate">
+                <div id="schemas">
+                    <h1><i class="material-icons">note</i> Schemas</h1>
+                    <!-- since the template requires a lot more than simple generation, it's handled in code -->
+                    <div id="editDialog"></div>
+                    <div id="currentSchemas" data-schemas="currentSchemas"></div>
+                    <button id="addSchema" class="round hugTop" data-schemas="addModel" data-click="addSchema" title="Add a new schema"><i class="material-icons md-light">add</i></button>
+                </div>
+            </template>
 			<template id="modelsTemplate">
                 <div id="models">
                     <h1><i class="material-icons">note</i> Models</h1>

@@ -1,0 +1,19 @@
+<div>
+    <ul>
+        {{#each schemas}}
+        <li>
+            <div class="flexContainer">
+                <p>{{name}}<br/><span class="secondary">
+                    {{#if url}}
+                        <strong>URL</strong> : {{url}}
+                    {{/if}}
+                    </span>
+                </p>
+                <div>
+                    <div class="inlineButton large" data-index="{{@index}}" data-schemas="edit" data-click="editSchema"><i class="material-icons md-dark">edit</i></div>
+                </div>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+</div>

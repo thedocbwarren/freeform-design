@@ -73,22 +73,6 @@ define("modelsSubView", ["augmented", "augmentedPresentation", "application", "m
 
                 this.render();
             }
-            /*
-            var m = this.dialog.model.get("model");
-            if (m) {
-                var index = this.dialog.model.get("index");
-                var model = this.collection.at(index);
-
-                if (model && index != -1) {
-                    model.set("model", m);
-                    this.collection.push(model);
-                } else {
-                    model = new Models.ModelModel({"model": m});
-                    this.collection.add(model);
-                }
-
-                this.render();
-            }*/
         },
         deleteModel: function() {
             this.deleteCurrent();

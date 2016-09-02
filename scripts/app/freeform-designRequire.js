@@ -44,6 +44,7 @@ require.config({
         "controllersSubView": "app/controllersSubView",
         "viewsSubView": "app/viewsSubView",
 		"modelsSubView": "app/modelsSubView",
+        "schemasSubView": "app/schemasSubView",
 
         // compiled templates
         "stylesheetsTemplate": "app/templates/stylesheetsTemplate",
@@ -53,6 +54,7 @@ require.config({
         "controllersTemplate": "app/templates/controllersTemplate",
         "observeViewsListTemplate": "app/templates/observeViewsListTemplate",
 		"modelsTemplate": "app/templates/modelsTemplate",
+        "schemasTemplate": "app/templates/schemasTemplate"
 	},
     "shim": {
     }
