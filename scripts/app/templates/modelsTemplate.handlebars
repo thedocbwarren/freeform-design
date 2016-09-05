@@ -5,12 +5,16 @@
             <div class="flexContainer">
                 <p>{{name}}<br/><span class="secondary">
                     {{#if url}}
-                        <strong>URL</strong> : {{url}}
+                        <strong>URL</strong>&nbsp;:&nbsp;{{url}}
+                    {{else}}
+                        <strong>Local</strong>
                     {{/if}}
                     </span>
                     <br/><span class="secondary">
                     {{#if schema}}
-                        <strong>Schema</strong> : {{schema}}
+                        <strong>Schema</strong>&nbsp;:&nbsp;{{schema}}
+                    {{else}}
+                        <strong>No Schema</strong>
                     {{/if}}
                     </span>
                 </p>

@@ -93,6 +93,12 @@ define("compiler", ["augmented", "models", "jszip"],
 
                 req = req + "\n" + mediation + "\n});";
 
+                // Schemas
+                l = model.schemas.length;
+                for(i = 0; i < l; i++) {
+                    req = req + "\n\n" + this.compileSchema(model.schemas[i]);
+                }
+
                 // Models
                 l = model.models.length;
                 for(i = 0; i < l; i++) {
@@ -122,9 +128,10 @@ define("compiler", ["augmented", "models", "jszip"],
             return "";
         },
         compileModel: function(model) {
-            var code = "var " + model.name + " = Augmented.Model.extend({ \"url\": \"" + model.url + "\", \"schema\": \"" +  model.schema + "\" });";
-
-            return code;
+            return "var " + model.name + " = Augmented.Model.extend({ \"url\": \"" + model.url + "\", \"schema\": " +  model.schema + " });";
+        },
+        compileSchema: function(schema) {
+            return "var " + schema.name + " = " + ((schema.url) ? schema.url : JSON.stringify(schema.schema)) + ";";
         },
         compileMediation: function(view) {
             var code = "", i, l = (view.observeList) ? view.observeList.length : 0;

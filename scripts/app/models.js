@@ -67,7 +67,8 @@ define('models', ['augmented'],
         SchemaModel: Augmented.Model.extend({
             defaults: {
                 "name": "",
-                "url": ""
+                "url": "",
+                "schema": {}
             }
         })
     };

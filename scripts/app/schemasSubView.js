@@ -36,6 +36,12 @@ define("schemasSubView", ["augmented", "augmentedPresentation", "application", "
         editSchema: function(event) {
             this.editCurrent(event);
         },
+        editSchemaDetail: function(event) {
+            var index = (event.currentTarget.getAttribute("data-index"));
+            var model = this.collection.at(index);
+            app.datastore.set("currentSchema", { "index": index, "model": model.toJSON() });
+            app.router.navigate("schema", {trigger: true});
+        },
         setSchema: function(arr) {
             this.model.set("currentSchemas", arr);
             app.datastore.set("schemas", arr);

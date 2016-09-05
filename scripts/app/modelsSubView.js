@@ -17,12 +17,13 @@ define("modelsSubView", ["augmented", "augmentedPresentation", "application", "m
     // an option builder for the views
     var buildOptions = function(selected) {
         var html = "", i = 0, s = app.datastore.get("schemas"), l = s.length;
+        html = html + "<option value=\"\">No Schema</option>";
         for (i = 0; i < l; i++) {
             html = html + "<option";
-            if (s[i] === selected) {
+            if (s[i].name === selected) {
                 html = html + " selected";
             }
-            html = html + ">" + s[i] + "</option>";
+            html = html + " value=\"" + s[i].name + "\" >" + s[i].name + "</option>";
         }
         return html;
     };

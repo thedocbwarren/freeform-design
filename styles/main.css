@@ -67,7 +67,7 @@
 .material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
 
 /* Rules for using icons as white on a dark background. */
-.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light { color: rgba(255, 255, 255, 0.85); }
 .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
 
 /*
@@ -1424,6 +1424,10 @@ article section div.panel ul li {
 
 div.panel.half {
     width: 44%;
+}
+
+div.panel.full {
+    width: auto !important;
 }
 
 div.panel.stack {

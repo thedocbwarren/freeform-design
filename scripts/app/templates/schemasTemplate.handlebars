@@ -5,11 +5,17 @@
             <div class="flexContainer">
                 <p>{{name}}<br/><span class="secondary">
                     {{#if url}}
-                        <strong>URL</strong> : {{url}}
+                        <strong>Hosted URL</strong>&nbsp;:&nbsp;{{url}}
+                    {{else}}
+                        <strong>Local Data</strong>
                     {{/if}}
                     </span>
                 </p>
                 <div>
+                    {{#if url}}
+                    {{else}}
+                        <div class="inlineButton large" data-name="{{name}}" data-url="{{url}}" data-index="{{@index}}" data-schemas="editSchemaDetail" data-click="editSchemaDetail"><i class="material-icons md-dark">add_circle</i></div>
+                    {{/if}}
                     <div class="inlineButton large" data-index="{{@index}}" data-schemas="edit" data-click="editSchema"><i class="material-icons md-dark">edit</i></div>
                 </div>
             </div>

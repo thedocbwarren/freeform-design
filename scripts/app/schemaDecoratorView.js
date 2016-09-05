@@ -1,4 +1,4 @@
-define('schemaDecoratorView', ['augmented', 'augmentedPresentation', 'application'],
+define("schemaDecoratorView", ["augmented", "augmentedPresentation", "application"],
     function(Augmented, Presentation, app) {
     "use strict";
 

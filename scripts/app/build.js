@@ -15,7 +15,9 @@
         permissionsTemplate: "templates/permissionsTemplate",
         controllersTemplate: "templates/controllersTemplate",
         modelsTemplate: "templates/modelsTemplate",
-        observeViewsListTemplate: "templates/observeViewsListTemplate"
+        schemsTemplate: "templates/schemsTemplate",
+        observeViewsListTemplate: "templates/observeViewsListTemplate",
+
     },
     include: ["jszip", "filesaver"],
     name: "freeform-designRequire",

@@ -37,6 +37,7 @@ require.config({
         "mediatorEditor": "app/mediatorEditor",
         "autoViewMediator": "app/autoViewMediator",
         "schemaDecoratorView": "app/schemaDecoratorView",
+		"schemaEditor": "app/schemaEditor",
 
         //subviews
         "stylesheetsSubView": "app/stylesheetsSubView",
@@ -63,9 +64,9 @@ require.config({
 //  main app
 
 require(["augmented", "augmentedPresentation",
-		 "application", "mainProject", "tableCreate", "autoForm", "standardViewEditor", "dialogEditor", "mediatorEditor", "models", "compiler"],
+		 "application", "mainProject", "tableCreate", "autoForm", "standardViewEditor", "dialogEditor", "mediatorEditor", "schemaEditor", "models", "compiler"],
     function(Augmented, Presentation,
-		     app, MainProject, TableCreate, AutoForm, StandardViewEditor, DialogEditor, MediatorEditor, Models, Compiler) {
+		     app, MainProject, TableCreate, AutoForm, StandardViewEditor, DialogEditor, MediatorEditor, SchemaEditor, Models, Compiler) {
     "use strict";
     app.log("Beginning Application...");
 
@@ -95,7 +96,8 @@ require(["augmented", "augmentedPresentation",
             "form":                 "form",     // #form
             "view":                 "view",     // #view
             "dialog":               "dialog",   // #dialog
-            "mediator":             "mediator"  // #mediator
+            "mediator":             "mediator", // #mediator
+			"schema":				"schema"    // #schema
         },
 
         index: function() {
@@ -118,7 +120,10 @@ require(["augmented", "augmentedPresentation",
         },
         mediator: function() {
             this.loadView(MediatorEditor.initialize());
-        }
+        },
+		schema: function() {
+			this.loadView(SchemaEditor.initialize());
+		}
     });
 
     app.router =  new MyRouter();

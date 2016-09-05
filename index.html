@@ -50,7 +50,7 @@
             <!-- Templates -->
             <template id="schemasTemplate">
                 <div id="schemas">
-                    <h1><i class="material-icons">note</i> Schemas</h1>
+                    <h1><i class="material-icons">code</i> Schemas</h1>
                     <!-- since the template requires a lot more than simple generation, it's handled in code -->
                     <div id="editDialog"></div>
                     <div id="currentSchemas" data-schemas="currentSchemas"></div>
@@ -191,6 +191,31 @@
                     </dialog>
                 </div>
             </template>
+			<template id="schemaEditorTemplate">
+                <div id="basic">
+                    <header>
+                        <h1 data-basic="name"></h1>
+                        <div class="icon right" data-basic="back" data-click="back"><i class="material-icons">arrow_back</i></div>
+                    </header>
+                </div>
+                <div id="schemaEditor" data-schemaEditor="schemaEditor" class="panel editor">
+                    <header>
+                        <h1><i class="material-icons">build</i>Schema Editor</h1>
+                    </header>
+					<div id="schema" class="panel editor full">
+	                    <header>
+	                        <h1><i class="material-icons">description</i>JSON Schema</h1>
+	                        <div class="tools" data-schema="clear" data-click="clear" title="Clear the schema"><i class="material-icons md-dark">clear</i></div>
+	                    </header>
+	                    <div>
+	                        <textarea name="schema" placeholder="JSON Schema" data-schema="schema" data-function="validate" autofocus></textarea>
+	                    </div>
+	                    <footer>
+	                        <p id="message" data-schema="message"></p>
+	                    </footer>
+					</div>
+                </div>
+            </template>
             <template id="tableCreateTemplate">
                 <div id="basic">
                     <header>
@@ -284,7 +309,7 @@
                         <h1><i class="material-icons">build</i>Dialog Editor</h1>
                     </header>
 
-                    <lable for="dialogStyle">Style</label>
+                    <label for="dialogStyle">Style</label>
                     <select data-dialogEditor="style">
                         <option value="form">Form</option>
                         <option value="bigForm">Big Form</option>
