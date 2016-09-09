@@ -2,6 +2,20 @@ define("schemaDecoratorView", ["augmented", "augmentedPresentation", "applicatio
     function(Augmented, Presentation, app) {
     "use strict";
 
+    // an option builder for the views
+    var schemaSelection = function(selected) {
+        var html = "", i = 0, s = app.datastore.get("schemas"), l = s.length;
+        html = html + "<option value=\"\">Custom</option>";
+        for (i = 0; i < l; i++) {
+            html = html + "<option";
+            if (s[i].name === selected) {
+                html = html + " selected";
+            }
+            html = html + " value=\"" + s[i].name + "\" >" + s[i].name + "</option>";
+        }
+        return html;
+    };
+
     var SchemaDecoratorView = Augmented.Presentation.DecoratorView.extend({
         name: "schema",
         el: "#schema",
@@ -14,6 +28,9 @@ define("schemaDecoratorView", ["augmented", "augmentedPresentation", "applicatio
                 this.model.set("schema", schema);
                 this.validate();
             });
+
+            Augmented.Presentation.Dom.setValue("#schemaSelector", schemaSelection());
+
         },
         setMessage: function(message, bad) {
             this.model.set("message", message);
