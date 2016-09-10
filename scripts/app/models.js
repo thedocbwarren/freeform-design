@@ -14,7 +14,8 @@ define('models', ['augmented'],
                 "stylesheets": [],
                 "models": [],
                 "schemas": [],
-                "currentView": null
+                "currentView": null,
+                "currentSchema": null
             }
         }),
         ControllerModel: Augmented.Model.extend({

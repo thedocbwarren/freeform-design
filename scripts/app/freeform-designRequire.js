@@ -46,6 +46,7 @@ require.config({
         "viewsSubView": "app/viewsSubView",
 		"modelsSubView": "app/modelsSubView",
         "schemasSubView": "app/schemasSubView",
+		"overviewSubView": "app/overviewSubView",
 
         // compiled templates
         "stylesheetsTemplate": "app/templates/stylesheetsTemplate",
@@ -166,6 +167,10 @@ require(["augmented", "augmentedPresentation",
             this.on("saveProject", function(file) {
                 app.log("Saving a project - " + file);
                 var blob = new Blob([JSON.stringify(app.datastore.toJSON())], {type: "text/plain;charset=utf-8"});
+				if (!file.endsWith(".json")) {
+					file = file + ".json";
+				}
+
                 saveAs(blob, file);
                 this.publish("header", "notification", "Save Project Complete.");
             });

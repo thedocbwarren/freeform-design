@@ -1541,25 +1541,28 @@ article section#activePanel div#viewer.panel header div#generate.tools {
     right: 64px;
 }
 
-article section#activePanel div#viewer.panel.viewer header nav#theme.tools {
+article section#activePanel div#viewer.panel.viewer header nav#theme.tools,
+article section#activePanel div#schema.panel.editor header nav#schemaSelector.menu.tools {
     left: unset;
     right: 32px;
     width: 24px;
 }
 
-article section#activePanel div#viewer.panel.viewer header nav#more.tools {
+article section#activePanel div.panel.viewer header nav#more.tools {
     left: unset;
     right: 0;
     width: 24px;
 }
 
 article section#activePanel div#viewer.panel.viewer header nav#more.tools.menu i,
-    article section#activePanel div#viewer.panel.viewer header nav#theme.tools i {
+article section#activePanel div#viewer.panel.viewer header nav#theme.tools i,
+article section#activePanel div#schema.panel.editor header nav#schemaSelector.menu.tools i {
     cursor: context-menu;
 }
 
 article section#activePanel div#viewer.panel.viewer header nav#more.tools ul,
-    article section#activePanel div#viewer.panel.viewer header nav#theme.tools ul {
+article section#activePanel div#viewer.panel.viewer header nav#theme.tools ul,
+article section#activePanel div#schema.panel.editor header nav#schemaSelector.menu.tools ul {
     display: block;
     position: absolute;
     right: 0;

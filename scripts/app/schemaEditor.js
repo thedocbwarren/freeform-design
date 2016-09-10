@@ -21,6 +21,7 @@ function(Augmented, Presentation, app, BasicInfoView, SchemaDecoratorView, Model
             var schemas = app.datastore.get("schemas");
             if (schemas) {
                 schemas[this.currentSchema.index] = this.currentSchema.model;
+                app.datastore.set("schemas", schemas);
             }
         },
         updateSchema: function(schema) {

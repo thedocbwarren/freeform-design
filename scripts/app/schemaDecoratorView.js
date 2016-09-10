@@ -2,16 +2,20 @@ define("schemaDecoratorView", ["augmented", "augmentedPresentation", "applicatio
     function(Augmented, Presentation, app) {
     "use strict";
 
+    var CUSTOM_SCHEMA_SELECTION = "Custom";
+
     // an option builder for the views
     var schemaSelection = function(selected) {
-        var html = "", i = 0, s = app.datastore.get("schemas"), l = s.length;
-        html = html + "<option value=\"\">Custom</option>";
+        var html = "", i = 0, s = app.datastore.get("schemas"), l = s.length, LI = "<li data-schema=\"material\" data-click=\"schemaSelector\"><i class=\"material-icons md-dark radio ";
+        html = html + LI + "hidden\"></i>Custom</li>";
         for (i = 0; i < l; i++) {
-            html = html + "<option";
+            html = html + LI;
             if (s[i].name === selected) {
-                html = html + " selected";
+                html = html + "selected\"></i>";
+            } else {
+                html = html + "hidden\"></i>";
             }
-            html = html + " value=\"" + s[i].name + "\" >" + s[i].name + "</option>";
+            html = html + s[i].name + "</li>";
         }
         return html;
     };
@@ -25,12 +29,15 @@ define("schemaDecoratorView", ["augmented", "augmentedPresentation", "applicatio
             this.syncModelChange("message");
             this.setMessage("Ready.");
             this.on("updateSchema", function(schema) {
-                this.model.set("schema", schema);
-                this.validate();
+                this.updateSchema(schema);
             });
 
-            Augmented.Presentation.Dom.setValue("#schemaSelector", schemaSelection());
+            Augmented.Presentation.Dom.setValue("#schemaSelector ul", schemaSelection());
 
+        },
+        updateSchema: function(schema) {
+            this.model.set("schema", schema);
+            this.validate();
         },
         setMessage: function(message, bad) {
             this.model.set("message", message);
@@ -70,6 +77,15 @@ define("schemaDecoratorView", ["augmented", "augmentedPresentation", "applicatio
             if (data) {
                 schema = this.model.get("schema");
                 this.sendMessage("compile", data);
+            }
+        },
+        schemaSelector: function(event) {
+            var li = event.currentTarget, selected = (li.textContent || li.innerText);  // get the text node child
+            if (selected !== CUSTOM_SCHEMA_SELECTION) {
+                var schemas = app.datastore.get("schemas"), schema = schemas.find(function(e) { return e.name === selected; });
+                if (schema) {
+                    this.updateSchema(JSON.stringify(schema.schema));
+                }
             }
         }
     });

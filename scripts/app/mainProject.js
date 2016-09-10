@@ -1,9 +1,9 @@
 // Main project module
-define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'models', 'editDialog', 'handlebars',
+define("mainProject", ["augmented", "augmentedPresentation", "application", "models", "editDialog", "handlebars",
 // subviews
-'stylesheetsSubView', 'routesSubView', 'controllersSubView', 'viewsSubView', 'modelsSubView', 'schemasSubView'],
+"stylesheetsSubView", "routesSubView", "controllersSubView", "viewsSubView", "modelsSubView", "schemasSubView", "overviewSubView"],
     function(Augmented, Presentation, app, Models, EditDialog, Handlebars,
-        StylesheetsView, RoutesView, ControllersView, ViewsView, ModelsView, SchemasView) {
+        StylesheetsView, RoutesView, ControllersView, ViewsView, ModelsView, SchemasView, OverviewView) {
     "use strict";
 
     var ProjectSideNavigation = Augmented.Presentation.DecoratorView.extend({
@@ -17,11 +17,17 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
                 this.markNavigation(nav);
             });
         },
+        defaultNavigation: function() {
+            this.overview();
+        },
         markNavigation: function(nav) {
             Augmented.Presentation.Dom.removeClass(this.currentNav, "current");
             var navListEl = this.boundElement(nav);
             this.currentNav = navListEl;
             Augmented.Presentation.Dom.addClass(this.currentNav, "current");
+        },
+        overview: function() {
+            this.sendMessage("navigation", "overview");
         },
         stylesheets: function() {
             this.sendMessage("navigation", "stylesheets");
@@ -63,6 +69,8 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
                     this.doNavigation(navigation, ModelsView);
                 } else if (navigation === "schemas" && this.currentNavigation !== navigation) {
                     this.doNavigation(navigation, SchemasView);
+                } else if (navigation === "overview" && this.currentNavigation !== navigation) {
+                    this.doNavigation(navigation, OverviewView);
                 }
             });
             this.setViewportHeight();
@@ -105,6 +113,8 @@ define('mainProject', ['augmented', 'augmentedPresentation', 'application', 'mod
                 "sideNav",   // channel
                 "sideNav"    // identifier
             );
+            // setup default nav
+            this.sideNav.defaultNavigation();
         },
         remove: function() {
             if (this.sideNav) {

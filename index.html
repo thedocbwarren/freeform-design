@@ -128,6 +128,7 @@
                         </header>
                         <nav class="sideNav">
                             <ul>
+								<li data-sideNav="overview" data-click="overview"><i class="material-icons md-dark">apps</i>Overview</li>
                                 <li data-sideNav="stylesheets" data-click="stylesheets"><i class="material-icons md-dark">style</i>Stylesheets</li>
                                 <li data-sideNav="routes" data-click="routes"><i class="material-icons md-dark">toc</i>Routes</li>
                                 <li data-sideNav="views" data-click="views"><i class="material-icons md-dark">web_asset</i>Views</li>
@@ -226,6 +227,13 @@
     			<div id="schema" class="panel editor">
                     <header>
                         <h1><i class="material-icons">description</i>JSON Schema</h1>
+						<nav id="schemaSelector" class="menu tools" title="Select a Schema">
+                            <i class="material-icons md-dark">style</i>
+                            <ul>
+                                
+								<!--  ...  -->
+                            </ul>
+                        </nav>
                         <div class="tools" data-schema="clear" data-click="clear" title="Clear the schema"><i class="material-icons md-dark">clear</i></div>
                     </header>
                     <div>
@@ -234,7 +242,9 @@
                     <footer>
                         <p id="message" data-schema="message"></p>
                     </footer>
-                    <select id="schemaSelector"></select>
+					<!--
+                    <select id="schemaSelector" data-schema="selector" data-click="schemaSelector"></select>
+					-->
                     <button id="compile" class="round" data-schema="compile" data-click="compile" title="Compile the schema"><i class="material-icons md-light">add</i></button>
     			</div>
                 <div id="viewer" class="panel viewer">
@@ -370,6 +380,7 @@
                     <footer>
                         <p id="message" data-schema="message"></p>
                     </footer>
+					<select id="schemaSelector" data-schema="selector" data-click="schemaSelector"></select>
                     <button id="compile" class="round" data-schema="compile" data-click="compile" title="Compile the schema"><i class="material-icons md-light">add</i></button>
     			</div>
                 <div id="viewer" class="panel viewer">
