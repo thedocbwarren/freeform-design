@@ -7,12 +7,12 @@
 		<title>freeForm Design in Augmented.js</title>
         <link type="text/css" rel="stylesheet" href="styles/main.css"/>
 		<!-- requirejs pulls in all necessary js for this component -->
-        <!-- for production
+        <!-- for production -->
 		<script data-main="scripts/app/freeform-designRequire-built.js" src="scripts/lib/require.js"></script>
-		-->
-        <!-- dev -->
-        <script data-main="scripts/app/freeform-designRequire.js" src="scripts/lib/require.js"></script>
 
+        <!-- dev
+        <script data-main="scripts/app/freeform-designRequire.js" src="scripts/lib/require.js"></script>
+        -->
 	</head>
 	<body>
 		<article>
@@ -228,9 +228,8 @@
                     <header>
                         <h1><i class="material-icons">description</i>JSON Schema</h1>
 						<nav id="schemaSelector" class="menu tools" title="Select a Schema">
-                            <i class="material-icons md-dark">style</i>
+                            <i class="material-icons md-dark">code</i>
                             <ul>
-                                
 								<!--  ...  -->
                             </ul>
                         </nav>
@@ -372,6 +371,12 @@
     			<div id="schema" class="panel editor">
                     <header>
                         <h1><i class="material-icons">description</i>JSON Schema</h1>
+                        <nav id="schemaSelector" class="menu tools" title="Select a Schema">
+                            <i class="material-icons md-dark">code</i>
+                            <ul>
+								<!--  ...  -->
+                            </ul>
+                        </nav>
                         <div class="tools" data-schema="clear" data-click="clear" title="Clear the schema"><i class="material-icons md-dark">clear</i></div>
                     </header>
                     <div>
@@ -380,7 +385,6 @@
                     <footer>
                         <p id="message" data-schema="message"></p>
                     </footer>
-					<select id="schemaSelector" data-schema="selector" data-click="schemaSelector"></select>
                     <button id="compile" class="round" data-schema="compile" data-click="compile" title="Compile the schema"><i class="material-icons md-light">add</i></button>
     			</div>
                 <div id="viewer" class="panel viewer">

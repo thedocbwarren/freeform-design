@@ -15,7 +15,7 @@
         permissionsTemplate: "templates/permissionsTemplate",
         controllersTemplate: "templates/controllersTemplate",
         modelsTemplate: "templates/modelsTemplate",
-        schemsTemplate: "templates/schemsTemplate",
+        schemasTemplate: "templates/schemasTemplate",
         observeViewsListTemplate: "templates/observeViewsListTemplate",
 
     },
