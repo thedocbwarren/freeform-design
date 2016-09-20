@@ -45,6 +45,24 @@ define("viewsSubView", ["augmented", "augmentedPresentation", "application", "mo
         return html;
     };
 
+    var buildModelOptions = function(selected) {
+        var html = "", i = 0, m = app.datastore.get("models"), l = m.length;
+        html = html + "<option";
+        if (!selected) {
+            html = html + " selected";
+        }
+        html = html + ">No Model</option>";
+
+        for (i = 0; i < l; i++) {
+            html = html + "<option";
+            if (m[i].name === selected) {
+                html = html + " selected";
+            }
+            html = html + ">" + m[i].name + "</option>";
+        }
+        return html;
+    };
+
     // {{#compare unicorns ponies operator="<"}}
     Handlebars.registerHelper("compare", function(lvalue, rvalue, options) {
         if (arguments.length < 3)
@@ -113,14 +131,16 @@ define("viewsSubView", ["augmented", "augmentedPresentation", "application", "mo
             if (name) {
                 var type = this.dialog.model.get("edit-view-type");
                 var index = this.dialog.model.get("index");
+                var m = this.dialog.model.get("edit-view-model");
                 var model = this.collection.at(index);
 
                 if (model && index != -1) {
                     model.set("name", name);
                     model.set("type", type);
+                    model.set("model", m);
                     this.collection.push(model);
                 } else {
-                    model = new Models.ViewModel({"name": name, "type": type});
+                    model = new Models.ViewModel({"name": name, "type": type, "model": m});
                     this.collection.add(model);
                 }
 
@@ -169,10 +189,14 @@ define("viewsSubView", ["augmented", "augmentedPresentation", "application", "mo
                     "\" data-edit-view=\"edit-view\" name=\"edit-view-name\" placeholder=\"Name\" required/>" +
                 "<label for=\"edit-view-type\">Type (Class)</label>" +
                 "<select data-edit-view=\"edit-view-type\" name=\"edit-view-type\">" +
-                    buildOptions(model.get("type")) + "</select>";
+                    buildOptions(model.get("type")) + "</select>" +
+                "<label for=\"edit-view-model\">Model</label>" +
+                "<select data-edit-view=\"edit-view-model\" name=\"edit-view-model\">" +
+                    buildModelOptions(model.get("model")) + "</select>";
             this.dialog.render();
             this.dialog.syncBoundElement("edit-view");
             this.dialog.syncBoundElement("edit-view-type");
+            this.dialog.syncBoundElement("edit-view-model");
         },
         addView: function() {
             this.addNew();

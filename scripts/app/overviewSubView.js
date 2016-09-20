@@ -9,7 +9,9 @@ define("overviewSubView", ["augmented", "augmentedPresentation", "application"],
 
         },
         render: function() {
-
+            var e = this.boundElement("overviewDetail");
+            this.removeTemplate(e, true);
+            //this.injectTemplate("", e);
         }
     });
     return OverviewView;

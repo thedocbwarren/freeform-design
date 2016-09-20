@@ -30,7 +30,8 @@ define('models', ['augmented'],
                 "permissions": {
                     "include": [],
                     "exclude": []
-                }
+                },
+                "model": null
             }
         }),
         StylesheetsModel: Augmented.Model.extend({

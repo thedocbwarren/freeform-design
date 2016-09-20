@@ -7,12 +7,12 @@
 		<title>freeForm Design in Augmented.js</title>
         <link type="text/css" rel="stylesheet" href="styles/main.css"/>
 		<!-- requirejs pulls in all necessary js for this component -->
-        <!-- for production -->
+        <!-- for production
 		<script data-main="scripts/app/freeform-designRequire-built.js" src="scripts/lib/require.js"></script>
-
-        <!-- dev
-        <script data-main="scripts/app/freeform-designRequire.js" src="scripts/lib/require.js"></script>
         -->
+        <!-- dev -->
+        <script data-main="scripts/app/freeform-designRequire.js" src="scripts/lib/require.js"></script>
+
 	</head>
 	<body>
 		<article>
@@ -48,6 +48,13 @@
             <section id="activePanel">
             </section>
             <!-- Templates -->
+            <template id="overviewTemplate">
+                <div id="overview">
+                    <h1><i class="material-icons">apps</i> Project Overview</h1>
+                    <div class="flexContainer" data-overview="overviewDetail"></div>
+
+                </div>
+            </template>
             <template id="schemasTemplate">
                 <div id="schemas">
                     <h1><i class="material-icons">code</i> Schemas</h1>

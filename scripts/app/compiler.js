@@ -60,6 +60,18 @@ define("compiler", ["augmented", "models", "jszip"],
 
                 router = router + "\n\t}, " + func + "\t});\n\treturn router;\n});";
 
+                // Schemas
+                l = model.schemas.length;
+                for(i = 0; i < l; i++) {
+                    req = req + "\n\n" + this.compileSchema(model.schemas[i]);
+                }
+
+                // Models
+                l = model.models.length;
+                for(i = 0; i < l; i++) {
+                    req = req + "\n\n" + this.compileModel(model.models[i]);
+                }
+
                 // controllers
                 l = model.controllers.length;
                 for(i = 0; i < l; i++) {
@@ -81,9 +93,13 @@ define("compiler", ["augmented", "models", "jszip"],
                         req = req + "\nvar " + model.views[i].name + " = " +
                             ((model.views[i].type === "View") ? "Augmented." : "Augmented.Presentation.") +
                             model.views[i].type + ".extend({\n";
-                            if (model.views[i].permissions) {
-                                req = req + "\"permissions\": " + JSON.stringify(model.views[i].permissions);
-                            }
+
+                        if (model.views[i].permissions) {
+                            req = req + "\"permissions\": " + JSON.stringify(model.views[i].permissions);
+                        }
+                        if (model.views[i].model) {
+                            req = req + ", \"model\": " + model.views[i].model;
+                        }
                         req = req + "});\n";
                     }
                     if (model.views[i].type === "Mediator") {
@@ -92,18 +108,6 @@ define("compiler", ["augmented", "models", "jszip"],
                 }
 
                 req = req + "\n" + mediation + "\n});";
-
-                // Schemas
-                l = model.schemas.length;
-                for(i = 0; i < l; i++) {
-                    req = req + "\n\n" + this.compileSchema(model.schemas[i]);
-                }
-
-                // Models
-                l = model.models.length;
-                for(i = 0; i < l; i++) {
-                    req = req + "\n\n" + this.compileModel(model.models[i]);
-                }
 
                 zip.file("index.html", html);
                 zip.folder("scripts").file(model.project + ".js", req);
@@ -128,7 +132,7 @@ define("compiler", ["augmented", "models", "jszip"],
             return "";
         },
         compileModel: function(model) {
-            return "var " + model.name + " = Augmented.Model.extend({ \"url\": \"" + model.url + "\", \"schema\": " +  model.schema + " });";
+            return "var " + model.name + " = Augmented.Model.extend({ \"url\": \"" + ((model.url) ? model.url : null) + "\", \"schema\": " + ((model.schema) ? model.schema : null) + " });";
         },
         compileSchema: function(schema) {
             return "var " + schema.name + " = " + ((schema.url) ? schema.url : JSON.stringify(schema.schema)) + ";";
@@ -157,6 +161,10 @@ define("compiler", ["augmented", "models", "jszip"],
                 code = code + "\n\t" + func + ": function(event) {},";
             }
             code = code.slice(0, -1);
+
+            if (viewModel.permissions) {
+                code = code + ", \"permissions\": " + JSON.stringify(viewModel.permissions);
+            }
             code = code + "\n});";
             return code;
         },
@@ -172,7 +180,8 @@ define("compiler", ["augmented", "models", "jszip"],
                     "\tlineNumbers: " + String(settings.lineNumbers) + ",\n" +
                     "\tsortable: " + String(settings.sortable) + ",\n" +
                     "\teditable: " + String(settings.editable) + ",\n" +
-                    "\turl: \"http://www.example.com/data\"\n" +
+                    "\turl: \"http://www.example.com/data\", \n" +
+                    "\tpermissions: " + JSON.stringify(viewModel.permissions) +
                 "});\n\n" +
                 "at.render();";
         },
@@ -185,7 +194,8 @@ define("compiler", ["augmented", "models", "jszip"],
                 "var f = new " + viewModel.name + "({ " +
                     "\tschema: " + viewModel.name + "schema, \n" +
                     "\tel: \"#autoForm\", \n" +
-                    "\turl: \"http://www.example.com/data\"\n" +
+                    "\turl: \"http://www.example.com/data\", \n" +
+                    "\tpermissions: " + JSON.stringify(viewModel.permissions) +
                 "});\n\n" +
                 "f.render();";
         },

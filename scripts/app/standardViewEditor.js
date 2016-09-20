@@ -45,7 +45,8 @@ function(Augmented, Presentation, app, BasicInfoView, EditDialog, AbstractEditor
                     "permissions": {
                         "include": [],
                         "exclude": []
-                    }
+                    },
+                    "model": null
                 }};
             }
 
