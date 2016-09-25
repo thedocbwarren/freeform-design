@@ -25,7 +25,7 @@ function(Augmented, Presentation, app, BasicInfoView, AutoViewMediator, SchemaDe
         }
     });
 
-    var MyTable = Augmented.Presentation.DirectDOMAutomaticTable.extend({
+    var MyTable = Augmented.Presentation.AutomaticTable.extend({
         setTheme: function(theme) {
             var e = document.querySelector(this.el + " > table");
             if (e) {

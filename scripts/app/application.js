@@ -6,8 +6,8 @@ define("application", ["augmented", "augmentedPresentation"], function(Augmented
     app.registerStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto:400,300,400italic,100,700");
     // adding style packs
     app.registerStylesheet("styles/table/material.css");
-    app.registerStylesheet("styles/table/plain.css");
     app.registerStylesheet("styles/table/spaceGray.css");
+    //app.registerStylesheet("styles/table/plain.css");  Empty at the moment
 
     // setup a logger
     app.logger = Augmented.Logger.LoggerFactory.getLogger(Augmented.Logger.Type.console, Augmented.Logger.Level.debug);
@@ -16,7 +16,7 @@ define("application", ["augmented", "augmentedPresentation"], function(Augmented
     app.log = function(message) {
         this.logger.log(app.APP_NAME + message);
     };
-    app.VERSION = "1.0.0α";
+    app.VERSION = "1.0.0";
 
     return app;
 });

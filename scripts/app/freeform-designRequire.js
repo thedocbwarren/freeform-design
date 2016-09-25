@@ -9,12 +9,12 @@ require.config({
         "handlebars": "lib/handlebars.runtime.min",
 
         // hosted version
-		"augmented": "/augmented/scripts/core/augmented",
-        "augmentedPresentation": "/augmented/scripts/presentation/augmentedPresentation",
+		//"augmented": "/augmented/scripts/core/augmented",
+        //"augmentedPresentation": "/augmented/scripts/presentation/augmentedPresentation",
 
         // local version
-		//"augmented": "lib/augmented",
-        //"augmentedPresentation": "lib/augmentedPresentation",
+		"augmented": "lib/augmented",
+        "augmentedPresentation": "lib/augmentedPresentation",
 
         // FileSave Polyfill
         "filesaver": "lib/FileSaver.min",
