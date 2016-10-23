@@ -3,23 +3,23 @@ require.config({
 
     "paths": {
         //base libraries
-		"jquery": "lib/jquery.min",
-		"underscore": "lib/lodash.min",
-		"backbone": "lib/backbone-min",
-        "handlebars": "lib/handlebars.runtime.min",
+		"jquery": "../node_modules/jquery/dist/jquery",
+		"underscore": "../node_modules/underscore/underscore",
+		"backbone": "../node_modules/backbone/backbone",
+        "handlebars": "../node_modules/handlebars/dist/handlebars.runtime.amd",
 
         // hosted version
 		//"augmented": "/augmented/scripts/core/augmented",
         //"augmentedPresentation": "/augmented/scripts/presentation/augmentedPresentation",
 
         // local version
-		"augmented": "lib/augmented",
-        "augmentedPresentation": "lib/augmentedPresentation",
+		"augmented": "../node_modules/augmentedjs/scripts/core/augmented",
+        "augmentedPresentation": "../node_modules/augmentedjs/scripts/presentation/augmentedPresentation",
 
         // FileSave Polyfill
-        "filesaver": "lib/FileSaver.min",
+        "filesaver": "../node_modules/file-saver/FileSaver",
         // Zip library
-        "jszip": "lib/jszip.min",
+        "jszip": "../node_modules/jszip/dist/jszip",
 
         // other modules
         "application": "app/application",
