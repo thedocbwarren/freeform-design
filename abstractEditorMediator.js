@@ -15,15 +15,11 @@ module.exports = Augmented.Presentation.Mediator.extend({
     goToProject: function() {
         this.currentView = null;
 		app.clearCurrentView();
-        //app.datastore.unset("currentView");
 		app.navigate(CONSTANTS.NAVIGATION.PROJECT);
-        //app.router.navigate(CONSTANTS.NAVIGATION.PROJECT, {trigger: true});
     },
     saveData: function() {
 		app.setCurrentView(this.currentView);
-        //app.datastore.set("currentView", this.currentView);
         var views = app.getViews();
-		//app.datastore.get("views");
         if (views) {
             views[this.currentView.index] = this.currentView.model;
         }

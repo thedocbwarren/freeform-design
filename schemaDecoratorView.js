@@ -8,7 +8,7 @@ var CUSTOM_SCHEMA_SELECTION = "Custom";
 
 // an option builder for the views
 var schemaSelection = function(selected) {
-    var html = "", i = 0, s = app.datastore.get("schemas"), l = s.length,
+    var html = "", i = 0, s = app.getDatastoreItem("schemas"), l = s.length,
         LI = "<li data-schema=\"material\" data-click=\"schemaSelector\"><i class=\"material-icons md-dark radio ";
     html = html + LI + "hidden\"></i>Custom</li>";
     for (i = 0; i < l; i++) {

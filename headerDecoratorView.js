@@ -80,7 +80,7 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
         var name = this.model.get("projectName");
         if (this.modal && name) {
             this.projectCreateButtonClose();
-            this.sendMessage("createProject", name);
+            this.sendMessage(CONSTANTS.MESSAGES.CREATE_PROJECT, name);
         }
     },
     open: function() {

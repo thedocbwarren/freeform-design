@@ -105,8 +105,7 @@ module.exports = AbstractEditorView.extend({
     },
     render: function() {
         // refresh the data
-        app.datastore.set("views", this.collection.toJSON());
-
+        app.setDatastoreItem("views", this.collection.toJSON());
         var e = this.boundElement("currentViews");
         this.removeTemplate(e, true);
         this.injectTemplate(Handlebars.templates.viewsTemplate({"currentViews": this.collection.toJSON()}), e);

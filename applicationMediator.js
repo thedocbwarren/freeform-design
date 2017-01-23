@@ -2,7 +2,8 @@ const Augmented = require("augmentedjs");
 	  Augmented.Presentation = require("augmentedjs-presentation");
 const CONSTANTS = require("./constants.js"),
         app = require("./application.js"),
-        filesaver = require("file-saver"),
+		Compiler = require("./compiler.js");
+        FileSaver = require("file-saver"),
         logger = require("./logger.js");
 
 module.exports = Augmented.Presentation.Mediator.extend({
@@ -45,7 +46,7 @@ module.exports = Augmented.Presentation.Mediator.extend({
 				file = file + ".json";
 			}
 
-            saveAs(blob, file);
+            FileSaver.saveAs(blob, file);
             this.publish(CONSTANTS.NAMES_AND_QUEUES.HEADER, CONSTANTS.MESSAGES.NOTIFICATION, "Save Project Complete.");
         });
         this.on(CONSTANTS.MESSAGES.COMPILE_PROJECT, function() {

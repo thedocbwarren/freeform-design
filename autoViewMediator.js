@@ -32,7 +32,7 @@ module.exports = Augmented.Presentation.Mediator.extend({
     },
     saveData: function() {
         app.setCurrentView(this.currentView);
-        var views = app.datastore.get("views");
+        var views = app.getViews();
         if (views) {
             views[this.currentView.index] = this.currentView.model;
         }

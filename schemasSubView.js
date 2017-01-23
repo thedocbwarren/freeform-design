@@ -45,7 +45,7 @@ module.exports = AbstractEditorView.extend({
         var index = (event.currentTarget.getAttribute("data-index"));
         var model = this.collection.at(index);
         app.setDatastoreItem("currentSchema", { "index": index, "model": model.toJSON() });
-        app.navigate(CONSTANTS.NAVIGATION.SCHEMAS);
+        app.navigate(CONSTANTS.NAVIGATION.SCHEMA);
     },
     setSchema: function(arr) {
         this.model.set("currentSchemas", arr);

@@ -1,6 +1,7 @@
 const   Augmented = require("augmentedjs");
 const   Models = require("./models.js"),
-        JSZip = require("jszip");
+        JSZip = require("jszip"),
+        FileSaver = require("file-saver");
 
 module.exports = {
     compile: function(model) {
@@ -122,7 +123,7 @@ module.exports = {
                       fn.
                       split(" ").
                       join("");
-                saveAs(blob, result);
+                FileSaver.saveAs(blob, result);
             });
 
             //return html + " \n\n " + req + " \n\n " + router + " \n\n " + application;

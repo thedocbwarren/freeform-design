@@ -19,7 +19,7 @@ var SchemaEditorMediator = Augmented.Presentation.Mediator.extend({
     },
     goToProject: function() {
         this.currentSchema = null;
-        app.datastore.unset("currentSchema");
+        app.clearDatastoreItem("currentSchema");
         app.navigate(CONSTANTS.NAVIGATION.PROJECT);
     },
     saveData: function() {

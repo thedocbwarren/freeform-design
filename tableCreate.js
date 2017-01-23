@@ -254,7 +254,7 @@ var SourceDecoratorView = Augmented.Presentation.DecoratorView.extend({
         });
     },
     compile: function(data) {
-        var view = app.datastore.get("currentView");
+        var view = app.getDatastoreItem("currentView");
         var settings = this.model.get("settings");
         var javascript = Compiler.compileTable(view.model, settings);
         this.model.set("javascript", javascript);

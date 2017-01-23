@@ -20,4 +20,4 @@ module.exports = {
     error: function(message) {
         logger.error(this._prefix + ": " + message);
     }
-}
+};

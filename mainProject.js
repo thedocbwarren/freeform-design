@@ -19,6 +19,7 @@ var ProjectSideNavigation = Augmented.Presentation.DecoratorView.extend({
     currentNav: "",
     init: function() {
         this.syncModelChange("name");
+		logger.debug("App " + JSON.stringify(app));
         this.model.set("name", app.getDatastoreItem("project"));
         this.on(CONSTANTS.MESSAGES.MARK_NAVIGATION, function(nav) {
             this.markNavigation(nav);

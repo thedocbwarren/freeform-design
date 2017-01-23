@@ -18,7 +18,7 @@ module.exports.NAVIGATION = {
     "ROUTES":               "routes",
     "VIEWS":                "views",
     "CONTROLLERS":          "controllers",
-    "MODLES":               "models",
+    "MODELS":               "models",
     "SCHEMAS":              "schemas"
 };
 
@@ -69,6 +69,7 @@ module.exports.MESSAGES = {
     "OPEN_PROJECT": "openProject",
     "COMPILE_PROJECT": "compileProject",
     "SAVE_PROJECT": "saveProject",
+    "CREATE_PROJECT": "createProject",
     "COMPILE": "compile",
     "REQUEST_DATA": "requestData",
     "YOUR_DATA_REQUEST": "yourDataRequest",
