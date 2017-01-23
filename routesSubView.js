@@ -1,11 +1,11 @@
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation"),
         Handlebars = require("handlebars");
-const   CONSTANTS = require("constants.js"),
-        app = require("application.js"),
-        Models = require("models.js"),
-        EditDialog = require("editDialog.js"),
-        routesTemplate = require("templates/routesTemplate.js");
+const   CONSTANTS = require("./constants.js"),
+        app = require("./application.js"),
+        Models = require("./models.js"),
+        EditDialog = require("./editDialog.js"),
+        routesTemplate = require("./templates/routesTemplate.js");
 
 var RouteCollection = Augmented.Collection.extend({
     model: Models.RouteModel
@@ -42,7 +42,7 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
     el: CONSTANTS.VIEW_MOUNT.ROUTES,
     init: function() {
         this.collection = new RouteCollection();
-        var arr = app.datastore.get("routes");
+        var arr = app.getDatastoreItem("routes");
         if (arr) {
             this.collection.reset(arr);
         }
@@ -50,7 +50,7 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
     },
     render: function() {
         // refresh the data
-        app.datastore.set("routes", this.collection.toJSON());
+        app.setDatastoreItem("routes", this.collection.toJSON());
         var e = this.boundElement("currentRoutes");
         this.removeTemplate(e, true);
         this.injectTemplate(Handlebars.templates.routesTemplate({"currentRoutes": this.collection.toJSON()}), e);
@@ -150,6 +150,4 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
         this.stopListening();
         return this;
     }
-});
-    return RoutesView;
 });

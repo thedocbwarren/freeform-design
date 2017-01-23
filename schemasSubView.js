@@ -1,12 +1,12 @@
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation"),
         Handlebars = require("handlebars");
-const   CONSTANTS = require("constants.js"),
-        app = require("application.js"),
-        Models = require("models.js"),
-        EditDialog = require("editDialog.js"),
-        AbstractEditorView = require("abstractEditorView.js"),
-        schemasTemplate = require("templates/schemasTemplate.js");
+const   CONSTANTS = require("./constants.js"),
+        app = require("./application.js"),
+        Models = require("./models.js"),
+        EditDialog = require("./editDialog.js"),
+        AbstractEditorView = require("./abstractEditorView.js"),
+        schemasTemplate = require("./templates/schemasTemplate.js");
 
 var EditSchemaDialog = EditDialog.extend({
     style: "bigForm",
@@ -24,7 +24,7 @@ module.exports = AbstractEditorView.extend({
     el: CONSTANTS.VIEW_MOUNT.SCHEMAS,
     init: function() {
         this.collection = new SchemasCollection();
-        var arr = app.datastore.get("schemas");
+        var arr = app.getDatastoreItem("schemas");
         if (arr) {
             this.collection.reset(arr);
         }
@@ -32,7 +32,7 @@ module.exports = AbstractEditorView.extend({
     },
     render: function() {
         // refresh the data
-        app.datastore.set("schemas", this.collection.toJSON());
+        app.setDatastoreItem("schemas", this.collection.toJSON());
 
         var e = this.boundElement("currentSchemas");
         this.removeTemplate(e, true);
@@ -44,12 +44,12 @@ module.exports = AbstractEditorView.extend({
     editSchemaDetail: function(event) {
         var index = (event.currentTarget.getAttribute("data-index"));
         var model = this.collection.at(index);
-        app.datastore.set("currentSchema", { "index": index, "model": model.toJSON() });
-        app.router.navigate(CONSTANTS.NAVIGATION.SCHEMAS, {trigger: true});
+        app.setDatastoreItem("currentSchema", { "index": index, "model": model.toJSON() });
+        app.navigate(CONSTANTS.NAVIGATION.SCHEMAS);
     },
     setSchema: function(arr) {
         this.model.set("currentSchemas", arr);
-        app.datastore.set("schemas", arr);
+        app.setDatastoreItem("schemas", arr);
     },
     saveSchema: function() {
         var name = this.dialog.model.get("name");

@@ -1,8 +1,8 @@
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation");
-const   CONSTANTS = require("constants.js"),
-        app = require("application.js"),
-        logger = require("logger.js");
+const   CONSTANTS = require("./constants.js"),
+        app = require("./application.js"),
+        logger = require("./logger.js");
 
 var CUSTOM_SCHEMA_SELECTION = "Custom";
 
@@ -86,7 +86,7 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
     schemaSelector: function(event) {
         var li = event.currentTarget, selected = (li.textContent || li.innerText);  // get the text node child
         if (selected !== CUSTOM_SCHEMA_SELECTION) {
-            var schemas = app.datastore.get("schemas"), schema = schemas.find(function(e) { return e.name === selected; });
+            var schemas = app.getDatastoreItem("schemas"), schema = schemas.find(function(e) { return e.name === selected; });
             if (schema) {
                 this.updateSchema(JSON.stringify(schema.schema));
             }

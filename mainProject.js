@@ -1,19 +1,15 @@
 const   Augmented = require("augmentedjs");
-	    Augmented.Presentation = require("augmentedjs-presentation"),
-        Handlebars = require("handlebars");
-const   CONSTANTS = require("constants.js"),
-        app = require("application.js"),
-        Models = require("models.js"),
-        EditDialog = require("editDialog.js"),
-        // subviews
-        StylesheetsView = require("stylesheetsSubView.js"),
-        RoutesView = require("routesSubView.js"),
-        ViewsView  require("viewsSubView.js"),
-        ControllersView = require("controllersSubView.js"),
-        ModelsView = require("modelsSubView.js"),
-        SchemasView = require("schemasSubView.js"),
-        OverviewView = require("overviewSubView.js"),
-        logger = require("logger.js");
+	    Augmented.Presentation = require("augmentedjs-presentation");
+const   CONSTANTS = require("./constants.js"),
+        app = require("./application.js"),
+        StylesheetsView = require("./stylesheetsSubView.js"),
+        RoutesView = require("./routesSubView.js"),
+        ViewsView = require("./viewsSubView.js"),
+        ControllersView = require("./controllersSubView.js"),
+        ModelsView = require("./modelsSubView.js"),
+        SchemasView = require("./schemasSubView.js"),
+        OverviewView = require("./overviewSubView.js"),
+        logger = require("./logger.js");
 
 const VIEWPORT_OFFSET = 55;
 
@@ -23,7 +19,7 @@ var ProjectSideNavigation = Augmented.Presentation.DecoratorView.extend({
     currentNav: "",
     init: function() {
         this.syncModelChange("name");
-        this.model.set("name", app.datastore.get("project"));
+        this.model.set("name", app.getDatastoreItem("project"));
         this.on(CONSTANTS.MESSAGES.MARK_NAVIGATION, function(nav) {
             this.markNavigation(nav);
         });
@@ -117,7 +113,9 @@ var MainProjectMediator = Augmented.Presentation.Mediator.extend({
         this.currentNavigation = null;
     },
     render: function() {
+		logger.debug("rendering main project");
         Augmented.Presentation.Dom.injectTemplate(CONSTANTS.TEMPLATES.MAIN_PROJECT, this.el);
+
         this.sideNav = new ProjectSideNavigation();
         this.observeColleagueAndTrigger(
             this.sideNav, // colleague view
@@ -149,6 +147,7 @@ module.exports = Augmented.Presentation.ViewController.extend({
         this.projectMediator.render();
     },
     initialize: function() {
+		logger.debug("Init main project");
         this.projectMediator = new MainProjectMediator();
         return this;
     },

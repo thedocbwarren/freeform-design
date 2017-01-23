@@ -78,7 +78,7 @@ module.exports.MESSAGES = {
     "UPDATE_SCHEMA": "updateSchema",
     "GO_TO_PROJECT": "goToProject",
     "UPDATE_DATA": "updateData",
-    "DIALOG_DATA": "dialogData"
+    "DIALOG_DATA": "dialogData",
     "SAVE": "save",
     "DELETE": "delete",
     "CLOSE": "close",
@@ -104,7 +104,7 @@ module.exports.NAMES_AND_QUEUES = {
     "MY_COLLEAGUE": "myColleague",
     "PROJECT_MEDIATOR": "projectMediator",
     "MEDIATOR_EDITOR": "MediatorEditorMediator",
-    "MEDIATOR":, "mediator",
+    "MEDIATOR": "mediator",
     "LIST_VIEW": "listView",
     "LIST": "list",
     "MODELS": "models",

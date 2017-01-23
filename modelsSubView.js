@@ -1,12 +1,12 @@
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation"),
         Handlebars = require("handlebars");
-const   CONSTANTS = require("constants.js"),
-        app = require("application.js"),
-        Models = require("models.js"),
-        EditDialog = require("editDialog.js"),
-        AbstractEditorView = require("abstractEditorView.js"),
-        modelsTemplate = require("templates/modelsTemplate.js");
+const   CONSTANTS = require("./constants.js"),
+        app = require("./application.js"),
+        Models = require("./models.js"),
+        EditDialog = require("./editDialog.js"),
+        AbstractEditorView = require("./abstractEditorView.js"),
+        modelsTemplate = require("./templates/modelsTemplate.js");
 
 var EditModelDialog = EditDialog.extend({
     style: "bigForm",
@@ -20,7 +20,7 @@ var ModelsCollection = Augmented.Collection.extend({
 
 // an option builder for the views
 var buildOptions = function(selected) {
-    var html = "", i = 0, s = app.datastore.get("schemas"), l = s.length;
+    var html = "", i = 0, s = app.getDatastoreItem("schemas"), l = s.length;
     html = html + "<option value=\"\">No Schema</option>";
     for (i = 0; i < l; i++) {
         html = html + "<option";
@@ -38,7 +38,7 @@ module.exports = AbstractEditorView.extend({
     el: CONSTANTS.VIEW_MOUNT.MODELS,
     init: function() {
         this.collection = new ModelsCollection();
-        var arr = app.datastore.get("models");
+        var arr = app.getDatastoreItem("models");
         if (arr) {
             this.collection.reset(arr);
         }
@@ -46,7 +46,7 @@ module.exports = AbstractEditorView.extend({
     },
     render: function() {
         // refresh the data
-        app.datastore.set("models", this.collection.toJSON());
+        app.setDatastoreItem("models", this.collection.toJSON());
 
         var e = this.boundElement("currentModels");
         this.removeTemplate(e, true);
@@ -57,7 +57,7 @@ module.exports = AbstractEditorView.extend({
     },
     setModel: function(arr) {
         this.model.set("currentModels", arr);
-        app.datastore.set("models", arr);
+        app.setDatastoreItem("models", arr);
     },
     saveModel: function() {
         var name = this.dialog.model.get("name");

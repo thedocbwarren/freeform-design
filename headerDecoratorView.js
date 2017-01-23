@@ -1,6 +1,6 @@
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation");
-const   CONSTANTS = require("constants.js");
+const   CONSTANTS = require("./constants.js");
 
 module.exports = Augmented.Presentation.DecoratorView.extend({
     name: CONSTANTS.NAMES_AND_QUEUES.HEADER,
@@ -47,7 +47,6 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
         if (!this.modal) {
             this.hamburger();
             var t = document.querySelector(CONSTANTS.TEMPLATES.ABOUT);
-            // consider an inject template method
             var clone = document.importNode(t.content, true);
             this.injectTemplate(clone, this.el);
             this.modal = true;
@@ -65,7 +64,6 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
         if (!this.modal) {
             this.hamburger();
             var t = document.querySelector(CONSTANTS.TEMPLATES.CREATE_PROJECT);
-            // consider an inject template method
             var clone = document.importNode(t.content, true);
             this.injectTemplate(clone, this.el);
             this.modal = true;
@@ -91,7 +89,6 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
             // Check for the various File API support.
             if (window.File && window.FileReader && window.FileList && window.Blob) {
                 var t = document.querySelector(CONSTANTS.TEMPLATES.OPEN_PROJECT);
-                // consider an inject template method
                 var clone = document.importNode(t.content, true);
                 this.injectTemplate(clone, this.el);
                 this.modal = true;
@@ -118,9 +115,7 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
     save: function() {
         if (!this.modal) {
             this.hamburger();
-
             var t = document.querySelector(CONSTANTS.TEMPLATES.SAVE_PROJECT);
-            // consider an inject template method
             var clone = document.importNode(t.content, true);
             this.injectTemplate(clone, this.el);
             this.modal = true;

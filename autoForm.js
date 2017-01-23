@@ -1,18 +1,17 @@
 const   Augmented = require("augmentedjs");
         Augmented.Presentation = require("augmentedjs-presentation");
-const   CONSTANTS = require("constants.js"),
-        app = require("application.js"),
-        logger = require("logger.js");
-
-const   BasicInfoView = require("basicInfoView.js"),
-        AutoViewMediator = require("autoViewMediator.js")
-        SchemaDecoratorView = require("schemaDecoratorView.js");
+const   CONSTANTS = require("./constants.js"),
+        app = require("./application.js"),
+        logger = require("./logger.js"),
+        BasicInfoView = require("./basicInfoView.js"),
+        AutoViewMediator = require("./autoViewMediator.js")
+        SchemaDecoratorView = require("./schemaDecoratorView.js");
 
 // define the classes
 var AutoFormMediator = AutoViewMediator.extend({
     name: CONSTANTS.NAMES_AND_QUEUES.AUTOFORM_MEDIATOR,
     render: function() {
-        this.currentView = app.datastore.get("currentView");
+        this.currentView = app.getDatastoreItem("currentView");
         if (!this.currentView) {
             this.currentView = { index: 0, "model": {
                 "name": "untitled",

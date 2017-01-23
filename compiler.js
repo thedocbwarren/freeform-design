@@ -1,5 +1,5 @@
 const   Augmented = require("augmentedjs");
-const   Models = require("models.js"),
+const   Models = require("./models.js"),
         JSZip = require("jszip");
 
 module.exports = {

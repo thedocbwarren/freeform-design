@@ -1,77 +1,80 @@
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation");
-const   CONSTANTS = require("constants.js"),
-        app = require("application.js"),
-        BasicInfoView = require("basicInfoView.js"),
-        SchemaDecoratorView = require("schemaDecoratorView.js"),
-        logger = require("logger.js");
+const   CONSTANTS = require("./constants.js"),
+        app = require("./application.js"),
+        BasicInfoView = require("./basicInfoView.js"),
+        SchemaDecoratorView = require("./schemaDecoratorView.js"),
+        logger = require("./logger.js");
 
-    var SchemaEditorMediator = Augmented.Presentation.Mediator.extend({
-        el: CONSTANTS.VIEW_MOUNT.ACTIVE_PANEL,
-        remove: function() {
-            /* off to unbind the events */
-            this.off(this.el);
-            this.stopListening();
-            Augmented.Presentation.Dom.empty(this.el);
-            return this;
-        },
-        goToProject: function() {
-            this.currentSchema = null;
-            app.datastore.unset("currentSchema");
-            app.router.navigate(CONSTANTS.NAVIGATION.PROJECT, {trigger: true});
-        },
-        saveData: function() {
-            app.datastore.set("currentSchema", this.currentSchema);
-            var schemas = app.datastore.get("schemas");
-            if (schemas) {
-                schemas[this.currentSchema.index] = this.currentSchema.model;
-                app.datastore.set("schemas", schemas);
-            }
-        },
-        updateSchema: function(schema) {
-            if (schema) {
-                logger.info("updating schema: " + schema);
-                this.publish(CONSTANTS.NAMES_AND_QUEUES.SCHEMA, CONSTANTS.MESSAGES.UPDATE_SCHEMA, Augmented.Utility.PrettyPrint(schema));
-            }
-        },
-        name: CONSTANTS.NAMES_AND_QUEUES.SCHEMA_EDITOR_MEDIATOR,
-        init: function() {
-            this.on(CONSTANTS.MESSAGES.GO_TO_PROJECT, function() {
-                this.goToProject();
-            });
-            this.on(CONSTANTS.MESSAGES.UPDATE_DATA, function(data) {
-                //this.publish("schema", "schemaData", data);
-                this.currentSchema.model = data;
-                this.saveData();
-            });
-            this.on(CONSTANTS.MESSAGES.UPDATE_SCHEMA, function(schema) {
-                this.currentSchema.model.schema = schema;
-                this.saveData();
-            });
-        },
-        render: function() {
-            this.currentSchema = app.datastore.get("currentSchema");
-            if (!this.currentSchema) {
-                this.currentSchema = {
-                    index: 0,
-                    "model": {
-                        "name": "",
-                        "url": "",
-                        "schema": {}
-                    }};
-            }
+const VIEWPORT_OFFSET = 238;
 
-            var t = document.querySelector(CONSTANTS.TEMPLATES.SCHEMA_EDITOR);
-            var clone = document.importNode(t.content, true);
-            this.el.appendChild(clone);
+var SchemaEditorMediator = Augmented.Presentation.Mediator.extend({
+    el: CONSTANTS.VIEW_MOUNT.ACTIVE_PANEL,
+    remove: function() {
+        /* off to unbind the events */
+        this.off(this.el);
+        this.stopListening();
+        Augmented.Presentation.Dom.empty(this.el);
+        return this;
+    },
+    goToProject: function() {
+        this.currentSchema = null;
+        app.datastore.unset("currentSchema");
+        app.navigate(CONSTANTS.NAVIGATION.PROJECT);
+    },
+    saveData: function() {
+        app.setDatastoreItem("currentSchema", this.currentSchema);
+        var schemas = app.getDatastoreItem("schemas");
+        if (schemas) {
+            schemas[this.currentSchema.index] = this.currentSchema.model;
+            app.setDatastoreItem("schemas", schemas);
         }
-    });
-
-    var SchemaEditorView = SchemaDecoratorView.extend({
-        setViewport: function() {
-            this.el.style.height = (Augmented.Presentation.Dom.getViewportHeight() - 238) + "px";
+    },
+    updateSchema: function(schema) {
+        if (schema) {
+            logger.info("updating schema: " + schema);
+            this.publish(CONSTANTS.NAMES_AND_QUEUES.SCHEMA, CONSTANTS.MESSAGES.UPDATE_SCHEMA, Augmented.Utility.PrettyPrint(schema));
         }
-    });
+    },
+    name: CONSTANTS.NAMES_AND_QUEUES.SCHEMA_EDITOR_MEDIATOR,
+    init: function() {
+        this.on(CONSTANTS.MESSAGES.GO_TO_PROJECT, function() {
+            this.goToProject();
+        });
+        this.on(CONSTANTS.MESSAGES.UPDATE_DATA, function(data) {
+            //this.publish("schema", "schemaData", data);
+            this.currentSchema.model = data;
+            this.saveData();
+        });
+        this.on(CONSTANTS.MESSAGES.UPDATE_SCHEMA, function(schema) {
+            this.currentSchema.model.schema = schema;
+            this.saveData();
+        });
+    },
+    render: function() {
+        this.currentSchema = app.getDatastoreItem("currentSchema");
+        if (!this.currentSchema) {
+            this.currentSchema = {
+                index: 0,
+                "model": {
+                    "name": "",
+                    "url": "",
+                    "schema": {}
+                }
+			};
+        }
+
+        var t = document.querySelector(CONSTANTS.TEMPLATES.SCHEMA_EDITOR);
+        var clone = document.importNode(t.content, true);
+        this.el.appendChild(clone);
+    }
+});
+
+var SchemaEditorView = SchemaDecoratorView.extend({
+    setViewport: function() {
+        this.el.style.height = (Augmented.Presentation.Dom.getViewportHeight() - VIEWPORT_OFFSET) + "px";
+    }
+});
 
 //SchemaEditorController
 module.exports = Augmented.Presentation.ViewController.extend({
@@ -99,7 +102,6 @@ module.exports = Augmented.Presentation.ViewController.extend({
 
         this.mediator.publish(CONSTANTS.NAMES_AND_QUEUES.BASIC, CONSTANTS.MESSAGES.UPDATE_NAME, this.mediator.currentSchema.model.name);
         this.mediator.updateSchema(this.mediator.currentSchema.model.schema);
-
     },
     initialize: function() {
         logger.info("Creating SchemaEditorController ...");

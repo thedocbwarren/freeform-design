@@ -1,12 +1,12 @@
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation"),
         Handlebars = require("handlebars");
-const   CONSTANTS = require("constants.js"),
-        app = require("application.js"),
-        Models = require("models.js"),
-        EditDialog = require("editDialog.js"),
-        stylesheetsTemplate = require("templates/stylesheetsTemplate.js"),
-        logger = require("logger.js");
+const   CONSTANTS = require("./constants.js"),
+        app = require("./application.js"),
+        Models = require("./models.js"),
+        EditDialog = require("./editDialog.js"),
+        stylesheetsTemplate = require("./templates/stylesheetsTemplate.js"),
+        logger = require("./logger.js");
 
 var StylesheetCollection = Augmented.Collection.extend({
     model: Models.StylesheetsModel
@@ -22,7 +22,7 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
     el: CONSTANTS.VIEW_MOUNT.STYLESHEETS,
     init: function() {
         this.collection = new StylesheetCollection();
-        var arr = app.datastore.get("stylesheets");
+        var arr = app.getDatastoreItem("stylesheets");
         if (arr) {
             this.collection.reset(arr);
         }
@@ -30,7 +30,7 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
     },
     render: function() {
         // refresh the data
-        app.datastore.set("stylesheets", this.collection.toJSON());
+        app.setDatastoreItem("stylesheets", this.collection.toJSON());
 
         var e = this.boundElement("stylesheetsTemplate");
         this.removeTemplate(e, true);

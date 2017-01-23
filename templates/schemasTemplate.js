@@ -1,1 +1,42 @@
-define(["handlebars"],function(a){a=a.default;var n=a.template,e=a.templates=a.templates||{};return e.schemasTemplate=n({1:function(a,n,e,l,i){var t,r,s=null!=n?n:{},u=e.helperMissing,d="function",c=a.escapeExpression;return'        <li>\n            <div class="flexContainer">\n                <p>'+c((r=null!=(r=e.name||(null!=n?n.name:n))?r:u,typeof r===d?r.call(s,{name:"name",hash:{},data:i}):r))+'<br/><span class="secondary">\n'+(null!=(t=e.if.call(s,null!=n?n.url:n,{name:"if",hash:{},fn:a.program(2,i,0),inverse:a.program(4,i,0),data:i}))?t:"")+"                    </span>\n                </p>\n                <div>\n"+(null!=(t=e.if.call(s,null!=n?n.url:n,{name:"if",hash:{},fn:a.program(6,i,0),inverse:a.program(8,i,0),data:i}))?t:"")+'                    <div class="inlineButton large" data-index="'+c((r=null!=(r=e.index||i&&i.index)?r:u,typeof r===d?r.call(s,{name:"index",hash:{},data:i}):r))+'" data-schemas="edit" data-click="editSchema"><i class="material-icons md-dark">edit</i></div>\n                </div>\n            </div>\n        </li>\n'},2:function(a,n,e,l,i){var t;return"                        <strong>Hosted URL</strong>&nbsp;:&nbsp;"+a.escapeExpression((t=null!=(t=e.url||(null!=n?n.url:n))?t:e.helperMissing,"function"==typeof t?t.call(null!=n?n:{},{name:"url",hash:{},data:i}):t))+"\n"},4:function(a,n,e,l,i){return"                        <strong>Local Data</strong>\n"},6:function(a,n,e,l,i){return""},8:function(a,n,e,l,i){var t,r=null!=n?n:{},s=e.helperMissing,u="function",d=a.escapeExpression;return'                        <div class="inlineButton large" data-name="'+d((t=null!=(t=e.name||(null!=n?n.name:n))?t:s,typeof t===u?t.call(r,{name:"name",hash:{},data:i}):t))+'" data-url="'+d((t=null!=(t=e.url||(null!=n?n.url:n))?t:s,typeof t===u?t.call(r,{name:"url",hash:{},data:i}):t))+'" data-index="'+d((t=null!=(t=e.index||i&&i.index)?t:s,typeof t===u?t.call(r,{name:"index",hash:{},data:i}):t))+'" data-schemas="editSchemaDetail" data-click="editSchemaDetail"><i class="material-icons md-dark">add_circle</i></div>\n'},compiler:[7,">= 4.0.0"],main:function(a,n,e,l,i){var t;return"<div>\n    <ul>\n"+(null!=(t=e.each.call(null!=n?n:{},null!=n?n.schemas:n,{name:"each",hash:{},fn:a.program(1,i,0),inverse:a.noop,data:i}))?t:"")+"    </ul>\n</div>\n"},useData:!0})});
+(function() {
+  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['schemasTemplate'] = template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "        <li>\n            <div class=\"flexContainer\">\n                <p>"
+    + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
+    + "<br/><span class=\"secondary\">\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.url : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "")
+    + "                    </span>\n                </p>\n                <div>\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.url : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.program(8, data, 0),"data":data})) != null ? stack1 : "")
+    + "                    <div class=\"inlineButton large\" data-index=\""
+    + alias4(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"index","hash":{},"data":data}) : helper)))
+    + "\" data-schemas=\"edit\" data-click=\"editSchema\"><i class=\"material-icons md-dark\">edit</i></div>\n                </div>\n            </div>\n        </li>\n";
+},"2":function(container,depth0,helpers,partials,data) {
+    var helper;
+
+  return "                        <strong>Hosted URL</strong>&nbsp;:&nbsp;"
+    + container.escapeExpression(((helper = (helper = helpers.url || (depth0 != null ? depth0.url : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"url","hash":{},"data":data}) : helper)))
+    + "\n";
+},"4":function(container,depth0,helpers,partials,data) {
+    return "                        <strong>Local Data</strong>\n";
+},"6":function(container,depth0,helpers,partials,data) {
+    return "";
+},"8":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "                        <div class=\"inlineButton large\" data-name=\""
+    + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
+    + "\" data-url=\""
+    + alias4(((helper = (helper = helpers.url || (depth0 != null ? depth0.url : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"url","hash":{},"data":data}) : helper)))
+    + "\" data-index=\""
+    + alias4(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"index","hash":{},"data":data}) : helper)))
+    + "\" data-schemas=\"editSchemaDetail\" data-click=\"editSchemaDetail\"><i class=\"material-icons md-dark\">add_circle</i></div>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<div>\n    <ul>\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.schemas : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "    </ul>\n</div>\n";
+},"useData":true});
+})();

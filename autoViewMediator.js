@@ -1,7 +1,7 @@
 const   Augmented = require("augmentedjs");
         Augmented.Presentation = require("augmentedjs-presentation");
-const   CONSTANTS = require("constants.js"),
-        app = require("application.js");
+const   CONSTANTS = require("./constants.js"),
+        app = require("./application.js");
 
 module.exports = Augmented.Presentation.Mediator.extend({
     //name
@@ -31,7 +31,7 @@ module.exports = Augmented.Presentation.Mediator.extend({
         });
     },
     saveData: function() {
-        app.datastore.set("currentView", this.currentView);
+        app.setCurrentView(this.currentView);
         var views = app.datastore.get("views");
         if (views) {
             views[this.currentView.index] = this.currentView.model;
@@ -57,7 +57,7 @@ module.exports = Augmented.Presentation.Mediator.extend({
     },
     goToProject: function() {
         this.currentView = null;
-        app.datastore.unset("currentView");
-        app.router.navigate(CONSTANTS.NAVIGATION.PROJECT, {trigger: true});
+        app.clearCurrentView();
+        app.navigate(CONSTANTS.NAVIGATION.PROJECT);
     }
 });

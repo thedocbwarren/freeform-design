@@ -1,1 +1,22 @@
-define(["handlebars"],function(n){n=n["default"];var a=n.template,e=n.templates=n.templates||{};return e.observeViewsListTemplate=a({1:function(n,a,e,l,i){var t,s=null!=a?a:{},d=e.helperMissing,r="function",c=n.escapeExpression;return'        <li>\n            <div class="flexContainer">\n                <div>\n                    <div class="avatar circle float left">C</div>\n                    <p>'+c((t=null!=(t=e.view||(null!=a?a.view:a))?t:d,typeof t===r?t.call(s,{name:"view",hash:{},data:i}):t))+'<br/><span class="secondary">'+c((t=null!=(t=e.channel||(null!=a?a.channel:a))?t:d,typeof t===r?t.call(s,{name:"channel",hash:{},data:i}):t))+'</span><br/><span class="secondary">'+c((t=null!=(t=e.identifier||(null!=a?a.identifier:a))?t:d,typeof t===r?t.call(s,{name:"identifier",hash:{},data:i}):t))+'</span></p>\n                </div>\n                <div>\n                    <div class="inlineButton large" data-index="'+c((t=null!=(t=e.index||i&&i.index)?t:d,typeof t===r?t.call(s,{name:"index",hash:{},data:i}):t))+'" data-mediator="edit" data-click="editView"><i class="material-icons md-dark">edit</i></div>\n                </div>\n            </div>\n        </li>\n'},compiler:[7,">= 4.0.0"],main:function(n,a,e,l,i){var t;return'<div>\n    <ul class="center">\n'+(null!=(t=e.each.call(null!=a?a:{},null!=a?a.views:a,{name:"each",hash:{},fn:n.program(1,i,0),inverse:n.noop,data:i}))?t:"")+"    </ul>\n</div>\n"},useData:!0})});
+(function() {
+  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['observeViewsListTemplate'] = template({"1":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "        <li>\n            <div class=\"flexContainer\">\n                <div>\n                    <div class=\"avatar circle float left\">C</div>\n                    <p>"
+    + alias4(((helper = (helper = helpers.view || (depth0 != null ? depth0.view : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"view","hash":{},"data":data}) : helper)))
+    + "<br/><span class=\"secondary\">"
+    + alias4(((helper = (helper = helpers.channel || (depth0 != null ? depth0.channel : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"channel","hash":{},"data":data}) : helper)))
+    + "</span><br/><span class=\"secondary\">"
+    + alias4(((helper = (helper = helpers.identifier || (depth0 != null ? depth0.identifier : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"identifier","hash":{},"data":data}) : helper)))
+    + "</span></p>\n                </div>\n                <div>\n                    <div class=\"inlineButton large\" data-index=\""
+    + alias4(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"index","hash":{},"data":data}) : helper)))
+    + "\" data-mediator=\"edit\" data-click=\"editView\"><i class=\"material-icons md-dark\">edit</i></div>\n                </div>\n            </div>\n        </li>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<div>\n    <ul class=\"center\">\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.views : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "    </ul>\n</div>\n";
+},"useData":true});
+})();

@@ -1,6 +1,6 @@
 const   Augmented = require("augmentedjs");
         Augmented.Presentation = require("augmentedjs-presentation"),
-        CONSTANTS = require("constants.js");
+        CONSTANTS = require("./constants.js");
 
 module.exports = Augmented.Presentation.DialogView.extend({
     style: "form",

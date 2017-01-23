@@ -1,1 +1,22 @@
-define(["handlebars"],function(a){a=a["default"];var n=a.template,e=a.templates=a.templates||{};return e.routesTemplate=n({1:function(a,n,e,l,t){var i,s=null!=n?n:{},r=e.helperMissing,u="function",c=a.escapeExpression;return'    <li>\n        <div class="flexContainer">\n            <p>'+c((i=null!=(i=e.route||(null!=n?n.route:n))?i:r,typeof i===u?i.call(s,{name:"route",hash:{},data:t}):i))+'<br/>\n                <span class="secondary">'+c((i=null!=(i=e.callback||(null!=n?n.callback:n))?i:r,typeof i===u?i.call(s,{name:"callback",hash:{},data:t}):i))+'</span><br/>\n                <span class="secondary">'+c((i=null!=(i=e.type||(null!=n?n.type:n))?i:r,typeof i===u?i.call(s,{name:"type",hash:{},data:t}):i))+'</span>\n            </p>\n            <div>\n                <div class="inlineButton large" data-index="'+c((i=null!=(i=e.index||t&&t.index)?i:r,typeof i===u?i.call(s,{name:"index",hash:{},data:t}):i))+'" data-routes="edit" data-click="editRoute"><i class="material-icons md-dark">edit</i></div>\n            </div>\n        </div>\n    </li>\n'},compiler:[7,">= 4.0.0"],main:function(a,n,e,l,t){var i;return"<ul>\n"+(null!=(i=e.each.call(null!=n?n:{},null!=n?n.currentRoutes:n,{name:"each",hash:{},fn:a.program(1,t,0),inverse:a.noop,data:t}))?i:"")+"</ul>\n"},useData:!0})});
+(function() {
+  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['routesTemplate'] = template({"1":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "    <li>\n        <div class=\"flexContainer\">\n            <p>"
+    + alias4(((helper = (helper = helpers.route || (depth0 != null ? depth0.route : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"route","hash":{},"data":data}) : helper)))
+    + "<br/>\n                <span class=\"secondary\">"
+    + alias4(((helper = (helper = helpers.callback || (depth0 != null ? depth0.callback : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"callback","hash":{},"data":data}) : helper)))
+    + "</span><br/>\n                <span class=\"secondary\">"
+    + alias4(((helper = (helper = helpers.type || (depth0 != null ? depth0.type : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"type","hash":{},"data":data}) : helper)))
+    + "</span>\n            </p>\n            <div>\n                <div class=\"inlineButton large\" data-index=\""
+    + alias4(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"index","hash":{},"data":data}) : helper)))
+    + "\" data-routes=\"edit\" data-click=\"editRoute\"><i class=\"material-icons md-dark\">edit</i></div>\n            </div>\n        </div>\n    </li>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<ul>\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.currentRoutes : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "</ul>\n";
+},"useData":true});
+})();

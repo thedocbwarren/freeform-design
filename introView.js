@@ -1,9 +1,9 @@
 const Augmented = require("augmentedjs");
 	  Augmented.Presentation = require("augmentedjs-presentation");
-const CONSTANTS = require("constants.js");
+const CONSTANTS = require("./constants.js");
 
 module.exports = Augmented.View.extend({
-    el: CONSTANTS.MAIN_VIEW_MOUNT,
+    el: CONSTANTS.VIEW_MOUNT.MAIN,
     render: function() {
         var h1 = document.createElement("h1"),
         t = document.createTextNode("Hello."),

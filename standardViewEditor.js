@@ -1,14 +1,14 @@
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation"),
         Handlebars = require("handlebars");
-const   CONSTANTS = require("constants.js"),
-        app = require("application.js"),
-        Models = require("models.js"),
-        EditDialog = require("editDialog.js"),
-        AbstractEditorMediator = require("abstractEditorMediator.js"),
-        BasicInfoView = require("basicInfoView.js"),
-        permissionsTemplate = require("templates/permissionsTemplate.js"),
-        logger = require("logger.js");
+const   CONSTANTS = require("./constants.js"),
+        app = require("./application.js"),
+        Models = require("./models.js"),
+        EditDialog = require("./editDialog.js"),
+        AbstractEditorMediator = require("./abstractEditorMediator.js"),
+        BasicInfoView = require("./basicInfoView.js"),
+        permissionsTemplate = require("./templates/permissionsTemplate.js"),
+        logger = require("./logger.js");
 
 var PermissionCollection = Augmented.Collection.extend({
     model: Models.PermissionModel
@@ -44,7 +44,7 @@ var StandardViewEditorMediator = AbstractEditorMediator.extend({
         });
     },
     render: function() {
-        this.currentView = app.datastore.get("currentView");
+        this.currentView = app.getCurrentView();
         if (!this.currentView) {
             this.currentView = {
                 index: 0, "model": {
@@ -150,7 +150,6 @@ var PermissionsView = Augmented.Presentation.DecoratorView.extend({
         }
 
         this.render();
-
     },
     deletePermission: function() {
         var index = this.dialog.model.get("index");

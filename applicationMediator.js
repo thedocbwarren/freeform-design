@@ -1,9 +1,9 @@
 const Augmented = require("augmentedjs");
 	  Augmented.Presentation = require("augmentedjs-presentation");
-const CONSTANTS = require("constants.js"),
-        app = require("application.js"),
+const CONSTANTS = require("./constants.js"),
+        app = require("./application.js"),
         filesaver = require("file-saver"),
-        logger = require("logger.js");
+        logger = require("./logger.js");
 
 module.exports = Augmented.Presentation.Mediator.extend({
     name: CONSTANTS.NAMES_AND_QUEUES.MEDIATOR,
@@ -12,8 +12,8 @@ module.exports = Augmented.Presentation.Mediator.extend({
         // hamburger events
         this.on(CONSTANTS.MESSAGES.CREATE_PROJECT, function(name) {
             logger.info("Created new project - " + name);
-            app.datastore.set("project", name);
-            app.router.navigate(CONSTANTS.NAVIGATION.PROJECT, {trigger: true});
+			app.setDatastoreItem("project", name);
+            app.navigate(CONSTANTS.NAVIGATION.PROJECT);
             this.publish(CONSTANTS.NAMES_AND_QUEUES.HEADER, CONSTANTS.MESSAGES.NOTIFICATION, "Project " + name + " Created.");
         });
         this.on(CONSTANTS.MESSAGES.OPEN_PROJECT, function(file) {
@@ -25,8 +25,9 @@ module.exports = Augmented.Presentation.Mediator.extend({
                 var text = reader.result, data;
                 try {
                     data = JSON.parse(text);
-                    app.datastore.set(data);
-                    app.router.navigate(CONSTANTS.NAVIGATION.PROJECT, {trigger: true});
+					app.setDatastore(data);
+
+                    app.navigate(CONSTANTS.NAVIGATION.PROJECT);
                     that.publish(CONSTANTS.NAMES_AND_QUEUES.HEADER, CONSTANTS.MESSAGES.NOTIFICATION, "Project Loaded.");
                 } catch(ex) {
                     alert("Failed to read file! " + ex);
@@ -39,7 +40,7 @@ module.exports = Augmented.Presentation.Mediator.extend({
         });
         this.on(CONSTANTS.MESSAGES.SAVE_PROJECT, function(file) {
             logger.info("Saving a project - " + file);
-            var blob = new Blob([JSON.stringify(app.datastore.toJSON())], {type: "text/plain;charset=utf-8"});
+            var blob = new Blob([JSON.stringify(app.getDatastore().toJSON())], {type: "text/plain;charset=utf-8"});
 			if (!file.endsWith(".json")) {
 				file = file + ".json";
 			}
@@ -49,7 +50,7 @@ module.exports = Augmented.Presentation.Mediator.extend({
         });
         this.on(CONSTANTS.MESSAGES.COMPILE_PROJECT, function() {
             logger.info("Compiling a project");
-            Compiler.compile(app.datastore.toJSON());
+            Compiler.compile(app.getDatastore().toJSON());
             this.publish(CONSTANTS.NAMES_AND_QUEUES.HEADER, CONSTANTS.MESSAGES.NOTIFICATION, "Compile Complete!");
         });
         // end hamburger events

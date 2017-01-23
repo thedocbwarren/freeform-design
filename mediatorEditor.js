@@ -1,15 +1,15 @@
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation"),
         Handlebars = require("handlebars");
-const   CONSTANTS = require("constants.js"),
-        app = require("application.js"),
-        Models = require("models.js"),
-        EditDialog = require("editDialog.js"),
-        BasicInfoView = require("basicInfoView.js"),
-        AbstractEditorMediator = require("abstractEditorMediator.js"),
-        logger = require("logger.js"),
-        AbstractEditorView = require("abstractEditorView.js"),
-        observeViewsListTemplate = require("templates/observeViewsListTemplate.js");
+const   CONSTANTS = require("./constants.js"),
+        app = require("./application.js"),
+        Models = require("./models.js"),
+        EditDialog = require("./editDialog.js"),
+        BasicInfoView = require("./basicInfoView.js"),
+        AbstractEditorMediator = require("./abstractEditorMediator.js"),
+        logger = require("./logger.js"),
+        AbstractEditorView = require("./abstractEditorView.js"),
+        observeViewsListTemplate = require("./templates/observeViewsListTemplate.js");
 
 const VIEWPORT_OFFSET = 160;
 
@@ -35,7 +35,7 @@ var MediatorEditorMediator = AbstractEditorMediator.extend({
         });
     },
     render: function() {
-        this.currentView = app.datastore.get("currentView");
+        this.currentView = app.getCurrentView();
         if (!this.currentView) {
             this.currentView = {
                 index: 0,
@@ -84,7 +84,7 @@ var MediatorObserverListView = AbstractEditorView.extend({
         this.addNew();
     },
     openDialog: function(model, index) {
-        var views = app.datastore.get("views");
+        var views = app.getViews();
 
         if (!this.dialog) {
             this.dialog = new ObserveViewDialog();

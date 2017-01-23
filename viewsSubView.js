@@ -1,13 +1,13 @@
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation"),
         Handlebars = require("handlebars");
-const   CONSTANTS = require("constants.js"),
-        app = require("application.js"),
-        Models = require("models.js"),
-        EditDialog = require("editDialog.js"),
-        AbstractEditorView = require("abstractEditorView.js"),
-        viewsTemplate = require("templates/viewsTemplate.js"),
-        logger = require("logger.js");
+const   CONSTANTS = require("./constants.js"),
+        app = require("./application.js"),
+        Models = require("./models.js"),
+        EditDialog = require("./editDialog.js"),
+        AbstractEditorView = require("./abstractEditorView.js"),
+        viewsTemplate = require("./templates/viewsTemplate.js"),
+        logger = require("./logger.js");
 
 var ViewCollection = Augmented.Collection.extend({
     model: Models.ViewModel
@@ -22,44 +22,34 @@ var EditViewDialog = EditDialog.extend({
 });
 
 // Current supported views
-var SUPPORTED_VIEWS = {
-    "BASE":             "View",
-    "MEDIATOR":         "Mediator",
-    "COLLEAGUE":        "Colleague",
-    "AUTO_TABLE":       "AutomaticTable",
-    "AUTO_FORM":        "AutomaticForm",
-    "DECORATOR":        "DecoratorView",
-    "DIALOG":           "DialogView"
-};
-
-var supportedViewsArray = Object.values(SUPPORTED_VIEWS);
+var SUPPORTED_VIEWS = [ "View", "Mediator", "Colleague", "AutomaticTable", "AutomaticForm", "DecoratorView", "DialogView" ];
 
 // register panels to a view type for navigation
 var panelRegistry = {
-    SUPPORTED_VIEWS.BASE:         CONSTANTS.NAVIGATION.VIEW,
-    SUPPORTED_VIEWS.MEDIATOR:     CONSTANTS.NAVIGATION.MEDIATOR,
-    SUPPORTED_VIEWS.COLLEAGUE:    CONSTANTS.NAVIGATION.VIEW,
-    SUPPORTED_VIEWS.DECORATOR:    CONSTANTS.NAVIGATION.VIEW,
-    SUPPORTED_VIEWS.DIALOG:       CONSTANTS.NAVIGATION.DIALOG,
-    SUPPORTED_VIEWS.AUTO_TABLE:   CONSTANTS.NAVIGATION.TABLE,
-    SUPPORTED_VIEWS.AUTO_FORM:    CONSTANTS.NAVIGATION.FORM
+    "View":         	CONSTANTS.NAVIGATION.VIEW,
+    "Mediator":     	CONSTANTS.NAVIGATION.MEDIATOR,
+    "Colleague":    	CONSTANTS.NAVIGATION.VIEW,
+    "DecoratorView":    CONSTANTS.NAVIGATION.VIEW,
+    "DialogView":       CONSTANTS.NAVIGATION.DIALOG,
+    "AutomaticTable":   CONSTANTS.NAVIGATION.TABLE,
+    "AutomaticForm":    CONSTANTS.NAVIGATION.FORM
 };
 
 // an option builder for the views
 var buildOptions = function(selected) {
-    var html = "", i = 0, l = supportedViewsArray.length;
+    var html = "", i = 0, l = SUPPORTED_VIEWS.length;
     for (i = 0; i < l; i++) {
         html = html + "<option";
-        if (supportedViewsArray[i] === selected) {
+        if (SUPPORTED_VIEWS[i] === selected) {
             html = html + " selected";
         }
-        html = html + ">" + supportedViewsArray[i] + "</option>";
+        html = html + ">" + SUPPORTED_VIEWS[i] + "</option>";
     }
     return html;
 };
 
 var buildModelOptions = function(selected) {
-    var html = "", i = 0, m = app.datastore.get("models"), l = m.length;
+    var html = "", i = 0, m = app.getDatastoreItem("models"), l = m.length;
     html = html + "<option";
     if (!selected) {
         html = html + " selected";
@@ -107,7 +97,7 @@ module.exports = AbstractEditorView.extend({
     el: CONSTANTS.VIEW_MOUNT.VIEWS,
     init: function() {
         this.collection = new ViewCollection();
-        var arr = app.datastore.get("views");
+        var arr = app.getDatastoreItem("views");
         if (arr) {
             this.collection.reset(arr);
         }
@@ -128,15 +118,15 @@ module.exports = AbstractEditorView.extend({
         var index = (event.currentTarget.getAttribute("data-index"));
         var model = this.collection.at(index);
         var panel = panelRegistry[model.get("type")];
-        app.datastore.set("currentView", { "index": index, "model": model.toJSON() });
-        app.router.navigate(panel, {trigger: true});
+        app.setCurrentView({ "index": index, "model": model.toJSON() });
+        app.navigate(panel);
     },
     editViewPermissions: function(event) {
         var index = (event.currentTarget.getAttribute("data-index"));
         var model = this.collection.at(index);
         var panel = panelRegistry.View;
-        app.datastore.set("currentView", { "index": index, "model": model.toJSON() });
-        app.router.navigate(panel, {trigger: true});
+        app.setCurrentView({ "index": index, "model": model.toJSON() });
+        app.navigate(panel);
     },
     saveView: function() {
         var name = this.dialog.model.get("edit-view");

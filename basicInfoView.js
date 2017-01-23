@@ -1,6 +1,6 @@
 const   Augmented = require("augmentedjs");
         Augmented.Presentation = require("augmentedjs-presentation");
-const   CONSTANTS = require("constants.js");
+const   CONSTANTS = require("./constants.js");
 
 module.exports = Augmented.Presentation.DecoratorView.extend({
     name: CONSTANTS.NAMES_AND_QUEUES.BASIC,

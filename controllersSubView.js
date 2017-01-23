@@ -1,12 +1,12 @@
 const   Augmented = require("augmentedjs");
         Augmented.Presentation = require("augmentedjs-presentation"),
         Handlebars = require("handlebars");
-const   CONSTANTS = require("constants.js"),
-        app = require("application.js"),
-        Models = require("models.js"),
-        EditDialog = require("editDialog.js"),
-        AbstractEditorView = require("abstractEditorView.js"),
-        controllersTemplate = require("templates/controllersTemplate.js");
+const   CONSTANTS = require("./constants.js"),
+        app = require("./application.js"),
+        Models = require("./models.js"),
+        EditDialog = require("./editDialog.js"),
+        AbstractEditorView = require("./abstractEditorView.js"),
+        controllersTemplate = require("./templates/controllersTemplate.js");
 
 var EditControllerDialog = EditDialog.extend({
     title: "Edit Controller",
@@ -23,7 +23,7 @@ module.exports = AbstractEditorView.extend({
     el: CONSTANTS.VIEW_MOUNT.CONTROLLERS,
     init: function() {
         this.collection = new ControllerCollection();
-        var arr = app.datastore.get("controllers");
+        var arr = app.getDatastoreItem("controllers");
         if (arr) {
             this.collection.reset(arr);
         }
@@ -31,7 +31,7 @@ module.exports = AbstractEditorView.extend({
     },
     render: function() {
         // refresh the data
-        app.datastore.set("controllers", this.collection.toJSON());
+        app.setDatastoreItem("controllers", this.collection.toJSON());
 
         var e = this.boundElement("currentControllers");
         this.removeTemplate(e, true);
@@ -42,7 +42,7 @@ module.exports = AbstractEditorView.extend({
     },
     setModel: function(arr) {
         this.model.set("currentControllers", arr);
-        app.datastore.set("controllers", arr);
+        app.setDatastoreItem("controllers", arr);
     },
     saveController: function() {
         var controller = this.dialog.model.get("controller");

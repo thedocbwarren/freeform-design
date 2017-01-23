@@ -1,1 +1,38 @@
-define(["handlebars"],function(n){n=n.default;var a=n.template,e=n.templates=n.templates||{};return e.modelsTemplate=a({1:function(n,a,e,l,s){var r,t,i=null!=a?a:{},o=e.helperMissing,u="function",c=n.escapeExpression;return'        <li>\n            <div class="flexContainer">\n                <p>'+c((t=null!=(t=e.name||(null!=a?a.name:a))?t:o,typeof t===u?t.call(i,{name:"name",hash:{},data:s}):t))+'<br/><span class="secondary">\n'+(null!=(r=e.if.call(i,null!=a?a.url:a,{name:"if",hash:{},fn:n.program(2,s,0),inverse:n.program(4,s,0),data:s}))?r:"")+'                    </span>\n                    <br/><span class="secondary">\n'+(null!=(r=e.if.call(i,null!=a?a.schema:a,{name:"if",hash:{},fn:n.program(6,s,0),inverse:n.program(8,s,0),data:s}))?r:"")+'                    </span>\n                </p>\n                <div>\n                    <div class="inlineButton large" data-index="'+c((t=null!=(t=e.index||s&&s.index)?t:o,typeof t===u?t.call(i,{name:"index",hash:{},data:s}):t))+'" data-models="edit" data-click="editModel"><i class="material-icons md-dark">edit</i></div>\n                </div>\n            </div>\n        </li>\n'},2:function(n,a,e,l,s){var r;return"                        <strong>URL</strong>&nbsp;:&nbsp;"+n.escapeExpression((r=null!=(r=e.url||(null!=a?a.url:a))?r:e.helperMissing,"function"==typeof r?r.call(null!=a?a:{},{name:"url",hash:{},data:s}):r))+"\n"},4:function(n,a,e,l,s){return"                        <strong>Local</strong>\n"},6:function(n,a,e,l,s){var r;return"                        <strong>Schema</strong>&nbsp;:&nbsp;"+n.escapeExpression((r=null!=(r=e.schema||(null!=a?a.schema:a))?r:e.helperMissing,"function"==typeof r?r.call(null!=a?a:{},{name:"schema",hash:{},data:s}):r))+"\n"},8:function(n,a,e,l,s){return"                        <strong>No Schema</strong>\n"},compiler:[7,">= 4.0.0"],main:function(n,a,e,l,s){var r;return"<div>\n    <ul>\n"+(null!=(r=e.each.call(null!=a?a:{},null!=a?a.models:a,{name:"each",hash:{},fn:n.program(1,s,0),inverse:n.noop,data:s}))?r:"")+"    </ul>\n</div>\n"},useData:!0})});
+(function() {
+  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['modelsTemplate'] = template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "        <li>\n            <div class=\"flexContainer\">\n                <p>"
+    + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
+    + "<br/><span class=\"secondary\">\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.url : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "")
+    + "                    </span>\n                    <br/><span class=\"secondary\">\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.schema : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.program(8, data, 0),"data":data})) != null ? stack1 : "")
+    + "                    </span>\n                </p>\n                <div>\n                    <div class=\"inlineButton large\" data-index=\""
+    + alias4(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"index","hash":{},"data":data}) : helper)))
+    + "\" data-models=\"edit\" data-click=\"editModel\"><i class=\"material-icons md-dark\">edit</i></div>\n                </div>\n            </div>\n        </li>\n";
+},"2":function(container,depth0,helpers,partials,data) {
+    var helper;
+
+  return "                        <strong>URL</strong>&nbsp;:&nbsp;"
+    + container.escapeExpression(((helper = (helper = helpers.url || (depth0 != null ? depth0.url : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"url","hash":{},"data":data}) : helper)))
+    + "\n";
+},"4":function(container,depth0,helpers,partials,data) {
+    return "                        <strong>Local</strong>\n";
+},"6":function(container,depth0,helpers,partials,data) {
+    var helper;
+
+  return "                        <strong>Schema</strong>&nbsp;:&nbsp;"
+    + container.escapeExpression(((helper = (helper = helpers.schema || (depth0 != null ? depth0.schema : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"schema","hash":{},"data":data}) : helper)))
+    + "\n";
+},"8":function(container,depth0,helpers,partials,data) {
+    return "                        <strong>No Schema</strong>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<div>\n    <ul>\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.models : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "    </ul>\n</div>\n";
+},"useData":true});
+})();

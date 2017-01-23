@@ -1,40 +1,46 @@
 {
-  "name": "freeform-design",
-  "version": "1.4.0",
-  "description": "The Augmented.js Framework - freeForm Design Application.",
-  "main": "freeform-design.js",
-  "scripts": {
-      "test": "jasmine-node ./test --verbose",
-      "lint": "jshint **.js",
-      "build": "browserify index.js | uglifyjs -c -m --screw-ie8 - > freeform-design.js",
-      "build-debug": "browserify index.js > freeform-design.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Augmentedjs/freeform-design.git"
-  },
-  "keywords": [
-    "augmentedjs"
-  ],
-  "author": "Bob Warren <jedi.master@augmentedjs.com> (http://www.augmentedjs.com)",
-  "license": "Apache-2.0",
-  "dependencies": {
-    "augmentedjs": ">=1.4.0",
-    "handlebars": ">=4.0.5",
-    "file-saver": ">=1.3.2",
-    "jszip": "^3.1.0"
-
-  },
-  "devDependencies": {
-      "augmentedjs": ">=1.4.0",
-      "handlebars": ">=4.0.5",
-      "file-saver": ">=1.3.2",
-      "jszip": "^3.1.0",
-      "browserify": "latest",
-      "uglifyjs": "latest"
-  },
-  "bugs": {
-    "url": "https://github.com/Augmentedjs/freeform-design/issues"
-  },
-  "homepage": "http://www.augmentedjs.com"
+    "name": "freeform-design",
+    "version": "1.4.0",
+    "description": "The Augmented.js Framework - freeForm Design Application.",
+    "main": "freeform-design.js",
+    "scripts": {
+        "start": "electron main.js",
+        "test": "jasmine-node ./test --verbose",
+        "lint": "jshint **.js",
+        "build": "browserify index.js | uglifyjs -c -m --screw-ie8 - > freeform-design.js",
+        "build-debug": "browserify index.js > freeform-design.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Augmentedjs/freeform-design.git"
+    },
+    "keywords": [
+        "augmentedjs"
+    ],
+        "author": "Bob Warren <jedi.master@augmentedjs.com> (http://www.augmentedjs.com)",
+        "license": "Apache-2.0",
+        "dependencies": {
+        "xhr2": "*",
+        "electron": "^1.4.1",
+        "augmentedjs": ">=1.4.0",
+        "augmentedjs-presentation": ">=1.1.0",
+        "handlebars": ">=4.0.5",
+        "file-saver": ">=1.3.2",
+        "jszip": "^3.1.0"
+    },
+    "devDependencies": {
+        "xhr2": "*",
+        "electron": "^1.4.1",
+        "augmentedjs": ">=1.4.0",
+        "augmentedjs-presentation": ">=1.1.0",
+        "handlebars": ">=4.0.5",
+        "file-saver": ">=1.3.2",
+        "jszip": "^3.1.0",
+        "browserify": "latest",
+        "uglifyjs": "latest"
+    },
+    "bugs": {
+        "url": "https://github.com/Augmentedjs/freeform-design/issues"
+    },
+    "homepage": "http://www.augmentedjs.com"
 }

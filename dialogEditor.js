@@ -1,13 +1,13 @@
 const   Augmented = require("augmentedjs");
         Augmented.Presentation = require("augmentedjs-presentation"),
         Handlebars = require("handlebars");
-const   CONSTANTS = require("constants.js"),
-        app = require("application.js"),
-        Models = require("models.js"),
-        EditDialog = require("editDialog.js"),
-        BasicInfoView = require("basicInfoView.js"),
-        AbstractEditorMediator = require("abstractEditorMediator.js"),
-        logger = require("logger.js");
+const   CONSTANTS = require("./constants.js"),
+        app = require("./application.js"),
+        Models = require("./models.js"),
+        EditDialog = require("./editDialog.js"),
+        BasicInfoView = require("./basicInfoView.js"),
+        AbstractEditorMediator = require("./abstractEditorMediator.js"),
+        logger = require("./logger.js");
 
 const VIEWPORT_OFFSET = 160;
 
@@ -24,7 +24,7 @@ var DialogEditorMediator = AbstractEditorMediator.extend({
         });
     },
     render: function() {
-        this.currentView = app.datastore.get("currentView");
+        this.currentView = app.getDatastoreItem("currentView");
         if (!this.currentView) {
             this.currentView = {
                 index: 0,
@@ -43,7 +43,6 @@ var DialogEditorMediator = AbstractEditorMediator.extend({
         }
 
         var t = document.querySelector(CONSTANTS.TEMPLATES.DIALOG_EDITOR);
-        // consider an inject template method simular to DecoratorView
         var clone = document.importNode(t.content, true);
         this.el.appendChild(clone);
     }
