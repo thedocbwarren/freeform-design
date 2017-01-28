@@ -1,14 +1,14 @@
 {
     "name": "freeform-design",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "The Augmented.js Framework - freeForm Design Application.",
     "main": "freeform-design.js",
     "scripts": {
         "start": "electron main.js",
         "test": "jasmine-node ./test --verbose",
         "lint": "jshint **.js",
-        "build": "browserify index.js | uglifyjs -c -m --screw-ie8 - > freeform-design.js",
-        "build-debug": "browserify index.js > freeform-design.js"
+        "build-ugly": "browserify index.js | uglifyjs -c -m --screw-ie8 - > freeform-design.js",
+        "build": "browserify index.js > freeform-design.js"
     },
     "repository": {
         "type": "git",
