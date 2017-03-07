@@ -1,6 +1,6 @@
 {
     "name": "freeform-design",
-    "version": "1.4.2",
+    "version": "1.5.0",
     "description": "The Augmented.js Framework - freeForm Design Application.",
     "main": "freeform-design.js",
     "scripts": {

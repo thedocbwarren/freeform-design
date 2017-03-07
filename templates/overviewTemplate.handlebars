@@ -1,0 +1,53 @@
+<h1>{{project}}</h1>
+<h2>{{filename}}</h2>
+
+<div class="info">
+    <h3><i class="material-icons md-dark">style</i> Stylesheets</h3>
+    <p>
+        {{#if stylesheets}}
+            <span class="green">{{stylesheets.length}} stylesheets defined.
+        {{else}}
+            <span class="red">No stylesheets defined.
+        {{/if}}
+    </span></p>
+    <h3><i class="material-icons md-dark">toc</i> Routes</h3>
+    <p>
+        {{#if routes}}
+            <span class="green">{{routes.length}} routes defined.
+        {{else}}
+            <span class="red">No routes defined.
+        {{/if}}
+    </span></p>
+    <h3><i class="material-icons md-dark">web_asset</i> Views</h3>
+    <p>
+        {{#if views}}
+            <span class="green">{{views.length}} views defined.
+        {{else}}
+            <span class="red">No views defined.
+        {{/if}}
+    </span></p>
+    <h3><i class="material-icons md-dark">web</i> Controllers</h3>
+    <p>
+        {{#if controllers}}
+            <span class="green">{{controllers.length}} controllers defined.
+        {{else}}
+            <span class="red">No controllers defined.
+        {{/if}}
+    </span></p>
+    <h3><i class="material-icons md-dark">note</i> Models</h3>
+    <p>
+        {{#if models}}
+            <span class="green">{{models.length}} models defined.
+        {{else}}
+            <span class="red">No models defined.
+        {{/if}}
+    </span></p>
+    <h3><i class="material-icons md-dark">code</i> Schemas</h3>
+    <p>
+        {{#if schemas}}
+            <span class="green">{{schemas.length}} schemas defined.
+        {{else}}
+            <span class="red">No schemas defined.
+        {{/if}}
+    </span></p>
+</div>
