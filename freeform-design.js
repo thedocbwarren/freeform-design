@@ -72,6 +72,8 @@ const   CONSTANTS = require("./constants.js"),
 // create an application and router
 var app = new Augmented.Presentation.Application(CONSTANTS.APP_NAME);
 
+var breadcrumb = "";
+
 app.afterInitialize = function() {
 	const 	mediatorView = new ApplicationMediator(),
 			headerView = new HeaderDecoratorView();
@@ -153,6 +155,14 @@ module.exports.getCurrentView = function() {
 module.exports.getViews = function() {
 	var ds = app.getDatastore();
 	return ds.get("views");
+};
+
+module.exports.setCurrentBreadcrumb = function(item) {
+	breadcrumb = item;
+};
+
+module.exports.getCurrentBreadcrumb = function() {
+	return breadcrumb;
 };
 
 },{"./applicationMediator.js":4,"./constants.js":9,"./headerDecoratorView.js":13,"./logger.js":16,"./models.js":19,"./router.js":175,"augmentedjs":23,"augmentedjs-presentation":22}],4:[function(require,module,exports){
@@ -683,7 +693,7 @@ module.exports = {
 
 },{"./models.js":19,"augmentedjs":23,"file-saver":53,"jszip":98}],9:[function(require,module,exports){
 module.exports.APP_NAME = "freeform";
-module.exports.VERSION = "1.4.1";
+module.exports.VERSION = "1.5.0";
 module.exports.TITLE = "freeForm Designer";
 module.exports.WEBSITE = "http://www.augmentedjs.com";
 
@@ -1408,6 +1418,10 @@ var MainProjectMediator = Augmented.Presentation.Mediator.extend({
     doNavigation: function(navigation, ViewObject) {
         this.removeLastView();
         this.currentNavigation = navigation;
+
+		// add navigation for breadcrumbing
+		app.setCurrentBreadcrumb(navigation);
+
         this.publish(CONSTANTS.NAMES_AND_QUEUES.SIDE_NAVIGATION, CONSTANTS.MESSAGES.MARK_NAVIGATION, navigation);
 
         logger.info("adding view");
@@ -1441,8 +1455,31 @@ var MainProjectMediator = Augmented.Presentation.Mediator.extend({
             CONSTANTS.NAMES_AND_QUEUES.SIDE_NAVIGATION,   // channel
             CONSTANTS.NAMES_AND_QUEUES.SIDE_NAVIGATION    // identifier
         );
-        // setup default nav
-        this.sideNav.defaultNavigation();
+		// go where we were
+		var bc = app.getCurrentBreadcrumb();
+		if (bc) {
+			if (bc === CONSTANTS.NAVIGATION.STYLESHEETS) {
+                this.doNavigation(bc, StylesheetsView);
+            } else if (bc === CONSTANTS.NAVIGATION.ROUTES) {
+                this.doNavigation(bc, RoutesView);
+            } else if (bc === CONSTANTS.NAVIGATION.VIEWS) {
+                this.doNavigation(bc, ViewsView);
+            } else if (bc === CONSTANTS.NAVIGATION.CONTROLLERS) {
+                this.doNavigation(bc, ControllersView);
+            } else if (bc === CONSTANTS.NAVIGATION.MODELS) {
+                this.doNavigation(bc, ModelsView);
+            } else if (bc === CONSTANTS.NAVIGATION.SCHEMAS) {
+                this.doNavigation(bc, SchemasView);
+            } else if (bc === CONSTANTS.NAVIGATION.OVERVIEW) {
+                this.doNavigation(bc, OverviewView);
+            } else {
+				// setup default nav
+				this.sideNav.defaultNavigation();
+			}
+		} else {
+			// setup default nav
+			this.sideNav.defaultNavigation();
+		}
     },
     remove: function() {
         if (this.sideNav) {
@@ -1476,7 +1513,7 @@ module.exports = Augmented.Presentation.ViewController.extend({
     }
 });
 
-},{"./application.js":3,"./constants.js":9,"./controllersSubView.js":10,"./logger.js":16,"./modelsSubView.js":20,"./overviewSubView.js":174,"./routesSubView.js":176,"./schemasSubView.js":179,"./stylesheetsSubView.js":181,"./viewsSubView.js":191,"augmentedjs":23,"augmentedjs-presentation":22}],18:[function(require,module,exports){
+},{"./application.js":3,"./constants.js":9,"./controllersSubView.js":10,"./logger.js":16,"./modelsSubView.js":20,"./overviewSubView.js":174,"./routesSubView.js":176,"./schemasSubView.js":179,"./stylesheetsSubView.js":181,"./viewsSubView.js":192,"augmentedjs":23,"augmentedjs-presentation":22}],18:[function(require,module,exports){
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation"),
         Handlebars = require("handlebars");
@@ -49342,22 +49379,26 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":172,"_process":143,"inherits":171}],174:[function(require,module,exports){
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation");
-const   CONSTANTS = require("./constants.js");
+const   CONSTANTS = require("./constants.js"),
+		app = require("./application.js"),
+		overviewTemplate = require("./templates/overviewTemplate.js");
 
 //OverviewView
 module.exports = Augmented.Presentation.DecoratorView.extend({
     name: CONSTANTS.NAMES_AND_QUEUES.OVERVIEW,
     el: CONSTANTS.VIEW_MOUNT.OVERVIEW,
     init: function() {
+		this.render();
     },
     render: function() {
         var e = this.boundElement("overviewDetail");
         this.removeTemplate(e, true);
-        //this.injectTemplate("", e);
+        var ds = app.getDatastore();
+        this.injectTemplate(Handlebars.templates.overviewTemplate(ds.toJSON()), e);
     }
 });
 
-},{"./constants.js":9,"augmentedjs":23,"augmentedjs-presentation":22}],175:[function(require,module,exports){
+},{"./application.js":3,"./constants.js":9,"./templates/overviewTemplate.js":186,"augmentedjs":23,"augmentedjs-presentation":22}],175:[function(require,module,exports){
 const Augmented = require("augmentedjs");
 
 const MainProject = require("./mainProject.js"),
@@ -49562,7 +49603,7 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
     }
 });
 
-},{"./application.js":3,"./constants.js":9,"./editDialog.js":12,"./models.js":19,"./templates/routesTemplate.js":187,"augmentedjs":23,"augmentedjs-presentation":22,"handlebars":83}],177:[function(require,module,exports){
+},{"./application.js":3,"./constants.js":9,"./editDialog.js":12,"./models.js":19,"./templates/routesTemplate.js":188,"augmentedjs":23,"augmentedjs-presentation":22,"handlebars":83}],177:[function(require,module,exports){
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation");
 const   CONSTANTS = require("./constants.js"),
@@ -49903,7 +49944,7 @@ module.exports = AbstractEditorView.extend({
     }
 });
 
-},{"./abstractEditorView.js":2,"./application.js":3,"./constants.js":9,"./editDialog.js":12,"./models.js":19,"./templates/schemasTemplate.js":188,"augmentedjs":23,"augmentedjs-presentation":22,"handlebars":83}],180:[function(require,module,exports){
+},{"./abstractEditorView.js":2,"./application.js":3,"./constants.js":9,"./editDialog.js":12,"./models.js":19,"./templates/schemasTemplate.js":189,"augmentedjs":23,"augmentedjs-presentation":22,"handlebars":83}],180:[function(require,module,exports){
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation"),
         Handlebars = require("handlebars");
@@ -50114,7 +50155,7 @@ module.exports = Augmented.Presentation.ViewController.extend({
     }
 });
 
-},{"./abstractEditorMediator.js":1,"./application.js":3,"./basicInfoView.js":7,"./constants.js":9,"./editDialog.js":12,"./logger.js":16,"./models.js":19,"./templates/permissionsTemplate.js":186,"augmentedjs":23,"augmentedjs-presentation":22,"handlebars":83}],181:[function(require,module,exports){
+},{"./abstractEditorMediator.js":1,"./application.js":3,"./basicInfoView.js":7,"./constants.js":9,"./editDialog.js":12,"./logger.js":16,"./models.js":19,"./templates/permissionsTemplate.js":187,"augmentedjs":23,"augmentedjs-presentation":22,"handlebars":83}],181:[function(require,module,exports){
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation"),
         Handlebars = require("handlebars");
@@ -50242,7 +50283,7 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
     }
 });
 
-},{"./application.js":3,"./constants.js":9,"./editDialog.js":12,"./logger.js":16,"./models.js":19,"./templates/stylesheetsTemplate.js":189,"augmentedjs":23,"augmentedjs-presentation":22,"handlebars":83}],182:[function(require,module,exports){
+},{"./application.js":3,"./constants.js":9,"./editDialog.js":12,"./logger.js":16,"./models.js":19,"./templates/stylesheetsTemplate.js":190,"augmentedjs":23,"augmentedjs-presentation":22,"handlebars":83}],182:[function(require,module,exports){
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation"),
         Handlebars = require("handlebars");
@@ -50667,6 +50708,8 @@ templates['observeViewsListTemplate'] = template({"1":function(container,depth0,
 },"useData":true});
 })();
 },{}],186:[function(require,module,exports){
+!function(){var n=Handlebars.template;(Handlebars.templates=Handlebars.templates||{}).overviewTemplate=n({1:function(n,e,a,s,l){var r;return'            <span class="green">'+n.escapeExpression(n.lambda(null!=(r=null!=e?e.stylesheets:e)?r.length:r,e))+" stylesheets defined.\n"},3:function(n,e,a,s,l){return'            <span class="red">No stylesheets defined.\n'},5:function(n,e,a,s,l){var r;return'            <span class="green">'+n.escapeExpression(n.lambda(null!=(r=null!=e?e.routes:e)?r.length:r,e))+" routes defined.\n"},7:function(n,e,a,s,l){return'            <span class="red">No routes defined.\n'},9:function(n,e,a,s,l){var r;return'            <span class="green">'+n.escapeExpression(n.lambda(null!=(r=null!=e?e.views:e)?r.length:r,e))+" views defined.\n"},11:function(n,e,a,s,l){return'            <span class="red">No views defined.\n'},13:function(n,e,a,s,l){var r;return'            <span class="green">'+n.escapeExpression(n.lambda(null!=(r=null!=e?e.controllers:e)?r.length:r,e))+" controllers defined.\n"},15:function(n,e,a,s,l){return'            <span class="red">No controllers defined.\n'},17:function(n,e,a,s,l){var r;return'            <span class="green">'+n.escapeExpression(n.lambda(null!=(r=null!=e?e.models:e)?r.length:r,e))+" models defined.\n"},19:function(n,e,a,s,l){return'            <span class="red">No models defined.\n'},21:function(n,e,a,s,l){var r;return'            <span class="green">'+n.escapeExpression(n.lambda(null!=(r=null!=e?e.schemas:e)?r.length:r,e))+" schemas defined.\n"},23:function(n,e,a,s,l){return'            <span class="red">No schemas defined.\n'},compiler:[7,">= 4.0.0"],main:function(n,e,a,s,l){var r,i,t=null!=e?e:{},o=a.helperMissing,c=n.escapeExpression;return"<h1>"+c((i=null!=(i=a.project||(null!=e?e.project:e))?i:o,"function"==typeof i?i.call(t,{name:"project",hash:{},data:l}):i))+"</h1>\n<h2>"+c((i=null!=(i=a.filename||(null!=e?e.filename:e))?i:o,"function"==typeof i?i.call(t,{name:"filename",hash:{},data:l}):i))+'</h2>\n\n<div class="info">\n    <h3><i class="material-icons md-dark">style</i> Stylesheets</h3>\n    <p>\n'+(null!=(r=a.if.call(t,null!=e?e.stylesheets:e,{name:"if",hash:{},fn:n.program(1,l,0),inverse:n.program(3,l,0),data:l}))?r:"")+'    </span></p>\n    <h3><i class="material-icons md-dark">toc</i> Routes</h3>\n    <p>\n'+(null!=(r=a.if.call(t,null!=e?e.routes:e,{name:"if",hash:{},fn:n.program(5,l,0),inverse:n.program(7,l,0),data:l}))?r:"")+'    </span></p>\n    <h3><i class="material-icons md-dark">web_asset</i> Views</h3>\n    <p>\n'+(null!=(r=a.if.call(t,null!=e?e.views:e,{name:"if",hash:{},fn:n.program(9,l,0),inverse:n.program(11,l,0),data:l}))?r:"")+'    </span></p>\n    <h3><i class="material-icons md-dark">web</i> Controllers</h3>\n    <p>\n'+(null!=(r=a.if.call(t,null!=e?e.controllers:e,{name:"if",hash:{},fn:n.program(13,l,0),inverse:n.program(15,l,0),data:l}))?r:"")+'    </span></p>\n    <h3><i class="material-icons md-dark">note</i> Models</h3>\n    <p>\n'+(null!=(r=a.if.call(t,null!=e?e.models:e,{name:"if",hash:{},fn:n.program(17,l,0),inverse:n.program(19,l,0),data:l}))?r:"")+'    </span></p>\n    <h3><i class="material-icons md-dark">code</i> Schemas</h3>\n    <p>\n'+(null!=(r=a.if.call(t,null!=e?e.schemas:e,{name:"if",hash:{},fn:n.program(21,l,0),inverse:n.program(23,l,0),data:l}))?r:"")+"    </span></p>\n</div>\n"},useData:!0})}();
+},{}],187:[function(require,module,exports){
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['permissionsTemplate'] = template({"1":function(container,depth0,helpers,partials,data) {
@@ -50695,7 +50738,7 @@ templates['permissionsTemplate'] = template({"1":function(container,depth0,helpe
     + "</ul>\n";
 },"useData":true});
 })();
-},{}],187:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['routesTemplate'] = template({"1":function(container,depth0,helpers,partials,data) {
@@ -50718,7 +50761,7 @@ templates['routesTemplate'] = template({"1":function(container,depth0,helpers,pa
     + "</ul>\n";
 },"useData":true});
 })();
-},{}],188:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['schemasTemplate'] = template({"1":function(container,depth0,helpers,partials,data) {
@@ -50761,7 +50804,7 @@ templates['schemasTemplate'] = template({"1":function(container,depth0,helpers,p
     + "    </ul>\n</div>\n";
 },"useData":true});
 })();
-},{}],189:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['stylesheetsTemplate'] = template({"1":function(container,depth0,helpers,partials,data) {
@@ -50790,7 +50833,7 @@ templates['stylesheetsTemplate'] = template({"1":function(container,depth0,helpe
     + "</ul>\n";
 },"useData":true});
 })();
-},{}],190:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['viewsTemplate'] = template({"1":function(container,depth0,helpers,partials,data) {
@@ -50836,7 +50879,7 @@ templates['viewsTemplate'] = template({"1":function(container,depth0,helpers,par
     + "</ul>\n";
 },"useData":true});
 })();
-},{}],191:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 const   Augmented = require("augmentedjs");
 	    Augmented.Presentation = require("augmentedjs-presentation"),
         Handlebars = require("handlebars");
@@ -51043,4 +51086,4 @@ module.exports = AbstractEditorView.extend({
     }
 });
 
-},{"./abstractEditorView.js":2,"./application.js":3,"./constants.js":9,"./editDialog.js":12,"./logger.js":16,"./models.js":19,"./templates/viewsTemplate.js":190,"augmentedjs":23,"augmentedjs-presentation":22,"handlebars":83}]},{},[14]);
+},{"./abstractEditorView.js":2,"./application.js":3,"./constants.js":9,"./editDialog.js":12,"./logger.js":16,"./models.js":19,"./templates/viewsTemplate.js":191,"augmentedjs":23,"augmentedjs-presentation":22,"handlebars":83}]},{},[14]);

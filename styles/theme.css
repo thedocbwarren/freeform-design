@@ -2,6 +2,11 @@
     z-index: 5;
 }
 
+h1 > i, h2 > i, h3 > i {
+    font-size: inherit !important;
+    line-height: inherit;
+}
+
 dialog {
     border: none;
 }
@@ -138,4 +143,8 @@ article section#activePanel div#basic header div {
     position: absolute;
     right: 16px;
     top: 16px;
+}
+
+div.info {
+    margin-left: 40px !important;
 }

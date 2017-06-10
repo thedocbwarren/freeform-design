@@ -90,6 +90,10 @@ var MainProjectMediator = Augmented.Presentation.Mediator.extend({
     doNavigation: function(navigation, ViewObject) {
         this.removeLastView();
         this.currentNavigation = navigation;
+
+		// add navigation for breadcrumbing
+		app.setCurrentBreadcrumb(navigation);
+
         this.publish(CONSTANTS.NAMES_AND_QUEUES.SIDE_NAVIGATION, CONSTANTS.MESSAGES.MARK_NAVIGATION, navigation);
 
         logger.info("adding view");
@@ -123,8 +127,31 @@ var MainProjectMediator = Augmented.Presentation.Mediator.extend({
             CONSTANTS.NAMES_AND_QUEUES.SIDE_NAVIGATION,   // channel
             CONSTANTS.NAMES_AND_QUEUES.SIDE_NAVIGATION    // identifier
         );
-        // setup default nav
-        this.sideNav.defaultNavigation();
+		// go where we were
+		var bc = app.getCurrentBreadcrumb();
+		if (bc) {
+			if (bc === CONSTANTS.NAVIGATION.STYLESHEETS) {
+                this.doNavigation(bc, StylesheetsView);
+            } else if (bc === CONSTANTS.NAVIGATION.ROUTES) {
+                this.doNavigation(bc, RoutesView);
+            } else if (bc === CONSTANTS.NAVIGATION.VIEWS) {
+                this.doNavigation(bc, ViewsView);
+            } else if (bc === CONSTANTS.NAVIGATION.CONTROLLERS) {
+                this.doNavigation(bc, ControllersView);
+            } else if (bc === CONSTANTS.NAVIGATION.MODELS) {
+                this.doNavigation(bc, ModelsView);
+            } else if (bc === CONSTANTS.NAVIGATION.SCHEMAS) {
+                this.doNavigation(bc, SchemasView);
+            } else if (bc === CONSTANTS.NAVIGATION.OVERVIEW) {
+                this.doNavigation(bc, OverviewView);
+            } else {
+				// setup default nav
+				this.sideNav.defaultNavigation();
+			}
+		} else {
+			// setup default nav
+			this.sideNav.defaultNavigation();
+		}
     },
     remove: function() {
         if (this.sideNav) {

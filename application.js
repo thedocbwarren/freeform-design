@@ -10,6 +10,8 @@ const   CONSTANTS = require("./constants.js"),
 // create an application and router
 var app = new Augmented.Presentation.Application(CONSTANTS.APP_NAME);
 
+var breadcrumb = "";
+
 app.afterInitialize = function() {
 	const 	mediatorView = new ApplicationMediator(),
 			headerView = new HeaderDecoratorView();
@@ -91,4 +93,12 @@ module.exports.getCurrentView = function() {
 module.exports.getViews = function() {
 	var ds = app.getDatastore();
 	return ds.get("views");
+};
+
+module.exports.setCurrentBreadcrumb = function(item) {
+	breadcrumb = item;
+};
+
+module.exports.getCurrentBreadcrumb = function() {
+	return breadcrumb;
 };
