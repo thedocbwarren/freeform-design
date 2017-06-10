@@ -1,6 +1,6 @@
 {
     "name": "freeform-design",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "description": "The Augmented.js Framework - freeForm Design Application.",
     "main": "freeform-design.js",
     "scripts": {
@@ -21,7 +21,7 @@
     "license": "Apache-2.0",
     "dependencies": {
         "xhr2": "*",
-        "electron": "^1.4.1",
+        "electron": "^1.7.3",
         "augmentedjs": ">=1.4.0",
         "augmentedjs-presentation": ">=1.1.0",
         "handlebars": ">=4.0.5",
@@ -30,8 +30,8 @@
     },
     "devDependencies": {
         "browserify": "latest",
-        "uglifyjs": "latest",
-        "jshint": "*",
+        "uglify-js": "latest",
+        "jshint": "latest",
         "jasmine-node": "^2.0.0"
     },
     "bugs": {
