@@ -167,12 +167,12 @@ module.exports.getCurrentBreadcrumb = function() {
 
 },{"./applicationMediator.js":4,"./constants.js":9,"./headerDecoratorView.js":13,"./logger.js":16,"./models.js":19,"./router.js":175,"augmentedjs":23,"augmentedjs-presentation":22}],4:[function(require,module,exports){
 const Augmented = require("augmentedjs");
-	  Augmented.Presentation = require("augmentedjs-presentation");
+	  	Augmented.Presentation = require("augmentedjs-presentation");
 const CONSTANTS = require("./constants.js"),
-        app = require("./application.js"),
-		Compiler = require("./compiler.js");
-        FileSaver = require("file-saver"),
-        logger = require("./logger.js");
+      app = require("./application.js"),
+			Compiler = require("./compiler.js");
+      FileSaver = require("file-saver"),
+      logger = require("./logger.js");
 
 module.exports = Augmented.Presentation.Mediator.extend({
     name: CONSTANTS.NAMES_AND_QUEUES.MEDIATOR,
@@ -181,7 +181,7 @@ module.exports = Augmented.Presentation.Mediator.extend({
         // hamburger events
         this.on(CONSTANTS.MESSAGES.CREATE_PROJECT, function(name) {
             logger.info("Created new project - " + name);
-			app.setDatastoreItem("project", name);
+						app.setDatastoreItem("project", name);
             app.navigate(CONSTANTS.NAVIGATION.PROJECT);
             this.publish(CONSTANTS.NAMES_AND_QUEUES.HEADER, CONSTANTS.MESSAGES.NOTIFICATION, "Project " + name + " Created.");
         });
@@ -194,7 +194,7 @@ module.exports = Augmented.Presentation.Mediator.extend({
                 var text = reader.result, data;
                 try {
                     data = JSON.parse(text);
-					app.setDatastore(data);
+										app.setDatastore(data);
 
                     app.navigate(CONSTANTS.NAVIGATION.PROJECT);
                     that.publish(CONSTANTS.NAMES_AND_QUEUES.HEADER, CONSTANTS.MESSAGES.NOTIFICATION, "Project Loaded.");
@@ -210,15 +210,16 @@ module.exports = Augmented.Presentation.Mediator.extend({
         this.on(CONSTANTS.MESSAGES.SAVE_PROJECT, function(file) {
             logger.info("Saving a project - " + file);
             var blob = new Blob([JSON.stringify(app.getDatastore().toJSON())], {type: "text/plain;charset=utf-8"});
-			if (!file.endsWith(".json")) {
-				file = file + ".json";
-			}
+						if (!file.endsWith(".json")) {
+							file = file + ".json";
+						}
 
             FileSaver.saveAs(blob, file);
             this.publish(CONSTANTS.NAMES_AND_QUEUES.HEADER, CONSTANTS.MESSAGES.NOTIFICATION, "Save Project Complete.");
         });
         this.on(CONSTANTS.MESSAGES.COMPILE_PROJECT, function() {
             logger.info("Compiling a project");
+						// TODO: make a chooser for AMD vs Commonjs
             Compiler.compile(app.getDatastore().toJSON());
             this.publish(CONSTANTS.NAMES_AND_QUEUES.HEADER, CONSTANTS.MESSAGES.NOTIFICATION, "Compile Complete!");
         });
@@ -497,14 +498,13 @@ module.exports = {
             for(i = 0; i < l; i++) {
                 html = html + "\t<link type=\"text/css\" rel=\"stylesheet\" href=\"" + syncStylesheets[i] + "\"/>\n";
             }
-            html = html + "\t<script data-main=\"scripts/" + model.project + ".js\" src=\"scripts/lib/require.js\"></script>\n\t</head>\n\t<body>\n\t\t<article>\n\t\t\t<section id=\"main\">\n\t\t\t</section>\n\t\t</article>\n\t</body>\n</html>";
+            html = html + "\t<script src=\"scripts/" + model.project + ".js\"></script>\n\t</head>\n\t<body>\n\t\t<article>\n\t\t\t<section id=\"main\">\n\t\t\t</section>\n\t\t</article>\n\t</body>\n</html>";
 
             // base require
-            var req = "require.config({'baseUrl': 'scripts/',\n'paths': {\n'jquery': 'lib/jquery.min', 'underscore': 'lib/lodash.min', 'backbone': 'lib/backbone-min', 'handlebars': 'lib/handlebars.runtime.min','augmented': 'scripts/lib/augmented','augmentedPresentation': 'scripts/lib/augmentedPresentation' }, 'shim': { } });" +
-                    "\n\n\\\\views\n\nrequire(['augmented', 'augmentedPresentation'],\nfunction(Augmented, Presentation) {\n\"use strict\";\n";
+            var req = '"use strict\";\n\n$ = require("jquery");\n_ = require("underscore");\nBackbone = require("backbone");\nHandlebars = require("handlebars");\nAugmented = require("augmentedjs");\nAugmented.Presentation = require("augmentedjs-presentation");\nvar app = require("application.js");\nvar router = require("router.js");';
 
             // application
-            var application = "define('application', ['augmented', 'augmentedPresentation'], function(Augmented) {\n\"use strict\";\n\tvar app = new Augmented.Presentation.Application(\"" + model.project + "\");\n";
+            var application = "module.exports = new Augmented.Presentation.Application(\"" + model.project + "\");\n";
             // add async stylesheets
             var asyncStylesheets = this.extractStylesheets(model.stylesheets, true);
 
@@ -515,8 +515,7 @@ module.exports = {
             application = application + "\n\treturn app;\n});";
 
             // router
-            var router = "define('router', ['augmented', 'augmentedPresentation'], function(Augmented) {\n\"use strict\";\n";
-            router = router + "\n\tvar router = Augmented.Router.extend({\n\troutes: {";
+            var router = "module.exports = Augmented.Router.extend({\n\troutes: {";
             // function routes
             l = model.routes.length;
             var func = "";
@@ -586,9 +585,39 @@ module.exports = {
                 }
             }
 
-            req = req + "\n" + mediation + "\n});";
+            req = req + "\n" + mediation;
+
+            const packagejson = {
+                "name": model.project,
+                "version": "1.0.0",
+                "description": "The " + model.project + " project",
+                "main": model.project + ".js",
+                "scripts": {
+                },
+                "repository": {
+                    "type": "git",
+                    "url": "git+https://github.com/something.git"
+                },
+                "keywords": [
+                    "javascript"
+                ],
+                "author": "You <me@email.com> (http://www.myhomepage.com)",
+                "license": "none",
+                "dependencies": {
+                    "xhr2": "*",
+                    "augmentedjs": ">=1.4.0",
+                    "augmentedjs-presentation": ">=1.1.0"
+                },
+                "devDependencies": {
+                },
+                "bugs": {
+                    "url": "bugurl"
+                },
+                "homepage": "http://www.myhomepage.com"
+            };
 
             zip.file("index.html", html);
+            zip.file("package.json", Augmented.Utility.PrettyPrint(packagejson, false, 0));
             zip.folder("scripts").file(model.project + ".js", req);
             zip.folder("scripts").file("router.js", router);
             zip.folder("scripts").file("application.js", application);
@@ -603,8 +632,6 @@ module.exports = {
                       join("");
                 FileSaver.saveAs(blob, result);
             });
-
-            //return html + " \n\n " + req + " \n\n " + router + " \n\n " + application;
             //zip it
             return zip;
         }
@@ -693,7 +720,7 @@ module.exports = {
 
 },{"./models.js":19,"augmentedjs":23,"file-saver":53,"jszip":98}],9:[function(require,module,exports){
 module.exports.APP_NAME = "freeform";
-module.exports.VERSION = "1.5.0";
+module.exports.VERSION = "1.6.0";
 module.exports.TITLE = "freeForm Designer";
 module.exports.WEBSITE = "http://www.augmentedjs.com";
 
@@ -6991,13 +7018,13 @@ module.exports = amdefine;
     }
 
     /**
-     * Augmented Logger - abstractLogger
-     * @constructor abstractLogger
+     * Augmented Abstract Logger
+     * @constructor Augmented.AbstractLogger
      * @param {Augmented.Logger.Level} l The level to initialize the logger with
      * @abstract
-     * @memberof Augmented.Logger
+     * @memberof Augmented
      */
-    var abstractLogger = function(l) {
+    var abstractLogger = Augmented.AbstractLogger = function(l) {
         this.TIME_SEPERATOR = ":";
         this.DATE_SEPERATOR = "-";
         this.OPEN_GROUP = " [ ";
@@ -15949,7 +15976,7 @@ var _logger = require('./logger');
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var VERSION = '4.0.5';
+var VERSION = '4.0.10';
 exports.VERSION = VERSION;
 var COMPILER_REVISION = 7;
 
@@ -16372,7 +16399,7 @@ Compiler.prototype = {
       for (var _name in knownHelpers) {
         /* istanbul ignore else */
         if (_name in knownHelpers) {
-          options.knownHelpers[_name] = knownHelpers[_name];
+          this.options.knownHelpers[_name] = knownHelpers[_name];
         }
       }
     }
@@ -16787,6 +16814,7 @@ function compile(input, options, env) {
     throw new _exception2['default']('You must pass a string or Handlebars AST to Handlebars.compile. You passed ' + input);
   }
 
+  options = _utils.extend({}, options);
   if (!('data' in options)) {
     options.data = true;
   }
@@ -18086,7 +18114,7 @@ JavaScriptCompiler.prototype = {
     var params = [],
         paramsInit = this.setupHelperArgs(name, paramSize, params, blockHelper);
     var foundHelper = this.nameLookup('helpers', name, 'helper'),
-        callContext = this.aliasable(this.contextName(0) + ' != null ? ' + this.contextName(0) + ' : {}');
+        callContext = this.aliasable(this.contextName(0) + ' != null ? ' + this.contextName(0) + ' : (container.nullContext || {})');
 
     return {
       params: params,
@@ -18220,10 +18248,11 @@ module.exports = exports['default'];
 
 
 },{"../base":56,"../exception":69,"../utils":82,"./code-gen":59}],63:[function(require,module,exports){
-/* istanbul ignore next */
+// File ignored in coverage tests via setting in .istanbul.yml
 /* Jison generated parser */
 "use strict";
 
+exports.__esModule = true;
 var handlebars = (function () {
     var parser = { trace: function trace() {},
         yy: {},
@@ -18955,8 +18984,8 @@ var handlebars = (function () {
         this.yy = {};
     }Parser.prototype = parser;parser.Parser = Parser;
     return new Parser();
-})();exports.__esModule = true;
-exports['default'] = handlebars;
+})();exports["default"] = handlebars;
+module.exports = exports["default"];
 
 
 },{}],64:[function(require,module,exports){
@@ -19598,7 +19627,10 @@ function Exception(message, node) {
       // Work around issue under safari where we can't directly set the column value
       /* istanbul ignore next */
       if (Object.defineProperty) {
-        Object.defineProperty(this, 'column', { value: column });
+        Object.defineProperty(this, 'column', {
+          value: column,
+          enumerable: true
+        });
       } else {
         this.column = column;
       }
@@ -20155,6 +20187,8 @@ function template(templateSpec, env) {
 
       return obj;
     },
+    // An empty object to use as replacement for null-contexts
+    nullContext: Object.seal({}),
 
     noop: env.VM.noop,
     compilerInfo: templateSpec.compiler
@@ -20222,7 +20256,7 @@ function wrapProgram(container, i, fn, data, declaredBlockParams, blockParams, d
     var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
     var currentDepths = depths;
-    if (depths && context != depths[0]) {
+    if (depths && context != depths[0] && !(context === container.nullContext && depths[0] === null)) {
       currentDepths = [context].concat(depths);
     }
 
@@ -20240,12 +20274,7 @@ function wrapProgram(container, i, fn, data, declaredBlockParams, blockParams, d
 function resolvePartial(partial, context, options) {
   if (!partial) {
     if (options.name === '@partial-block') {
-      var data = options.data;
-      while (data['partial-block'] === noop) {
-        data = data._parent;
-      }
-      partial = data['partial-block'];
-      data['partial-block'] = noop;
+      partial = options.data['partial-block'];
     } else {
       partial = options.partials[options.name];
     }
@@ -20258,6 +20287,8 @@ function resolvePartial(partial, context, options) {
 }
 
 function invokePartial(partial, context, options) {
+  // Use the current closure context to save the partial-block if this partial
+  var currentPartialBlock = options.data && options.data['partial-block'];
   options.partial = true;
   if (options.ids) {
     options.data.contextPath = options.ids[0] || options.data.contextPath;
@@ -20265,12 +20296,23 @@ function invokePartial(partial, context, options) {
 
   var partialBlock = undefined;
   if (options.fn && options.fn !== noop) {
-    options.data = _base.createFrame(options.data);
-    partialBlock = options.data['partial-block'] = options.fn;
+    (function () {
+      options.data = _base.createFrame(options.data);
+      // Wrapper function to get access to currentPartialBlock from the closure
+      var fn = options.fn;
+      partialBlock = options.data['partial-block'] = function partialBlockWrapper(context) {
+        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-    if (partialBlock.partials) {
-      options.partials = Utils.extend({}, options.partials, partialBlock.partials);
-    }
+        // Restore the partial-block from the closure for the execution of the block
+        // i.e. the part inside the block of the partial call.
+        options.data = _base.createFrame(options.data);
+        options.data['partial-block'] = currentPartialBlock;
+        return fn(context, options);
+      };
+      if (fn.partials) {
+        options.partials = Utils.extend({}, options.partials, fn.partials);
+      }
+    })();
   }
 
   if (partial === undefined && partialBlock) {

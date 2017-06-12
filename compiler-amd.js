@@ -19,13 +19,14 @@ module.exports = {
             for(i = 0; i < l; i++) {
                 html = html + "\t<link type=\"text/css\" rel=\"stylesheet\" href=\"" + syncStylesheets[i] + "\"/>\n";
             }
-            html = html + "\t<script src=\"scripts/" + model.project + ".js\"></script>\n\t</head>\n\t<body>\n\t\t<article>\n\t\t\t<section id=\"main\">\n\t\t\t</section>\n\t\t</article>\n\t</body>\n</html>";
+            html = html + "\t<script data-main=\"scripts/" + model.project + ".js\" src=\"scripts/lib/require.js\"></script>\n\t</head>\n\t<body>\n\t\t<article>\n\t\t\t<section id=\"main\">\n\t\t\t</section>\n\t\t</article>\n\t</body>\n</html>";
 
             // base require
-            var req = '"use strict\";\n\n$ = require("jquery");\n_ = require("underscore");\nBackbone = require("backbone");\nHandlebars = require("handlebars");\nAugmented = require("augmentedjs");\nAugmented.Presentation = require("augmentedjs-presentation");\nvar app = require("application.js");\nvar router = require("router.js");';
+            var req = "require.config({'baseUrl': 'scripts/',\n'paths': {\n'jquery': 'lib/jquery.min', 'underscore': 'lib/lodash.min', 'backbone': 'lib/backbone-min', 'handlebars': 'lib/handlebars.runtime.min','augmented': 'scripts/lib/augmented','augmentedPresentation': 'scripts/lib/augmentedPresentation' }, 'shim': { } });" +
+                    "\n\n\\\\views\n\nrequire(['augmented', 'augmentedPresentation'],\nfunction(Augmented, Presentation) {\n\"use strict\";\n";
 
             // application
-            var application = "module.exports = new Augmented.Presentation.Application(\"" + model.project + "\");\n";
+            var application = "define('application', ['augmented', 'augmentedPresentation'], function(Augmented) {\n\"use strict\";\n\tvar app = new Augmented.Presentation.Application(\"" + model.project + "\");\n";
             // add async stylesheets
             var asyncStylesheets = this.extractStylesheets(model.stylesheets, true);
 
@@ -36,7 +37,8 @@ module.exports = {
             application = application + "\n\treturn app;\n});";
 
             // router
-            var router = "module.exports = Augmented.Router.extend({\n\troutes: {";
+            var router = "define('router', ['augmented', 'augmentedPresentation'], function(Augmented) {\n\"use strict\";\n";
+            router = router + "\n\tvar router = Augmented.Router.extend({\n\troutes: {";
             // function routes
             l = model.routes.length;
             var func = "";
@@ -106,39 +108,9 @@ module.exports = {
                 }
             }
 
-            req = req + "\n" + mediation;
-
-            const packagejson = {
-                "name": model.project,
-                "version": "1.0.0",
-                "description": "The " + model.project + " project",
-                "main": model.project + ".js",
-                "scripts": {
-                },
-                "repository": {
-                    "type": "git",
-                    "url": "git+https://github.com/something.git"
-                },
-                "keywords": [
-                    "javascript"
-                ],
-                "author": "You <me@email.com> (http://www.myhomepage.com)",
-                "license": "none",
-                "dependencies": {
-                    "xhr2": "*",
-                    "augmentedjs": ">=1.4.0",
-                    "augmentedjs-presentation": ">=1.1.0"
-                },
-                "devDependencies": {
-                },
-                "bugs": {
-                    "url": "bugurl"
-                },
-                "homepage": "http://www.myhomepage.com"
-            };
+            req = req + "\n" + mediation + "\n});";
 
             zip.file("index.html", html);
-            zip.file("package.json", Augmented.Utility.PrettyPrint(packagejson, false, 0));
             zip.folder("scripts").file(model.project + ".js", req);
             zip.folder("scripts").file("router.js", router);
             zip.folder("scripts").file("application.js", application);
@@ -153,6 +125,8 @@ module.exports = {
                       join("");
                 FileSaver.saveAs(blob, result);
             });
+
+            //return html + " \n\n " + req + " \n\n " + router + " \n\n " + application;
             //zip it
             return zip;
         }
