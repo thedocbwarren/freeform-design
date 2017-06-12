@@ -172,6 +172,20 @@
                     </dialog>
                 </div>
             </template>
+						<template id="compileProjectDialogTemplate">
+                <div class="blur" id="compileProjectDialog" data-header="compileProjectDialog">
+                    <dialog class="mediumForm">
+                        <h1>Compile the project</h1>
+												<label for="projectStandard">JavaScript Standard</label><select name="projectStandard" id="projectStandard" data-header="projectStandard"><option value="es5">ES5+</option><!-- option value="es6">ES6</option --></select>
+                        <label for="projectStyle">Dependancy Style</label><select name="projectStyle" id="projectStyle" data-header="projectStyle"><option value="commonjs">CommonJS</option><option value="amd">AMD</option></select>
+                        <p data-header="message" class="message"></p>
+                        <div class="buttonGroup">
+                            <button data-header="compileButton" data-click="projectCompileButton">Compile</button>
+                            <button data-header="cancelButton" data-click="projectCompileButtonClose">Cancel</button>
+                        </div>
+                    </dialog>
+                </div>
+            </template>
             <template id="createProjectDialogTemplate">
                 <div class="blur" id="createProjectDialog" data-header="createProjectDialog">
                     <dialog class="form">

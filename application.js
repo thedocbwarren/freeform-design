@@ -62,7 +62,7 @@ module.exports.start = function() {
 	// adding style packs
 	app.registerStylesheet("node_modules/augmentedjs/styles/table/material.css");
 	app.registerStylesheet("node_modules/augmentedjs/styles/table/spaceGray.css");
-	//app.registerStylesheet("node_modules/augmentedjs/styles/table/plain.css");  Empty at the moment
+	app.registerStylesheet("node_modules/augmentedjs/styles/table/plain.css");
 
 	app.createDatastore(Models.ProjectModel);
     logger.info("Starting Application...");

@@ -148,3 +148,10 @@ article section#activePanel div#basic header div {
 div.info {
     margin-left: 40px !important;
 }
+
+dialog.mediumForm {
+    height: 232px;
+    margin-left: -184px;
+    margin-top: -140px;
+    width: 368px;
+}

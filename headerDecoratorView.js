@@ -67,6 +67,7 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
             var clone = document.importNode(t.content, true);
             this.injectTemplate(clone, this.el);
             this.modal = true;
+						this.syncAllBoundElements();
         }
     },
     projectCreateButtonClose: function() {
@@ -136,7 +137,27 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
         }
     },
     compile: function() {
-        this.hamburger();
-        this.sendMessage(CONSTANTS.MESSAGES.COMPILE_PROJECT, null);
+			if (!this.modal) {
+					this.hamburger();
+					var t = document.querySelector(CONSTANTS.TEMPLATES.COMPILE_PROJECT);
+					var clone = document.importNode(t.content, true);
+					this.injectTemplate(clone, this.el);
+					this.modal = true;
+					this.syncAllBoundElements();
+			}
+		},
+		projectCompileButtonClose: function() {
+        if (this.modal) {
+            var dialog = this.boundElement("compileProjectDialog");
+            this.removeTemplate(dialog);
+            this.modal = false;
+        }
+    },
+		projectCompileButton: function() {
+        var style = this.model.get("projectStyle");
+        if (this.modal && style) {
+            this.projectCompileButtonClose();
+            this.sendMessage(CONSTANTS.MESSAGES.COMPILE_PROJECT, style);
+        }
     }
 });

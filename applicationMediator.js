@@ -2,7 +2,8 @@ const Augmented = require("augmentedjs");
 	  	Augmented.Presentation = require("augmentedjs-presentation");
 const CONSTANTS = require("./constants.js"),
       app = require("./application.js"),
-			Compiler = require("./compiler.js");
+			Compiler = require("./compiler.js"),
+			AMDCompiler = require("./compiler-amd.js"),
       FileSaver = require("file-saver"),
       logger = require("./logger.js");
 
@@ -49,10 +50,15 @@ module.exports = Augmented.Presentation.Mediator.extend({
             FileSaver.saveAs(blob, file);
             this.publish(CONSTANTS.NAMES_AND_QUEUES.HEADER, CONSTANTS.MESSAGES.NOTIFICATION, "Save Project Complete.");
         });
-        this.on(CONSTANTS.MESSAGES.COMPILE_PROJECT, function() {
-            logger.info("Compiling a project");
-						// TODO: make a chooser for AMD vs Commonjs
-            Compiler.compile(app.getDatastore().toJSON());
+        this.on(CONSTANTS.MESSAGES.COMPILE_PROJECT, function(style) {
+            logger.info("Compiling a project wth style " + style);
+
+						if (style === "amd") {
+							AMDCompiler.compile(app.getDatastore().toJSON());
+						} else {
+							Compiler.compile(app.getDatastore().toJSON());
+						}
+
             this.publish(CONSTANTS.NAMES_AND_QUEUES.HEADER, CONSTANTS.MESSAGES.NOTIFICATION, "Compile Complete!");
         });
         // end hamburger events
