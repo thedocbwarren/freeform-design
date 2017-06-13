@@ -706,7 +706,7 @@ const   Models = require("./models.js"),
 
 module.exports = {
     compile: function(model) {
-        var zip = new JSZip();
+        let zip = new JSZip();
 
         if (model) {
             var i = 0, l;
@@ -763,20 +763,22 @@ module.exports = {
             // Schemas
             l = model.schemas.length;
             for(i = 0; i < l; i++) {
-                req = req + "\n\n" + this.compileSchema(model.schemas[i]);
+                //req = req + "\n\n" + this.compileSchema(model.schemas[i]);
+                zip.folder("schemas").file(model.schemas[i].name + ".js", this.compileSchema(model.schemas[i]));
             }
 
             // Models
             l = model.models.length;
             for(i = 0; i < l; i++) {
-                req = req + "\n\n" + this.compileModel(model.models[i]);
+                zip.folder("models").file(model.models[i].name + ".js", this.compileModel(model.models[i]));
             }
 
             // controllers
             l = model.controllers.length;
             for(i = 0; i < l; i++) {
-                req = req + "\nvar " + model.controllers[i].controller +
+                var controller = "\nvar " + model.controllers[i].controller +
                     " = Augmented.Presentation.ViewController.extend({\nrender: function() {\n },\n initialize: function() {\nreturn this;\n},\nremove: function() {\n}\n});\n";
+                zip.folder("controllers").file(model.controllers[i].controller + ".js", controller);
             }
 
             // views
@@ -784,23 +786,27 @@ module.exports = {
             l = model.views.length;
             for(i = 0; i < l; i++) {
                 if (model.views[i].type === "AutomaticTable") {
-                    req = req + "\n\n" + this.compileTable(model.views[i], model.views[i].settings);
+                    zip.folder("views").file(model.views[i].name + ".js", this.compileTable(model.views[i], model.views[i].settings));
+                    //req = req + "\n\n" + this.compileTable(model.views[i], model.views[i].settings);
                 } else if(model.views[i].type === "AutomaticForm") {
-                    req = req + "\n\n" + this.compileForm(model.views[i]);
+                    zip.folder("views").file(model.views[i].name + ".js", this.compileForm(model.views[i]));
+                    //req = req + "\n\n" + this.compileForm(model.views[i]);
                 } else if (model.views[i].type === "DialogView") {
-                    req = req + "\n\n" + this.compileDialog(model.views[i]);
+                    zip.folder("views").file(model.views[i].name + ".js", this.compileDialog(model.views[i]));
+                    //req = req + "\n\n" + this.compileDialog(model.views[i]);
                 } else {
-                    req = req + "\nvar " + model.views[i].name + " = " +
+                    var view = "\nvar " + model.views[i].name + " = " +
                         ((model.views[i].type === "View") ? "Augmented." : "Augmented.Presentation.") +
                         model.views[i].type + ".extend({\n";
 
                     if (model.views[i].permissions) {
-                        req = req + "\"permissions\": " + JSON.stringify(model.views[i].permissions);
+                        view = view + "\"permissions\": " + JSON.stringify(model.views[i].permissions);
                     }
                     if (model.views[i].model) {
-                        req = req + ", \"model\": " + model.views[i].model;
+                        view = view + ", \"model\": " + model.views[i].model;
                     }
-                    req = req + "});\n";
+                    view = view + "});\n\n module.exports = " + model.views[i].name + ";";
+                    zip.folder("views").file(model.views[i].name + ".js", view);
                 }
                 if (model.views[i].type === "Mediator") {
                     mediation = mediation + this.compileMediation(model.views[i]);
@@ -809,6 +815,9 @@ module.exports = {
 
             req = req + "\n" + mediation;
 
+            zip.file("index.html", html);
+
+            // package.json
             const packagejson = {
                 "name": model.project,
                 "version": "1.0.0",
@@ -838,18 +847,22 @@ module.exports = {
                 "homepage": "http://www.myhomepage.com"
             };
 
-            zip.file("index.html", html);
             zip.file("package.json", Augmented.Utility.PrettyPrint(packagejson, false, 0));
-            zip.folder("scripts").file(model.project + ".js", req);
-            zip.folder("scripts").file("router.js", router);
-            zip.folder("scripts").file("application.js", application);
+
+            zip.file(model.project + ".js", req);
+            zip.file("router.js", router);
+            zip.file("application.js", application);
             zip.folder("styles");
+            zip.folder("images");
+            zip.folder("test");
+
+            // TODO: support collections
+            zip.folder("collections");
 
             zip.generateAsync({type:"blob"})
             .then(function(blob) {
-                var fn = model.project + ".zip";
                 var result =
-                      fn.
+                      model.project + ".zip".
                       split(" ").
                       join("");
                 FileSaver.saveAs(blob, result);
@@ -860,13 +873,19 @@ module.exports = {
         return "";
     },
     compileModel: function(model) {
-        return "var " + model.name + " = Augmented.Model.extend({ \"url\": \"" + ((model.url) ? model.url : null) + "\", \"schema\": " + ((model.schema) ? model.schema : null) + " });";
+        let schema = null;
+        if (module.schema) {
+            schema = (Augmented.isObject(model.schema)) ?
+            "var " + model.name + "schema = " + JSON.stringify(model.schema) + ";\n\n" :
+            "var " + model.name + "schema = require(\"..\\schemas\\" + model.name + ".js\");\n\n";
+        }
+        return "var " + model.name + " = Augmented.Model.extend({ \"url\": \"" + ((model.url) ? model.url : null) + "\", \"schema\": " + ((schema) ? schema : null) + " });\n module.exports = " + model.name + ";";
     },
     compileSchema: function(schema) {
-        return "var " + schema.name + " = " + ((schema.url) ? schema.url : JSON.stringify(schema.schema)) + ";";
+        return "var " + schema.name + " = " + ((schema.url) ? schema.url : JSON.stringify(schema.schema)) + ";\n module.exports = " + schema.name + ";";
     },
     compileMediation: function(view) {
-        var code = "", i, l = (view.observeList) ? view.observeList.length : 0;
+        let code = "", i, l = (view.observeList) ? view.observeList.length : 0;
         for(i = 0; i < l; i++) {
             code = code + view.name + ".observeColleagueAndTrigger(\n" +
                 "\t" + view.observeList[i].view + ",\n" +
@@ -877,7 +896,7 @@ module.exports = {
         return code;
     },
     compileDialog: function(viewModel) {
-        var code =  "var " + viewModel.name +
+        let code =  "var " + viewModel.name +
             " = Augmented.Presentation.DialogView.extend({\n" +
             "\tstyle: \"" + viewModel.style + "\", \n" +
             "\tel: \"#" + viewModel.name + "\", \n" +
@@ -893,11 +912,14 @@ module.exports = {
         if (viewModel.permissions) {
             code = code + ", \"permissions\": " + JSON.stringify(viewModel.permissions);
         }
-        code = code + "\n});";
+        code = code + "\n});\n module.exports = " + viewModel.name + ";";
         return code;
     },
     compileTable: function(viewModel, settings) {
-        return "var " + viewModel.name + "schema = " + JSON.stringify(viewModel.schema) + ";\n\n" +
+        let schema = (Augmented.isObject(viewModel.schema)) ?
+            "var " + viewModel.name + "schema = " + JSON.stringify(viewModel.schema) + ";\n\n" :
+            "var " + viewModel.name + "schema = require(\"..\\schemas\\" + viewModel.name + ".js\");\n\n";
+        return schema +
             "var " + viewModel.name +
             " = Augmented.Presentation.AutomaticTable.extend({\n" +
             "\tinit: function(options) { }\n" +
@@ -911,10 +933,13 @@ module.exports = {
                 "\turl: \"http://www.example.com/data\", \n" +
                 "\tpermissions: " + JSON.stringify(viewModel.permissions) +
             "});\n\n" +
-            "at.render();";
+            "module.exports = " + viewModel.name + ";";
     },
     compileForm: function(viewModel) {
-        return "var " + viewModel.name + "schema = " + JSON.stringify(viewModel.schema) + ";\n\n" +
+        let schema = (Augmented.isObject(viewModel.schema)) ?
+            "var " + viewModel.name + "schema = " + JSON.stringify(viewModel.schema) + ";\n\n" :
+            "var " + viewModel.name + "schema = require(\"..\\schemas\\" + viewModel.name + ".js\");\n\n";
+        return schema +
             "var " + viewModel.name +
             " = Augmented.Presentation.AutomaticForm.extend({\n" +
             "\tinit: function(options) { }\n" +
@@ -925,10 +950,10 @@ module.exports = {
                 "\turl: \"http://www.example.com/data\", \n" +
                 "\tpermissions: " + JSON.stringify(viewModel.permissions) +
             "});\n\n" +
-            "f.render();";
+            "module.exports = " + viewModel.name + ";"
     },
     extractStylesheets: function(arr, as) {
-        var a = [], i = 0, l = arr.length;
+        let a = [], i = 0, l = arr.length;
 
         for (i = 0; i < l; i++) {
             if (arr[i].async === as) {
@@ -7262,13 +7287,13 @@ module.exports = amdefine;
     }
 
     /**
-     * Augmented Abstract Logger
-     * @constructor Augmented.AbstractLogger
+     * Augmented Logger - abstractLogger
+     * @constructor abstractLogger
      * @param {Augmented.Logger.Level} l The level to initialize the logger with
      * @abstract
-     * @memberof Augmented
+     * @memberof Augmented.Logger
      */
-    var abstractLogger = Augmented.AbstractLogger = function(l) {
+    var abstractLogger = function(l) {
         this.TIME_SEPERATOR = ":";
         this.DATE_SEPERATOR = "-";
         this.OPEN_GROUP = " [ ";
@@ -16220,7 +16245,7 @@ var _logger = require('./logger');
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var VERSION = '4.0.10';
+var VERSION = '4.0.5';
 exports.VERSION = VERSION;
 var COMPILER_REVISION = 7;
 
@@ -16643,7 +16668,7 @@ Compiler.prototype = {
       for (var _name in knownHelpers) {
         /* istanbul ignore else */
         if (_name in knownHelpers) {
-          this.options.knownHelpers[_name] = knownHelpers[_name];
+          options.knownHelpers[_name] = knownHelpers[_name];
         }
       }
     }
@@ -17058,7 +17083,6 @@ function compile(input, options, env) {
     throw new _exception2['default']('You must pass a string or Handlebars AST to Handlebars.compile. You passed ' + input);
   }
 
-  options = _utils.extend({}, options);
   if (!('data' in options)) {
     options.data = true;
   }
@@ -18358,7 +18382,7 @@ JavaScriptCompiler.prototype = {
     var params = [],
         paramsInit = this.setupHelperArgs(name, paramSize, params, blockHelper);
     var foundHelper = this.nameLookup('helpers', name, 'helper'),
-        callContext = this.aliasable(this.contextName(0) + ' != null ? ' + this.contextName(0) + ' : (container.nullContext || {})');
+        callContext = this.aliasable(this.contextName(0) + ' != null ? ' + this.contextName(0) + ' : {}');
 
     return {
       params: params,
@@ -18492,11 +18516,10 @@ module.exports = exports['default'];
 
 
 },{"../base":57,"../exception":70,"../utils":83,"./code-gen":60}],64:[function(require,module,exports){
-// File ignored in coverage tests via setting in .istanbul.yml
+/* istanbul ignore next */
 /* Jison generated parser */
 "use strict";
 
-exports.__esModule = true;
 var handlebars = (function () {
     var parser = { trace: function trace() {},
         yy: {},
@@ -19228,8 +19251,8 @@ var handlebars = (function () {
         this.yy = {};
     }Parser.prototype = parser;parser.Parser = Parser;
     return new Parser();
-})();exports["default"] = handlebars;
-module.exports = exports["default"];
+})();exports.__esModule = true;
+exports['default'] = handlebars;
 
 
 },{}],65:[function(require,module,exports){
@@ -19871,10 +19894,7 @@ function Exception(message, node) {
       // Work around issue under safari where we can't directly set the column value
       /* istanbul ignore next */
       if (Object.defineProperty) {
-        Object.defineProperty(this, 'column', {
-          value: column,
-          enumerable: true
-        });
+        Object.defineProperty(this, 'column', { value: column });
       } else {
         this.column = column;
       }
@@ -20431,8 +20451,6 @@ function template(templateSpec, env) {
 
       return obj;
     },
-    // An empty object to use as replacement for null-contexts
-    nullContext: Object.seal({}),
 
     noop: env.VM.noop,
     compilerInfo: templateSpec.compiler
@@ -20500,7 +20518,7 @@ function wrapProgram(container, i, fn, data, declaredBlockParams, blockParams, d
     var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
     var currentDepths = depths;
-    if (depths && context != depths[0] && !(context === container.nullContext && depths[0] === null)) {
+    if (depths && context != depths[0]) {
       currentDepths = [context].concat(depths);
     }
 
@@ -20518,7 +20536,12 @@ function wrapProgram(container, i, fn, data, declaredBlockParams, blockParams, d
 function resolvePartial(partial, context, options) {
   if (!partial) {
     if (options.name === '@partial-block') {
-      partial = options.data['partial-block'];
+      var data = options.data;
+      while (data['partial-block'] === noop) {
+        data = data._parent;
+      }
+      partial = data['partial-block'];
+      data['partial-block'] = noop;
     } else {
       partial = options.partials[options.name];
     }
@@ -20531,8 +20554,6 @@ function resolvePartial(partial, context, options) {
 }
 
 function invokePartial(partial, context, options) {
-  // Use the current closure context to save the partial-block if this partial
-  var currentPartialBlock = options.data && options.data['partial-block'];
   options.partial = true;
   if (options.ids) {
     options.data.contextPath = options.ids[0] || options.data.contextPath;
@@ -20540,23 +20561,12 @@ function invokePartial(partial, context, options) {
 
   var partialBlock = undefined;
   if (options.fn && options.fn !== noop) {
-    (function () {
-      options.data = _base.createFrame(options.data);
-      // Wrapper function to get access to currentPartialBlock from the closure
-      var fn = options.fn;
-      partialBlock = options.data['partial-block'] = function partialBlockWrapper(context) {
-        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+    options.data = _base.createFrame(options.data);
+    partialBlock = options.data['partial-block'] = options.fn;
 
-        // Restore the partial-block from the closure for the execution of the block
-        // i.e. the part inside the block of the partial call.
-        options.data = _base.createFrame(options.data);
-        options.data['partial-block'] = currentPartialBlock;
-        return fn(context, options);
-      };
-      if (fn.partials) {
-        options.partials = Utils.extend({}, options.partials, fn.partials);
-      }
-    })();
+    if (partialBlock.partials) {
+      options.partials = Utils.extend({}, options.partials, partialBlock.partials);
+    }
   }
 
   if (partial === undefined && partialBlock) {
