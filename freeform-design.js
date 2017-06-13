@@ -726,7 +726,7 @@ module.exports = {
             var req = '"use strict\";\n\n$ = require("jquery");\n_ = require("underscore");\nBackbone = require("backbone");\nHandlebars = require("handlebars");\nAugmented = require("augmentedjs");\nAugmented.Presentation = require("augmentedjs-presentation");\nvar app = require("application.js");\nvar router = require("router.js");';
 
             // application
-            var application = "module.exports = new Augmented.Presentation.Application(\"" + model.project + "\");\n";
+            var application = "var router = require(\"router.js\");\n\nvar app = new Augmented.Presentation.Application(\"" + model.project + "\");\n";
             // add async stylesheets
             var asyncStylesheets = this.extractStylesheets(model.stylesheets, true);
 
@@ -734,7 +734,9 @@ module.exports = {
             for(i = 0; i < l; i++) {
                 application = application + "\tapp.registerStylesheet(\"" + asyncStylesheets[i] + "\");\n";
             }
-            application = application + "\n\treturn app;\n});";
+            application = application + "app.router = router;\n";
+
+            application = application + "\n\tmodule.exports = app;";
 
             // router
             var router = "module.exports = Augmented.Router.extend({\n\troutes: {";
