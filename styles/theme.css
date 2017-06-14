@@ -49,7 +49,7 @@ article section#main h1 {
 
 article section#activePanel div.panel#schema {
     top: 0;
-    width: 40%;
+    width: 39%;
     height: 310px;
     margin-top: 8px;
 }
@@ -169,4 +169,8 @@ dialog input[type="checkbox"] {
     display: block;
     float: left;
     z-index: +1;
+}
+
+.full {
+width: auto !important;
 }

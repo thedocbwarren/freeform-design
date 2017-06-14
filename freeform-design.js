@@ -778,7 +778,7 @@ module.exports = {
             // controllers
             l = model.controllers.length;
             for(i = 0; i < l; i++) {
-                var controller = "\nvar " + model.controllers[i].controller +
+                var controller = "\nmodule.exports " +
                     " = Augmented.Presentation.ViewController.extend({\nrender: function() {\n },\n initialize: function() {\nreturn this;\n},\nremove: function() {\n}\n});\n";
                 zip.folder("controllers").file(model.controllers[i].controller + ".js", controller);
             }
@@ -7289,13 +7289,13 @@ module.exports = amdefine;
     }
 
     /**
-     * Augmented Logger - abstractLogger
-     * @constructor abstractLogger
+     * Augmented Abstract Logger
+     * @constructor Augmented.AbstractLogger
      * @param {Augmented.Logger.Level} l The level to initialize the logger with
      * @abstract
-     * @memberof Augmented.Logger
+     * @memberof Augmented
      */
-    var abstractLogger = function(l) {
+    var abstractLogger = Augmented.AbstractLogger = function(l) {
         this.TIME_SEPERATOR = ":";
         this.DATE_SEPERATOR = "-";
         this.OPEN_GROUP = " [ ";
@@ -16247,7 +16247,7 @@ var _logger = require('./logger');
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var VERSION = '4.0.5';
+var VERSION = '4.0.10';
 exports.VERSION = VERSION;
 var COMPILER_REVISION = 7;
 
@@ -16670,7 +16670,7 @@ Compiler.prototype = {
       for (var _name in knownHelpers) {
         /* istanbul ignore else */
         if (_name in knownHelpers) {
-          options.knownHelpers[_name] = knownHelpers[_name];
+          this.options.knownHelpers[_name] = knownHelpers[_name];
         }
       }
     }
@@ -17085,6 +17085,7 @@ function compile(input, options, env) {
     throw new _exception2['default']('You must pass a string or Handlebars AST to Handlebars.compile. You passed ' + input);
   }
 
+  options = _utils.extend({}, options);
   if (!('data' in options)) {
     options.data = true;
   }
@@ -18384,7 +18385,7 @@ JavaScriptCompiler.prototype = {
     var params = [],
         paramsInit = this.setupHelperArgs(name, paramSize, params, blockHelper);
     var foundHelper = this.nameLookup('helpers', name, 'helper'),
-        callContext = this.aliasable(this.contextName(0) + ' != null ? ' + this.contextName(0) + ' : {}');
+        callContext = this.aliasable(this.contextName(0) + ' != null ? ' + this.contextName(0) + ' : (container.nullContext || {})');
 
     return {
       params: params,
@@ -18518,10 +18519,11 @@ module.exports = exports['default'];
 
 
 },{"../base":57,"../exception":70,"../utils":83,"./code-gen":60}],64:[function(require,module,exports){
-/* istanbul ignore next */
+// File ignored in coverage tests via setting in .istanbul.yml
 /* Jison generated parser */
 "use strict";
 
+exports.__esModule = true;
 var handlebars = (function () {
     var parser = { trace: function trace() {},
         yy: {},
@@ -19253,8 +19255,8 @@ var handlebars = (function () {
         this.yy = {};
     }Parser.prototype = parser;parser.Parser = Parser;
     return new Parser();
-})();exports.__esModule = true;
-exports['default'] = handlebars;
+})();exports["default"] = handlebars;
+module.exports = exports["default"];
 
 
 },{}],65:[function(require,module,exports){
@@ -19896,7 +19898,10 @@ function Exception(message, node) {
       // Work around issue under safari where we can't directly set the column value
       /* istanbul ignore next */
       if (Object.defineProperty) {
-        Object.defineProperty(this, 'column', { value: column });
+        Object.defineProperty(this, 'column', {
+          value: column,
+          enumerable: true
+        });
       } else {
         this.column = column;
       }
@@ -20453,6 +20458,8 @@ function template(templateSpec, env) {
 
       return obj;
     },
+    // An empty object to use as replacement for null-contexts
+    nullContext: Object.seal({}),
 
     noop: env.VM.noop,
     compilerInfo: templateSpec.compiler
@@ -20520,7 +20527,7 @@ function wrapProgram(container, i, fn, data, declaredBlockParams, blockParams, d
     var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
     var currentDepths = depths;
-    if (depths && context != depths[0]) {
+    if (depths && context != depths[0] && !(context === container.nullContext && depths[0] === null)) {
       currentDepths = [context].concat(depths);
     }
 
@@ -20538,12 +20545,7 @@ function wrapProgram(container, i, fn, data, declaredBlockParams, blockParams, d
 function resolvePartial(partial, context, options) {
   if (!partial) {
     if (options.name === '@partial-block') {
-      var data = options.data;
-      while (data['partial-block'] === noop) {
-        data = data._parent;
-      }
-      partial = data['partial-block'];
-      data['partial-block'] = noop;
+      partial = options.data['partial-block'];
     } else {
       partial = options.partials[options.name];
     }
@@ -20556,6 +20558,8 @@ function resolvePartial(partial, context, options) {
 }
 
 function invokePartial(partial, context, options) {
+  // Use the current closure context to save the partial-block if this partial
+  var currentPartialBlock = options.data && options.data['partial-block'];
   options.partial = true;
   if (options.ids) {
     options.data.contextPath = options.ids[0] || options.data.contextPath;
@@ -20563,12 +20567,23 @@ function invokePartial(partial, context, options) {
 
   var partialBlock = undefined;
   if (options.fn && options.fn !== noop) {
-    options.data = _base.createFrame(options.data);
-    partialBlock = options.data['partial-block'] = options.fn;
+    (function () {
+      options.data = _base.createFrame(options.data);
+      // Wrapper function to get access to currentPartialBlock from the closure
+      var fn = options.fn;
+      partialBlock = options.data['partial-block'] = function partialBlockWrapper(context) {
+        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-    if (partialBlock.partials) {
-      options.partials = Utils.extend({}, options.partials, partialBlock.partials);
-    }
+        // Restore the partial-block from the closure for the execution of the block
+        // i.e. the part inside the block of the partial call.
+        options.data = _base.createFrame(options.data);
+        options.data['partial-block'] = currentPartialBlock;
+        return fn(context, options);
+      };
+      if (fn.partials) {
+        options.partials = Utils.extend({}, options.partials, fn.partials);
+      }
+    })();
   }
 
   if (partial === undefined && partialBlock) {
