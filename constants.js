@@ -1,5 +1,5 @@
 module.exports.APP_NAME = "freeform";
-module.exports.VERSION = "1.6.1";
+module.exports.VERSION = "1.7.0";
 module.exports.TITLE = "freeForm Designer";
 module.exports.WEBSITE = "http://www.augmentedjs.com";
 
@@ -19,6 +19,7 @@ module.exports.NAVIGATION = {
     "VIEWS":                "views",
     "CONTROLLERS":          "controllers",
     "MODELS":               "models",
+    "COLLECTIONS":          "collections",
     "SCHEMAS":              "schemas"
 };
 
@@ -38,6 +39,7 @@ module.exports.VIEW_MOUNT = {
     "BASE_PANEL": "#basePanel",
     "MEDIATOR": "#mediator",
     "MODELS": "#models",
+    "COLLECTIONS": "#collections",
     "OVERVIEW": "#overview",
     "ROUTES": "#routes",
     "SCHEMA": "#schema",
@@ -110,6 +112,7 @@ module.exports.NAMES_AND_QUEUES = {
     "LIST_VIEW": "listView",
     "LIST": "list",
     "MODELS": "models",
+    "COLLECTIONS": "collections",
     "OVERVIEW": "overview",
     "ROUTES": "routes",
     "SCHEMA_EDITOR_MEDIATOR": "SchemaEditorMediator",

@@ -7,6 +7,7 @@ const   CONSTANTS = require("./constants.js"),
         ViewsView = require("./viewsSubView.js"),
         ControllersView = require("./controllersSubView.js"),
         ModelsView = require("./modelsSubView.js"),
+		CollectionsView = require("./collectionsSubView.js"),
         SchemasView = require("./schemasSubView.js"),
         OverviewView = require("./overviewSubView.js"),
         logger = require("./logger.js");
@@ -52,6 +53,9 @@ var ProjectSideNavigation = Augmented.Presentation.DecoratorView.extend({
     models: function() {
         this.sendMessage(CONSTANTS.MESSAGES.NAVIGATION, CONSTANTS.NAVIGATION.MODELS);
     },
+	collections: function() {
+        this.sendMessage(CONSTANTS.MESSAGES.NAVIGATION, CONSTANTS.NAVIGATION.COLLECTIONS);
+    },
     schemas: function() {
         this.sendMessage(CONSTANTS.MESSAGES.NAVIGATION, CONSTANTS.NAVIGATION.SCHEMAS);
     }
@@ -75,6 +79,8 @@ var MainProjectMediator = Augmented.Presentation.Mediator.extend({
                 this.doNavigation(navigation, ControllersView);
             } else if (navigation === CONSTANTS.NAVIGATION.MODELS && this.currentNavigation !== navigation) {
                 this.doNavigation(navigation, ModelsView);
+			} else if (navigation === CONSTANTS.NAVIGATION.COLLECTIONS && this.currentNavigation !== navigation) {
+				this.doNavigation(navigation, CollectionsView);
             } else if (navigation === CONSTANTS.NAVIGATION.SCHEMAS && this.currentNavigation !== navigation) {
                 this.doNavigation(navigation, SchemasView);
             } else if (navigation === CONSTANTS.NAVIGATION.OVERVIEW && this.currentNavigation !== navigation) {
@@ -140,6 +146,8 @@ var MainProjectMediator = Augmented.Presentation.Mediator.extend({
                 this.doNavigation(bc, ControllersView);
             } else if (bc === CONSTANTS.NAVIGATION.MODELS) {
                 this.doNavigation(bc, ModelsView);
+			} else if (bc === CONSTANTS.NAVIGATION.COLLECTIONS) {
+				this.doNavigation(bc, CollectionsView);
             } else if (bc === CONSTANTS.NAVIGATION.SCHEMAS) {
                 this.doNavigation(bc, SchemasView);
             } else if (bc === CONSTANTS.NAVIGATION.OVERVIEW) {

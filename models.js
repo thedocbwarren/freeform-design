@@ -5,11 +5,13 @@ module.exports = {
         defaults: {
             "project": "untitled",
             "filename": "",
+            "version": "1.7",
             "routes": [],
             "views": [],
             "controllers": [],
             "stylesheets": [],
             "models": [],
+            "collections": [],
             "schemas": [],
             "currentView": null,
             "currentSchema": null
@@ -61,6 +63,16 @@ module.exports = {
             "name": "",
             "schema": "",
             "url": ""
+        }
+    }),
+    CollectionModel: Augmented.Model.extend({
+        defaults: {
+            "name": "",
+            "schema": "",
+            "url": "",
+            "pagination": false,
+            "paginationKey": null,
+            "localStorage": false
         }
     }),
     SchemaModel: Augmented.Model.extend({

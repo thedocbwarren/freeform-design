@@ -74,6 +74,12 @@ module.exports = {
                 zip.folder("models").file(model.models[i].name + ".js", this.compileModel(model.models[i]));
             }
 
+            // Collections
+            l = model.models.length;
+            for(i = 0; i < l; i++) {
+                zip.folder("collections").file(model.collections[i].name + ".js", this.compileCollections(model.collections[i]));
+            }
+
             // controllers
             l = model.controllers.length;
             for(i = 0; i < l; i++) {
@@ -175,12 +181,32 @@ module.exports = {
     },
     compileModel: function(model) {
         let schema = null;
-        if (module.schema) {
+        if (model.schema) {
             schema = (Augmented.isObject(model.schema)) ?
             "var " + model.name + "schema = " + JSON.stringify(model.schema) + ";\n\n" :
             "var " + model.name + "schema = require(\"..\\schemas\\" + model.name + ".js\");\n\n";
         }
         return "var " + model.name + " = Augmented.Model.extend({ \"url\": \"" + ((model.url) ? model.url : null) + "\", \"schema\": " + ((schema) ? schema : null) + " });\n module.exports = " + model.name + ";";
+    },
+    compileCollection: function(collection) {
+        let schema = null;
+        if (collection.schema) {
+            schema = (Augmented.isObject(collection.schema)) ?
+            "var " + collection.name + "schema = " + JSON.stringify(collection.schema) + ";\n\n" :
+            "var " + collection.name + "schema = require(\"..\\schemas\\" + collection.name + ".js\");\n\n";
+        }
+        let clazz = "";
+        if (collection.pagination) {
+            clazz = "PaginatedCollection";
+        } else if (collection.localStorage) {
+            clazz = "LocalStorageCollection";
+        } else {
+            clazz = "Collection";
+        }
+
+        return "var " + collection.name + " = Augmented." + clazz + ".extend({ \"url\": \"" + ((collection.url) ? collection.url : null) +
+            "\", \"schema\": " + ((schema) ? schema : null) +
+            ((collection.pagination && collection.paginationKey) ? (",\"paginationKey\": " + collection.paginationKey) : null) + " });\n module.exports = " + collection.name + ";";
     },
     compileSchema: function(schema) {
         return "var " + schema.name + " = " + ((schema.url) ? schema.url : JSON.stringify(schema.schema)) + ";\n module.exports = " + schema.name + ";";

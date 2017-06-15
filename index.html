@@ -71,6 +71,15 @@
                     <button id="addModel" class="round hugTop" data-models="addModel" data-click="addModel" title="Add a new model"><i class="material-icons md-light">add</i></button>
                 </div>
             </template>
+			<template id="collectionsTemplate">
+                <div id="collections">
+                    <h1><i class="material-icons">note</i> Collections</h1>
+                    <!-- since the template requires a lot more than simple generation, it's handled in code -->
+                    <div id="editDialog"></div>
+                    <div id="currentCollections" data-models="currentCollections"></div>
+                    <button id="addCollection" class="round hugTop" data-models="addCollection" data-click="addCollection" title="Add a new model"><i class="material-icons md-light">add</i></button>
+                </div>
+            </template>
             <template id="controllersTemplate">
                 <div id="controllers">
                     <h1><i class="material-icons">web</i> Controllers</h1>
@@ -139,6 +148,7 @@
                                 <li data-sideNav="views" data-click="views"><i class="material-icons md-dark">web_asset</i>Views</li>
                                 <li data-sideNav="controllers" data-click="controllers"><i class="material-icons md-dark">web</i>Controllers</li>
 								<li data-sideNav="models" data-click="models"><i class="material-icons md-dark">note</i>Models</li>
+								<li data-sideNav="collections" data-click="collections"><i class="material-icons md-dark">note</i>Collections</li>
 								<li data-sideNav="schemas" data-click="schemas"><i class="material-icons md-dark">code</i>Schemas</li>
                             </ul>
                         </nav>

@@ -1,0 +1,39 @@
+<div>
+    <ul>
+        {{#each collections}}
+        <li>
+            <div class="flexContainer">
+                <p>{{name}}<br/>
+                    <span class="secondary">
+                    {{#if pagination}}
+                        <strong>Paginated</strong>&nbsp;:&nbsp;{{paginationType}}
+                    {{/if}}
+                    </span>
+                    <span class="secondary">
+                    {{#if url}}
+                        <strong>URL</strong>&nbsp;:&nbsp;{{url}}
+                    {{else}}
+                        <strong>Local</strong>
+                    {{/if}}
+                    </span>
+                    <br/><span class="secondary">
+                    {{#if schema}}
+                        <strong>Schema</strong>&nbsp;:&nbsp;{{schema}}
+                    {{else}}
+                        <strong>No Schema</strong>
+                    {{/if}}
+                    </span>
+                    <br/><span class="secondary">
+                    {{#if localStorage}}
+                        <strong>Local storage-based</strong>&nbsp;:&nbsp;Key: {{localStorageKey}}
+                    {{/if}}
+                    </span>
+                </p>
+                <div>
+                    <div class="inlineButton large" data-index="{{@index}}" data-collections="edit" data-click="editCollection"><i class="material-icons md-dark">edit</i></div>
+                </div>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+</div>
