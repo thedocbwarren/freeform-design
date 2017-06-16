@@ -494,7 +494,7 @@ const   CONSTANTS = require("./constants.js"),
         panelTemplates = require("./templates/panelTemplates.js");
 
 var EditCollectionDialog = EditDialog.extend({
-    style: "bigForm",
+    style: "reallyBigForm",
     title: "Edit Collection",
     name: "edit-collection"
 });
@@ -537,7 +537,7 @@ module.exports = AbstractEditorView.extend({
         this.removeTemplate(e, true);
         this.injectTemplate(Handlebars.templates.collectionsTemplate({"collections": this.collection.toJSON()}), e);
     },
-    editModel: function(event) {
+    editCollection: function(event) {
         this.editCurrent(event);
     },
     setCollection: function(arr) {
@@ -565,7 +565,7 @@ module.exports = AbstractEditorView.extend({
 				model.set("localStorage", localStorage);
                 this.collection.push(model);
             } else {
-                model = new Models.CollectionModel({"name": name, "schema": schema, "url": url});
+                model = new Models.CollectionModel({"name": name, "schema": schema, "url": url, "pagination": pagination, "paginationKey": paginationKey, "localStorage": localStorage});
                 this.collection.add(model);
             }
 
@@ -611,13 +611,13 @@ module.exports = AbstractEditorView.extend({
         this.dialog.body =
             "<label for=\"name\">Model</label>" +
             "<input type=\"text\" value=\"" + ((model) ? model.get("name") : "") +
-                "\" data-edit-model=\"name\" name=\"name\" placeholder=\"Name\" required/>" +
+                "\" data-edit-collection=\"name\" name=\"name\" placeholder=\"Name\" required/>" +
             "<label for=\"schema\">Schema</label>" +
-            "<select data-edit-model=\"schema\" name=\"schema\">" +
+            "<select data-edit-collection=\"schema\" name=\"schema\">" +
                 buildOptions(model.get("schema")) + "</select>" +
             "<label for=\"url\">URL</label>" +
             "<input type=\"text\" value=\"" + ((model) ? model.get("url") : "") +
-                "\" data-edit-model=\"url\" name=\"url\" placeholder=\"Service API\" />" +
+                "\" data-edit-collection=\"url\" name=\"url\" placeholder=\"Service API\" />" +
 			"<input type=\"checkbox\" name=\"edit-collection-localStorage\" data-edit-collection=\"edit-collection-localStorage\"" +
 				((model.get("localStorage") === true) ? "checked=\"checked\"" : "") + " />" +
 			"<label for=\"edit-stylesheet-localstorage\">Local Storage</label>" +
@@ -934,9 +934,9 @@ module.exports = {
             }
 
             // Collections
-            l = model.models.length;
+            l = model.collections.length;
             for(i = 0; i < l; i++) {
-                zip.folder("collections").file(model.collections[i].name + ".js", this.compileCollections(model.collections[i]));
+                zip.folder("collections").file(model.collections[i].name + ".js", this.compileCollection(model.collections[i]));
             }
 
             // controllers

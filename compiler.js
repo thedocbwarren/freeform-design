@@ -75,9 +75,9 @@ module.exports = {
             }
 
             // Collections
-            l = model.models.length;
+            l = model.collections.length;
             for(i = 0; i < l; i++) {
-                zip.folder("collections").file(model.collections[i].name + ".js", this.compileCollections(model.collections[i]));
+                zip.folder("collections").file(model.collections[i].name + ".js", this.compileCollection(model.collections[i]));
             }
 
             // controllers

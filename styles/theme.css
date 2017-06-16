@@ -6,9 +6,23 @@ h1 > i, h2 > i, h3 > i {
     font-size: inherit !important;
     line-height: inherit;
 }
+button {
+    outline: none;
+}
 
 dialog {
     border: none;
+}
+
+dialog.reallyBigForm {
+    height: 425px;
+    margin-left: -184px;
+    margin-top: -210px;
+    width: 368px;
+}
+
+div.panel.half {
+    width: 43%;
 }
 
 div#addRouteDialog dialog.form {
@@ -169,6 +183,8 @@ dialog input[type="checkbox"] {
     display: block;
     float: left;
     z-index: +1;
+    clear: left;
+    margin-top: 0px;
 }
 
 .full {
