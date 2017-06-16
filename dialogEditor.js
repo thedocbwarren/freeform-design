@@ -97,7 +97,12 @@ var DialogViewerView = Augmented.Presentation.DecoratorView.extend({
             Augmented.Presentation.Dom.removeClass(dialog, "alert");
             Augmented.Presentation.Dom.removeClass(dialog, "form");
             Augmented.Presentation.Dom.removeClass(dialog, "bigForm");
+            if (!this.model.get("style")) {
+                this.model.set("style", "form");
+            }
+
             Augmented.Presentation.Dom.addClass(dialog, this.model.get("style"));
+
 
             var bEl = this.boundElement("buttons");
             Augmented.Presentation.Dom.setValue(bEl, this._getButtonGroup());
