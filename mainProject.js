@@ -7,7 +7,7 @@ const   CONSTANTS = require("./constants.js"),
         ViewsView = require("./viewsSubView.js"),
         ControllersView = require("./controllersSubView.js"),
         ModelsView = require("./modelsSubView.js"),
-		CollectionsView = require("./collectionsSubView.js"),
+				CollectionsView = require("./collectionsSubView.js"),
         SchemasView = require("./schemasSubView.js"),
         OverviewView = require("./overviewSubView.js"),
         logger = require("./logger.js");
@@ -20,7 +20,7 @@ var ProjectSideNavigation = Augmented.Presentation.DecoratorView.extend({
     currentNav: "",
     init: function() {
         this.syncModelChange("name");
-		logger.debug("App " + JSON.stringify(app));
+				logger.debug("App " + JSON.stringify(app));
         this.model.set("name", app.getDatastoreItem("project"));
         this.on(CONSTANTS.MESSAGES.MARK_NAVIGATION, function(nav) {
             this.markNavigation(nav);
@@ -53,7 +53,7 @@ var ProjectSideNavigation = Augmented.Presentation.DecoratorView.extend({
     models: function() {
         this.sendMessage(CONSTANTS.MESSAGES.NAVIGATION, CONSTANTS.NAVIGATION.MODELS);
     },
-	collections: function() {
+		collections: function() {
         this.sendMessage(CONSTANTS.MESSAGES.NAVIGATION, CONSTANTS.NAVIGATION.COLLECTIONS);
     },
     schemas: function() {
@@ -79,8 +79,8 @@ var MainProjectMediator = Augmented.Presentation.Mediator.extend({
                 this.doNavigation(navigation, ControllersView);
             } else if (navigation === CONSTANTS.NAVIGATION.MODELS && this.currentNavigation !== navigation) {
                 this.doNavigation(navigation, ModelsView);
-			} else if (navigation === CONSTANTS.NAVIGATION.COLLECTIONS && this.currentNavigation !== navigation) {
-				this.doNavigation(navigation, CollectionsView);
+						} else if (navigation === CONSTANTS.NAVIGATION.COLLECTIONS && this.currentNavigation !== navigation) {
+								this.doNavigation(navigation, CollectionsView);
             } else if (navigation === CONSTANTS.NAVIGATION.SCHEMAS && this.currentNavigation !== navigation) {
                 this.doNavigation(navigation, SchemasView);
             } else if (navigation === CONSTANTS.NAVIGATION.OVERVIEW && this.currentNavigation !== navigation) {
@@ -97,8 +97,8 @@ var MainProjectMediator = Augmented.Presentation.Mediator.extend({
         this.removeLastView();
         this.currentNavigation = navigation;
 
-		// add navigation for breadcrumbing
-		app.setCurrentBreadcrumb(navigation);
+				// add navigation for breadcrumbing
+				app.setCurrentBreadcrumb(navigation);
 
         this.publish(CONSTANTS.NAMES_AND_QUEUES.SIDE_NAVIGATION, CONSTANTS.MESSAGES.MARK_NAVIGATION, navigation);
 
@@ -124,7 +124,7 @@ var MainProjectMediator = Augmented.Presentation.Mediator.extend({
         this.currentNavigation = null;
     },
     render: function() {
-		logger.debug("rendering main project");
+				logger.debug("rendering main project");
         Augmented.Presentation.Dom.injectTemplate(CONSTANTS.TEMPLATES.MAIN_PROJECT, this.el);
 
         this.sideNav = new ProjectSideNavigation();
@@ -133,33 +133,33 @@ var MainProjectMediator = Augmented.Presentation.Mediator.extend({
             CONSTANTS.NAMES_AND_QUEUES.SIDE_NAVIGATION,   // channel
             CONSTANTS.NAMES_AND_QUEUES.SIDE_NAVIGATION    // identifier
         );
-		// go where we were
-		var bc = app.getCurrentBreadcrumb();
-		if (bc) {
-			if (bc === CONSTANTS.NAVIGATION.STYLESHEETS) {
-                this.doNavigation(bc, StylesheetsView);
-            } else if (bc === CONSTANTS.NAVIGATION.ROUTES) {
-                this.doNavigation(bc, RoutesView);
-            } else if (bc === CONSTANTS.NAVIGATION.VIEWS) {
-                this.doNavigation(bc, ViewsView);
-            } else if (bc === CONSTANTS.NAVIGATION.CONTROLLERS) {
-                this.doNavigation(bc, ControllersView);
-            } else if (bc === CONSTANTS.NAVIGATION.MODELS) {
-                this.doNavigation(bc, ModelsView);
-			} else if (bc === CONSTANTS.NAVIGATION.COLLECTIONS) {
-				this.doNavigation(bc, CollectionsView);
-            } else if (bc === CONSTANTS.NAVIGATION.SCHEMAS) {
-                this.doNavigation(bc, SchemasView);
-            } else if (bc === CONSTANTS.NAVIGATION.OVERVIEW) {
-                this.doNavigation(bc, OverviewView);
-            } else {
-				// setup default nav
-				this.sideNav.defaultNavigation();
-			}
-		} else {
-			// setup default nav
-			this.sideNav.defaultNavigation();
-		}
+				// go where we were
+				var bc = app.getCurrentBreadcrumb();
+				if (bc) {
+					if (bc === CONSTANTS.NAVIGATION.STYLESHEETS) {
+		                this.doNavigation(bc, StylesheetsView);
+		            } else if (bc === CONSTANTS.NAVIGATION.ROUTES) {
+		                this.doNavigation(bc, RoutesView);
+		            } else if (bc === CONSTANTS.NAVIGATION.VIEWS) {
+		                this.doNavigation(bc, ViewsView);
+		            } else if (bc === CONSTANTS.NAVIGATION.CONTROLLERS) {
+		                this.doNavigation(bc, ControllersView);
+		            } else if (bc === CONSTANTS.NAVIGATION.MODELS) {
+		                this.doNavigation(bc, ModelsView);
+					} else if (bc === CONSTANTS.NAVIGATION.COLLECTIONS) {
+						this.doNavigation(bc, CollectionsView);
+		            } else if (bc === CONSTANTS.NAVIGATION.SCHEMAS) {
+		                this.doNavigation(bc, SchemasView);
+		            } else if (bc === CONSTANTS.NAVIGATION.OVERVIEW) {
+		                this.doNavigation(bc, OverviewView);
+		            } else {
+						// setup default nav
+						this.sideNav.defaultNavigation();
+					}
+				} else {
+					// setup default nav
+					this.sideNav.defaultNavigation();
+				}
     },
     remove: function() {
         if (this.sideNav) {

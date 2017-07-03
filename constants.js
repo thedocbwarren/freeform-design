@@ -1,5 +1,5 @@
 module.exports.APP_NAME = "freeform";
-module.exports.VERSION = "1.7.1";
+module.exports.VERSION = "1.7.2";
 module.exports.TITLE = "freeForm Designer";
 module.exports.WEBSITE = "http://www.augmentedjs.com";
 
@@ -89,7 +89,8 @@ module.exports.MESSAGES = {
     "MARK_NAVIGATION": "markNavigation",
     "NAVIGATION": "navigation",
     "MEDIATOR_DATA": "mediatorData",
-    "UPDATE_PERMISSIONS": "updatePermissions"
+    "UPDATE_PERMISSIONS": "updatePermissions",
+    "CLOSE": "close"
 };
 
 module.exports.NAMES_AND_QUEUES = {

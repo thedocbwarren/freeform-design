@@ -19,7 +19,7 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
     },
     notification: function(message, error) {
         if (message) {
-            Augmented.Presentation.Dom.setValue(this.notifyEl, message);
+            Augmented.Presentation.Dom.setValue(this.notifyEl, "<i class=\"material-icons md-dark md-24\">" + ((error) ? "priority_high" : "done") + "</i>" + message);
             Augmented.Presentation.Dom.addClass(this.notifyEl, ((error) ? "showError" : "show"));
             Augmented.Presentation.Dom.addClass(this.el, ((error) ? "red" : "green"));
             var that = this;
@@ -159,5 +159,8 @@ module.exports = Augmented.Presentation.DecoratorView.extend({
             this.projectCompileButtonClose();
             this.sendMessage(CONSTANTS.MESSAGES.COMPILE_PROJECT, style);
         }
-    }
+    },
+		close: function() {
+			this.sendMessage(CONSTANTS.MESSAGES.CLOSE);
+		}
 });
