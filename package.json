@@ -1,6 +1,6 @@
 {
     "name": "freeform-design",
-    "version": "1.7.3",
+    "version": "1.7.4",
     "description": "The Augmented.js Framework - freeForm Design Application.",
     "main": "freeform-design.js",
     "scripts": {
@@ -24,9 +24,9 @@
         "augmentedjs": "^1.5.5",
         "augmentedjs-presentation": "^1.7.0",
         "buffer-shims": "^1.0.0",
-        "electron": "^6.0.7",
+        "electron": "^6.0.10",
         "file-saver": "^2.0.2",
-        "handlebars": "^4.2.0",
+        "handlebars": "^4.3.3",
         "jszip": "^3.2.2",
         "xhr2": "^0.2.0"
     },
